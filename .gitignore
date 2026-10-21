@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+build/
+.vercel/
+
+# Environment variables
+.env
+.env.*
+
+# System files
+.DS_Store
+*.tsbuildinfo

@@ -1,0 +1,1 @@
+export default function PageHeader({eyebrow,title,subtitle}:{eyebrow:string,title:string,subtitle:string}){return <section className="pagehead"><div className="shell"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{subtitle}</p></div></section>}

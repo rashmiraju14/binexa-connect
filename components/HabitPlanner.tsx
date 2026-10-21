@@ -1,0 +1,9 @@
+"use client";
+import { useState } from "react";
+const ideas = ["Make time for a short walk", "Set aside a quiet reading break", "Plan a consistent wind-down time", "Check in with someone I care about"];
+const days = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"];
+export default function HabitPlanner() {
+  const [selected, setSelected] = useState(ideas[0]);
+  const [done, setDone] = useState<number[]>([]);
+  return <section className="onboarding-panel"><span className="pill">Your next small step</span><h2>One habit. A little room to try.</h2><p>Choose an idea that fits your life. This is a personal reflection tool; your selections stay in this page and reset on refresh.</p><div className="interest-options">{ideas.map(idea => <button type="button" aria-pressed={selected === idea} key={idea} className={selected === idea ? "interest-option chosen" : "interest-option"} onClick={() => {setSelected(idea);setDone([]);}}>{idea}</button>)}</div><div className="habit-week"><h3>{selected}</h3><p>Tap a day when you’ve made time for your habit. Start wherever you are.</p><div className="habit-days">{days.map((day,index) => <button type="button" key={day} aria-label={`${day}: ${done.includes(index) ? "completed" : "not completed"}`} aria-pressed={done.includes(index)} className={done.includes(index) ? "habit-day complete" : "habit-day"} onClick={() => setDone(items => items.includes(index) ? items.filter(item => item !== index) : [...items,index])}><span>{done.includes(index) ? "✓" : "○"}</span>{day}</button>)}</div><p aria-live="polite">{done.length} of 7 days marked. Every week can look different.</p></div><div className="onboarding-next"><h3>A question to bring to the community</h3><p>“What makes this habit easier to fit into your day?” Share practical ideas rather than personal medical details.</p><a className="textlink" href="/discussions">Explore conversation starters →</a></div></section>;
+}

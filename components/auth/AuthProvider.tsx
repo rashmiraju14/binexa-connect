@@ -83,6 +83,11 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
   function intercept(event: MouseEvent<HTMLDivElement>) {
     if (event.defaultPrevented || event.button !== 0) return;
     const target = event.target as HTMLElement;
+    const publicLink = target.closest<HTMLAnchorElement>("a[href]");
+    if (publicLink) {
+      const url = new URL(publicLink.href, window.location.origin);
+      if (url.origin === window.location.origin && ["/privacy", "/about"].includes(url.pathname)) return;
+    }
     // Explicit account buttons own their mode; do not replace it with preview sign-up.
     if (target.closest("[data-auth-trigger]")) return;
     const authAnchor = target.closest<HTMLAnchorElement>("a[href]");

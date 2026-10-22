@@ -1,3 +1,4 @@
+import PrivacyVideo from "@/components/PrivacyVideo";
 import { ArrowUpRight, PlayCircle } from "lucide-react";
 import { learningItems, type LearningTopic, type LearningItem } from "@/lib/learning";
 export default function LearningLibrary({ title, subtitle, topic, kind, ids }: {
@@ -7,7 +8,7 @@ export default function LearningLibrary({ title, subtitle, topic, kind, ids }: {
   return <section className="learning-section">
     <div className="learning-heading"><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div>
     <div className="learning-grid">{items.map(item => <article className="learning-card" key={item.id}>
-      {item.videoId && <iframe className="learning-video" src={`https://www.youtube-nocookie.com/embed/${item.videoId}`} title={item.title} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />}
+      {item.videoId && <PrivacyVideo id={item.videoId} title={item.title} />}
       {item.kind === "Video" && !item.videoId && <a className="learning-video-link" href={item.url} target="_blank" rel="noopener noreferrer"><PlayCircle size={42}/><span>Watch on {item.publisher}</span></a>}
       <div className="learning-card-body"><span className="pill">{item.topic} · {item.kind}</span><h3>{item.title}</h3><p>{item.description}</p>
         <div className="postmeta">{item.publisher}{item.expert && <><br/>{item.expert}</>}{item.date && <><br/>{item.date}</>}</div>

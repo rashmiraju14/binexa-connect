@@ -1,3 +1,4 @@
+import CookieNotice, { CookieNoticeButton } from "@/components/CookieNotice";
 
 import Link from "next/link";
 import { Suspense } from "react";
@@ -36,11 +37,15 @@ export default async function CommunityLayout({
               <Link href="/resources">Resources</Link>
               <Link href="/events">Events</Link>
               <Link href="/join">Join</Link>
+              <Link href="/about">About Binexa</Link>
+              <Link href="/privacy">Privacy Policy</Link>
+              <CookieNoticeButton />
             </div>
 
             <small>For education only. Not medical advice.</small>
           </div>
         </footer>
+        <CookieNotice />
       </AuthProvider>
     </Suspense>
   );

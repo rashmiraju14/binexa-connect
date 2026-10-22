@@ -1,3 +1,3 @@
-// One member-facing action handles Discord authorization, joining, and verification.
-export const discordJoinUrl = "/api/discord/connect";
+// Community join buttons open the existing Discord server invite directly.
+export const discordJoinUrl = "https://discord.gg/uGWdz6Bem";
 export const discordJoinLabel = "Join Our Discord Community";

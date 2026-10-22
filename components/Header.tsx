@@ -28,7 +28,7 @@ export default function Header() {
       </div>
       <nav className="community-subnav shell" aria-label="Community activities">
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
-        <a href={discordJoinUrl}>{discordJoinLabel} →</a>
+        <a href={discordJoinUrl} target="_blank" rel="noopener noreferrer">{discordJoinLabel} →</a>
       </nav>
       {open && <nav className="nav-mobile">
         {links.map(([label, url]) => <Link key={url} href={url} onClick={() => setOpen(false)}>{label}</Link>)}
@@ -36,7 +36,7 @@ export default function Header() {
         {authenticated && <Link href="/member" onClick={() => setOpen(false)}>My Account</Link>}
         <button type="button" className="auth-nav-link" data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>
         <button type="button" className="auth-nav-link" data-auth-trigger onClick={() => { setOpen(false); openAuth("signup"); }}>{communityCopy.hero.cta} →</button>
-        <a href={discordJoinUrl} onClick={() => setOpen(false)}>{discordJoinLabel} →</a>
+        <a href={discordJoinUrl} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>{discordJoinLabel} →</a>
       </nav>}
     </header>
   </>;

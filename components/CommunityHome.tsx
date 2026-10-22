@@ -1,3 +1,4 @@
+import { discordJoinUrl } from "@/lib/discord/navigation";
 import CommunityMemberCount from "@/components/CommunityMemberCount";
 
 import { communityTabs } from "@/lib/communityCopy";
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 import WellnessCategories from "@/components/WellnessCategories";
 
-const DISCORD_URL = "/api/discord/connect";
+const DISCORD_URL = discordJoinUrl;
 
 export default function Home({ authenticated = false }: { authenticated?: boolean }) {
   return (
@@ -50,6 +51,8 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
           <div className="actions">
             <a
               href={DISCORD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn"
             >
               Join Our Discord Community
@@ -86,6 +89,8 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             <div className="home-launch-links">
               <a
                 href={DISCORD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Join Our Discord Community →
               </a>

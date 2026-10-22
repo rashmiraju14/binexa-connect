@@ -3,7 +3,7 @@ import { safeNextPath } from "@/lib/auth/navigation";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isDiscordConfigured } from "@/lib/discord/server";
+import { discordJoinUrl } from "@/lib/discord/navigation";
 import SignOutButton from "@/app/member/sign-out-button";
 import "../onboarding.css";
 
@@ -28,8 +28,7 @@ export default async function JoinDiscordPage({ searchParams }: {
   if (error || !user) redirect("/sign-in");
   const params = await searchParams;
   const next = safeNextPath(params.next);
-  const configured = isDiscordConfigured();
-  const message = !configured ? errors.unavailable : params.error ? errors[params.error] : null;
+  const message = params.error ? errors[params.error] : null;
   return (
     <main className="onboarding-screen">
       <section className="onboarding-card" aria-labelledby="onboarding-title">
@@ -45,29 +44,25 @@ export default async function JoinDiscordPage({ searchParams }: {
         </p>
 
         <p className="onboarding-description">
-          One step joins the server and verifies your Discord account. If you’re
-          already a member, we’ll simply confirm your membership.
+          Use the button below to open our server invite on Discord. If you’re
+          already a member, it takes you back to the community.
         </p>
         {message && <p className="onboarding-message" role="status">{message}</p>}
         <div className="onboarding-actions">
-          {configured ? (
-            <a href={`/api/discord/connect?next=${encodeURIComponent(next)}`} className="onboarding-button onboarding-button-gold">
-              Join Our Discord Community →
-            </a>
-          ) : (
-            <button disabled className="onboarding-button onboarding-button-gold">Discord temporarily unavailable</button>
-          )}
+          <a href={discordJoinUrl} target="_blank" rel="noopener noreferrer" className="onboarding-button onboarding-button-gold">
+            Join Our Discord Community ↗
+          </a>
         </div>
         <p className="onboarding-note">
-          Discord will ask your permission to join the server and confirm your
-          membership. Complete any server rules screening before continuing.
+          The invite opens in a new tab. Accept the invitation and any server rules
+          in Discord, then return here to continue browsing.
         </p>
         {params.error === "screening_pending" && <p className="onboarding-note">
           <a href="https://discord.gg/uGWdz6Bem" target="_blank" rel="noopener noreferrer">Open Discord to complete the server rules ↗</a>
           {" "}Then return and choose Join Our Discord Community again.
         </p>}
         <div className="onboarding-footer">
-          <Link href={next}>Already verified? Enter the community →</Link>
+          <Link href={next}>Continue to the community →</Link>
           <SignOutButton />
         </div>
       </section>

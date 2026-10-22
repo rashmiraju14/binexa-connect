@@ -1,3 +1,4 @@
+import { discordJoinUrl } from "@/lib/discord/navigation";
 import Link from "next/link";
 import { requireAccount } from "@/lib/auth/require-account";
 import SignOutButton from "./sign-out-button";
@@ -62,7 +63,9 @@ export default async function MemberPage() {
         </Link>
 
         <a
-          href="/api/discord/connect"
+          href={discordJoinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             padding: "17px 26px",
             border: "1px solid #e8b84c",

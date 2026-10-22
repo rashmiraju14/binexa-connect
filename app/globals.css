@@ -85,3 +85,71 @@
     width: 100%;
   }
 }
+
+.wellness-card-image { position: relative; height: 280px; }
+
+/* Phone and tablet layouts share the same content and member access rules. */
+@media (max-width: 1000px) {
+  .header .community-subnav { display: none; }
+  .headrow { min-height: 76px; gap: 16px; }
+  .header .menu { min-width: 44px; min-height: 44px; padding: 10px; }
+  .nav-mobile { position: absolute; inset: 100% 0 auto; max-height: calc(100dvh - 110px); overflow-y: auto; overscroll-behavior: contain; background: white; box-shadow: 0 16px 24px #082b501a; gap: 4px; padding: 12px 24px 20px; }
+  .nav-mobile a, .nav-mobile button { display: flex; align-items: center; min-height: 44px; padding: 10px 12px; border-radius: 8px; font-size: 14px; }
+  .nav-mobile a:hover, .nav-mobile button:hover { background: var(--ivory); }
+  .home-welcome { grid-row: 1; max-width: none; padding: 0; }
+  .home-layout { gap: 40px; }
+  .home-layout > *, .articlelayout > *, .twocol > *, .mockrow > div { min-width: 0; }
+  .home-wellness-grid h3 { overflow-wrap: anywhere; }
+}
+@media (max-width: 700px) {
+  .shell { padding-inline: 20px; }
+  .topbar { padding: 8px 18px; font-size: 10px; line-height: 1.5; }
+  .headrow { min-height: 70px; }
+  .logomark { width: 42px; height: 42px; }
+  .brandtext { font-size: 21px; }
+  .logo { gap: 8px; }
+  .home-layout { padding-block: 32px 40px; gap: 36px; }
+  .home-welcome h1 { font-size: clamp(36px, 9.5vw, 54px); line-height: 1.12; margin-block: 20px; }
+  .home-welcome .lead { font-size: 16px; line-height: 1.7; }
+  .home-welcome .eyebrow { font-size: 10px; letter-spacing: .1em; }
+  .actions { gap: 12px; align-items: stretch; }
+  .actions > .btn { width: 100%; min-height: 48px; text-align: center; white-space: normal; }
+  .actions > .textlink { min-height: 44px; margin-top: 0; }
+  .home-wellness-grid { gap: 22px; }
+  .wellness-card-image { height: auto; aspect-ratio: 4 / 3; }
+  .home-wellness-grid h3 { margin-top: 0; }
+  .home-wellness > div > p { font-size: 15px; line-height: 1.7; }
+  .home-community { padding: 12px; border-radius: 16px; }
+  .mockrow { padding: 14px 10px; gap: 10px; }
+  .mockrow .roundicon { width: 36px; height: 36px; flex-shrink: 0; }
+  .proof { flex-wrap: wrap; line-height: 1.7; }
+  .home-learning { padding-bottom: 40px; }
+  .home-launch-links a, .footlinks a, .learning-topics a { min-height: 44px; display: inline-flex; align-items: center; }
+  .home-launch-links { gap: 4px 16px; }
+  .pagehead, .articlehero { padding-block: 32px; }
+  .pagecontent { padding-block: 30px 48px; }
+  .articlelayout { padding-block: 30px 48px; }
+  .card, .listcard, .resourceinner, .learning-card-body { padding: 20px; }
+  .cta { padding: 26px 22px; }
+  .cta h2 { font-size: 28px; }
+  .cta .btn { width: 100%; white-space: normal; text-align: center; }
+  .footlinks { flex-wrap: wrap; gap: 4px 20px; }
+  .formbox { padding: 24px 20px; }
+  input, textarea, select, .chat-composer textarea { font-size: 16px; }
+  .chat-header { flex-wrap: wrap; }
+  .composer-footer { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .card, .resourcecard { transition: none; }
+}
+
+/* Account and Discord actions sit together above the member counts. */
+.home-account-actions .home-signin,
+.nav .header-signin,
+.nav-mobile .header-signin { background: var(--navy); border-color: var(--navy); color: white; }
+.home-account-actions .home-signin:hover,
+.nav .header-signin:hover,
+.nav-mobile .header-signin:hover { background: #0e406e; color: white; }
+.home-account-actions .btn.ghost { background: white; color: var(--navy); border-color: var(--navy); }
+.nav .header-discord { white-space: nowrap; }

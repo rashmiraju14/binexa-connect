@@ -44,21 +44,22 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             delivered through convenient online care.
           </p>
 
-          <div className="actions"><Link href="/sign-up" className="btn gold">Join Binexa Connect →</Link></div>
-
-          <CommunityMemberCount />
-
-          <div className="actions">
+          <div className="actions home-account-actions">
+            <Link href="/sign-in" className="btn home-signin">Sign In</Link>
             <a
               href={DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn"
+              className="btn ghost"
             >
               Join Our Discord Community
               <ArrowRight size={16} />
             </a>
+          </div>
 
+          <CommunityMemberCount />
+
+          <div className="actions">
             <Link
               href="/offerings"
               className="textlink"

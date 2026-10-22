@@ -29,3 +29,18 @@
 .community-signup-preview iframe { pointer-events: none; }
 .auth-nav-link { border: 0; padding: 0; background: transparent; color: #082b50; font: inherit; font-weight: 700; cursor: pointer; text-align: left; }
 .auth-nav-link:focus-visible { outline: 3px solid #ad7b18; outline-offset: 4px; }
+
+/* Keep forms usable on narrow screens and when the phone keyboard opens. */
+.binexa-auth-modal { overscroll-behavior: contain; scroll-padding-block: 24px; }
+.binexa-auth-close { width: 44px; height: 44px; }
+.binexa-auth-switch button { min-height: 44px; padding-inline: 8px; }
+@media (max-width: 520px) {
+  .binexa-auth-modal { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 64px 22px 24px; border-radius: 20px; }
+  .binexa-auth-brand { gap: 8px; margin-bottom: 20px; }
+  .binexa-auth-brand img { width: 40px; height: 40px; }
+  .binexa-auth-brand strong { font-size: 20px; }
+  .binexa-auth-description { font-size: 14px; line-height: 1.65; }
+  .binexa-auth-modal input { font-size: 16px; min-height: 48px; }
+  .binexa-auth-submit, .binexa-discord-actions .btn { min-height: 48px; }
+  .binexa-discord-actions .textlink { min-height: 44px; justify-content: center; line-height: 1.6; }
+}

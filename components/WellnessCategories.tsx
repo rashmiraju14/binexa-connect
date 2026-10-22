@@ -48,12 +48,12 @@ export default function WellnessCategories() {
                 boxShadow: "0 8px 24px rgba(8,43,80,0.08)",
               }}
             >
-              <div style={{ position: "relative", height: 280 }}>
+              <div className="wellness-card-image">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
-                  sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 30vw"
+                  sizes="(max-width: 700px) 100vw, (max-width: 1000px) 33vw, 30vw"
                   style={{ objectFit: "cover", objectPosition: item.imagePosition }}
                 />
               </div>

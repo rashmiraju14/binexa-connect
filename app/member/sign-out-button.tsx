@@ -30,14 +30,9 @@ export default function SignOutButton() {
     <button
       onClick={signOut}
       disabled={loading}
-      style={{
-        background: "transparent",
-        color: "#d3deea",
-        border: "1px solid #6e8297",
-        borderRadius: 9,
-        padding: "12px 22px",
-        cursor: "pointer",
-      }}
+      type="button"
+      className="btn"
+      aria-busy={loading}
     >
       {loading ? "Signing Out..." : "Sign Out"}
     </button>

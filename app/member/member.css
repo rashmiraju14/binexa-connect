@@ -1,0 +1,11 @@
+.member-screen { min-height: 100dvh; display: grid; place-items: center; padding: 32px 20px; background: radial-gradient(circle at 80% 10%, #fff1cf, transparent 50%), #f5f7fa; }
+.member-card { width: min(100%, 480px); padding: 36px; border: 1px solid #e5d7b8; border-radius: 22px; background: white; color: #10243c; box-shadow: 0 24px 70px #082b5014; }
+.member-card .binexa-auth-brand { width: fit-content; }
+.member-card h1 { font-size: clamp(26px, 5vw, 32px); line-height: 1.25; letter-spacing: -.035em; margin: 12px 0; overflow-wrap: anywhere; }
+.member-actions { display: grid; gap: 14px; }
+.member-actions .btn { min-height: 48px; text-align: center; }
+.member-signout { margin-top: 26px; padding-top: 24px; border-top: 1px solid #e5e9ec; }
+.member-signout .btn { width: 100%; min-height: 48px; }
+.member-signout .btn:disabled { opacity: .6; cursor: wait; }
+.member-signout [role="alert"] { font-size: 13px; color: #9c3030; overflow-wrap: anywhere; }
+@media (max-width: 520px) { .member-screen { padding: 24px 14px; } .member-card { padding: 28px 22px; } .member-card .binexa-auth-brand { gap: 8px; } .member-card .binexa-auth-brand img { width: 40px; height: 40px; } }

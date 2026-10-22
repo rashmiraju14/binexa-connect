@@ -1,0 +1,136 @@
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 16px;
+  font-family: "Manrope", sans-serif;
+  background:
+    radial-gradient(circle at 80% 20%, #164b73 0%, transparent 45%),
+    linear-gradient(135deg, #06172c, #0b2c4b);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 42px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 30px 80px #00000040;
+  color: #10243c;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #092442;
+  text-decoration: none;
+}
+
+.auth-brand img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.auth-brand span span {
+  color: #c99525;
+}
+
+.auth-eyebrow {
+  color: #b58625;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.auth-card h1 {
+  margin: 12px 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: #071d35;
+}
+
+.auth-description {
+  color: #66768a;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.auth-form label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #17334f;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid #d5dee7;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #10243c;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #d9a93e;
+  box-shadow: 0 0 0 3px #e8b84c25;
+}
+
+.auth-form button {
+  margin-top: 15px;
+  padding: 15px;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(120deg, #ffe39a, #e7b13d);
+  color: #071d35;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.auth-form button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.auth-message {
+  padding: 12px;
+  margin-top: 18px;
+  border-radius: 9px;
+  background: #f4f6f9;
+  color: #163e61;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.auth-bottom {
+  margin-top: 24px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.auth-bottom a {
+  color: #b18020;
+  font-weight: 800;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 28px 22px;
+  }
+}

@@ -1,0 +1,44 @@
+
+import Link from "next/link";
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import Header from "@/components/Header";
+import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+
+export default async function CommunityLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const supabase = isSupabaseConfigured() ? await createClient() : null;
+  const result = supabase ? await supabase.auth.getUser() : null;
+  const authenticated = Boolean(result?.data.user && !result.error);
+
+  return (
+    <AuthProvider authenticated={authenticated}>
+      <Header />
+
+      {children}
+
+      <footer className="footer">
+        <div className="shell footrow">
+          <div>
+            <b>Binexa Connect</b>
+            <br />
+            <small>
+              By Binexa Health · Learn. Connect. Thrive.
+            </small>
+          </div>
+
+          <div className="footlinks">
+            <Link href="/resources">Resources</Link>
+            <Link href="/events">Events</Link>
+            <Link href="/join">Join</Link>
+          </div>
+
+          <small>For education only. Not medical advice.</small>
+        </div>
+      </footer>
+    </AuthProvider>
+  );
+}

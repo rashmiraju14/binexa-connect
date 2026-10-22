@@ -3,6 +3,8 @@ node_modules/
 
 # Next.js
 .next/
+.next-dev/
+.next-dev-*/
 out/
 build/
 .vercel/

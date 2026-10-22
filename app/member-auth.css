@@ -1,0 +1,23 @@
+.member-auth-dialog { position: fixed; inset: 0; margin: auto; width: min(480px, calc(100% - 28px)); max-height: calc(100dvh - 32px); overflow-y: auto; padding: 36px; border: 1px solid #e5d7b8; border-radius: 22px; background: #fff; color: #10243c; box-shadow: 0 24px 90px #0005; }
+.member-auth-dialog::backdrop { background: #06172cc4; backdrop-filter: blur(5px); }
+.member-auth-close { position: absolute; right: 12px; top: 12px; display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #edf1f5; color: #17334f; font: inherit; font-size: 24px; cursor: pointer; }
+.member-auth-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; font-size: 23px; font-weight: 800; }
+.member-auth-brand strong { color: #ad7b18; }
+.member-auth-brand img { object-fit: contain; }
+.member-auth-eyebrow { color: #916411; font-weight: 800; font-size: 11px; letter-spacing: 2px; }
+.member-auth-dialog h2 { font-size: clamp(24px, 5vw, 30px); line-height: 1.2; margin: 12px 0; color: #082b50; }
+#member-auth-description { color: #5c6c7c; line-height: 1.7; margin-bottom: 24px; }
+.member-auth-form { display: flex; flex-direction: column; gap: 10px; }
+.member-auth-form label { font-size: 13px; font-weight: 700; }
+.member-auth-form input { width: 100%; padding: 13px 14px; border: 1px solid #cbd5df; border-radius: 10px; background: #fff; color: #10243c; font: inherit; }
+.member-auth-form .btn { margin-top: 12px; width: 100%; justify-content: center; }
+.member-auth-dialog button:disabled { opacity: .6; cursor: wait; }
+.member-auth-dialog :focus-visible { outline: 3px solid #ad7b18; outline-offset: 3px; }
+.member-auth-message { margin-top: 18px; padding: 14px; border-radius: 10px; background: #f0f4f8; color: #163e61; line-height: 1.6; overflow-wrap: anywhere; }
+.member-auth-switch { margin-top: 22px; text-align: center; font-size: 13px; color: #5c6c7c; }
+.member-auth-switch button { border: 0; padding: 4px; background: transparent; color: #865a09; font: inherit; font-weight: 800; cursor: pointer; }
+.member-auth-note { margin-top: 20px; font-size: 11px; line-height: 1.7; color: #5c6c7c; text-align: center; }
+@media (max-width: 480px) { .member-auth-dialog { padding: 32px 22px 24px; } }
+.member-discord-actions { display: grid; gap: 14px; margin-top: 24px; }
+.member-discord-actions .btn { display: flex; justify-content: center; text-align: center; }
+.member-discord-actions .textlink { margin-top: 8px; text-align: center; }

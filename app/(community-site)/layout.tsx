@@ -1,5 +1,6 @@
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import Header from "@/components/Header";
 import { createClient } from "@/lib/supabase/server";
@@ -15,30 +16,32 @@ export default async function CommunityLayout({
   const authenticated = Boolean(result?.data.user && !result.error);
 
   return (
-    <AuthProvider authenticated={authenticated}>
-      <Header />
+    <Suspense fallback={<main className="shell" role="status" style={{ paddingBlock: 48 }}>Loading Binexa Connect…</main>}>
+      <AuthProvider authenticated={authenticated}>
+        <Header />
 
-      {children}
+        {children}
 
-      <footer className="footer">
-        <div className="shell footrow">
-          <div>
-            <b>Binexa Connect</b>
-            <br />
-            <small>
-              By Binexa Health · Learn. Connect. Thrive.
-            </small>
+        <footer className="footer">
+          <div className="shell footrow">
+            <div>
+              <b>Binexa Connect</b>
+              <br />
+              <small>
+                By Binexa Health · Learn. Connect. Thrive.
+              </small>
+            </div>
+
+            <div className="footlinks">
+              <Link href="/resources">Resources</Link>
+              <Link href="/events">Events</Link>
+              <Link href="/join">Join</Link>
+            </div>
+
+            <small>For education only. Not medical advice.</small>
           </div>
-
-          <div className="footlinks">
-            <Link href="/resources">Resources</Link>
-            <Link href="/events">Events</Link>
-            <Link href="/join">Join</Link>
-          </div>
-
-          <small>For education only. Not medical advice.</small>
-        </div>
-      </footer>
-    </AuthProvider>
+        </footer>
+      </AuthProvider>
+    </Suspense>
   );
 }

@@ -247,3 +247,8 @@
 .community-path-lounge .community-path-photo img { object-position: 45% center; }
 .founder-details h3 { margin-top: 0; }
 .founder-details .founder-role { margin: 8px 0 12px; color: var(--gold); font-size: 17px; font-weight: 800; line-height: 1.5; }
+
+.founder-biography { padding: clamp(22px, 4vw, 36px); background: #fffdf7; border: 1px solid #e5d7b8; border-radius: 18px; }
+.founder-biography h3 { margin: 20px 0 6px; color: var(--navy); font-size: 22px; }
+.policy-page .founder-biography .founder-role { margin-top: 0; color: var(--gold); font-weight: 800; }
+.founder-biography > p:not(.eyebrow):not(.founder-role) { line-height: 1.9; }

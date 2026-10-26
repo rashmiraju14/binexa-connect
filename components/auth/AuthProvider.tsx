@@ -32,6 +32,9 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
     const supabase = createClient();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSignedIn(Boolean(session));
+      if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
+        void fetch("/api/auth/sign-in-log", { method: "POST" }).catch(() => {});
+      }
       if (event === "SIGNED_OUT") { setShowDiscord(false); router.refresh(); }
     });
     return () => subscription.unsubscribe();

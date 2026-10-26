@@ -265,3 +265,6 @@
 @media (max-width: 700px) { .founder-bio-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 56px 22px 24px; } }
 .combined-founder-message + .combined-founder-message { border-top: 1px solid #e5d7b8; margin-top: 32px; padding-top: 28px; }
 [data-founder-page] > section > .btn { margin-bottom: 24px; }
+.founder-card[data-founder-bio] { cursor: pointer; }
+.founder-card[data-founder-bio]:hover { border-color: var(--gold); }
+.founder-card[data-founder-bio]:focus-within { outline: 2px solid var(--gold); outline-offset: 3px; }

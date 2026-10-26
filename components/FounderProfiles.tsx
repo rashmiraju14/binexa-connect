@@ -6,7 +6,7 @@ const founders = [
 ];
 
 export default function FounderProfiles() {
-  return <div className="founder-grid">{founders.map(founder => <article className="founder-card" key={founder.image}>
+  return <div className="founder-grid">{founders.map(founder => <article className="founder-card" data-founder-bio={`${founder.image}-bio`} key={founder.image}>
     <div className={`founder-portrait founder-portrait-${founder.image}`}>
       <Image src={`/images/founders/${founder.image}.jpeg`} alt={founder.name} fill sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1000px) 45vw, 430px" />
     </div>

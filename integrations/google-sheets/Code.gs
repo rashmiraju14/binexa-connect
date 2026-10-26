@@ -13,6 +13,13 @@ function doPost(e) {
     var expected = Utilities.computeHmacSha256Signature(envelope.payload, secret, Utilities.Charset.UTF_8).map(function (b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
     if (!equalSignature(expected, envelope.signature)) return reply({ ok: false });
     var data = JSON.parse(envelope.payload);
+    if (data.action === 'check-connection' && typeof data.sentAt === 'number' && Math.abs(Date.now() - data.sentAt) <= 300000) {
+      var target = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(TAB_NAME);
+      if (!target) throw new Error('Missing tab');
+      var setupRows = target.getRange(1, 1, Math.min(25, target.getMaxRows()), 5).getDisplayValues();
+      var headerFound = setupRows.some(function (r) { return r.map(function (h) { return h.toLowerCase().replace(/[^a-z]/g, ''); }).join(',') === 'userid,name,emailid,signintime,phonenumber'; });
+      return reply({ ok: headerFound, connectionCheck: true, reason: headerFound ? 'ready' : 'headers_not_found' });
+    }
     if (typeof data.sentAt !== 'number' || Math.abs(Date.now() - data.sentAt) > 300000 || !/^[a-f0-9-]{36}$/i.test(data.userId) || typeof data.signedInAt !== 'string' || !isFinite(Date.parse(data.signedInAt))) return reply({ ok: false });
     if ([data.name, data.email, data.phone].some(function (v) { return typeof v !== 'string' || v.length > 500; })) return reply({ ok: false });
     lock = LockService.getScriptLock();
@@ -36,7 +43,7 @@ function doPost(e) {
     sheet.getRange(row, 1).setNote(eventId);
     SpreadsheetApp.flush();
     return reply({ ok: true });
-  } catch (_) { return reply({ ok: false }); }
+  } catch (_) { console.error('Binexa sign-in receiver: sheet access or configuration failed. Check the deployment account, sheet ID, tab, and headers.'); return reply({ ok: false, reason: 'sheet_configuration' }); }
   finally { if (lock && lock.hasLock()) lock.releaseLock(); }
 }
 

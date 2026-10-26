@@ -20,9 +20,9 @@ export default function FounderBiography({ id, labelledBy, children }: { id: str
     function fromName(event: MouseEvent) {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       if (!(event.target instanceof Element) || event.target.closest("dialog")) return;
-      const page = event.target.closest("[data-founder-page]");
-      const anchor = event.target.closest<HTMLAnchorElement>("a[data-founder-bio]");
-      const requestedId = page ? "both-founders-bio" : anchor?.dataset.founderBio;
+      const trigger = event.target.closest<HTMLElement>("[data-founder-bio]");
+      const requestedId = trigger?.dataset.founderBio;
+      const anchor = trigger?.closest(".founder-card")?.querySelector<HTMLAnchorElement>(".founder-name-link") ?? (trigger instanceof HTMLAnchorElement ? trigger : null);
       if (requestedId !== id) return;
       event.preventDefault();
       event.stopPropagation();

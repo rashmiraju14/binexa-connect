@@ -252,3 +252,16 @@
 .founder-biography h3 { margin: 20px 0 6px; color: var(--navy); font-size: 22px; }
 .policy-page .founder-biography .founder-role { margin-top: 0; color: var(--gold); font-weight: 800; }
 .founder-biography > p:not(.eyebrow):not(.founder-role) { line-height: 1.9; }
+.founder-details .founder-name-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--navy); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 5px; }
+.founder-name-link:hover { color: #94630d; }
+.founder-biography[id] { scroll-margin-top: 160px; }
+
+.founder-bio-dialog { position: fixed; inset: 0; margin: auto; width: min(760px, calc(100% - 32px)); max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; padding: 52px 36px 32px; border: 1px solid #e5d7b8; border-radius: 22px; background: #fffdf7; color: var(--navy); box-shadow: 0 24px 90px #0005; }
+.founder-bio-dialog::backdrop { background: #06172cc4; backdrop-filter: blur(5px); }
+.founder-bio-content h2 { font-size: clamp(26px, 5vw, 34px); line-height: 1.25; letter-spacing: -.035em; margin: 16px 0; }
+.founder-bio-content h3 { font-size: 22px; margin-bottom: 8px; }
+.founder-bio-content p { color: #536475; line-height: 1.9; }
+.founder-bio-content .founder-role { color: var(--gold); font-weight: 800; margin-top: 0; }
+@media (max-width: 700px) { .founder-bio-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 56px 22px 24px; } }
+.combined-founder-message + .combined-founder-message { border-top: 1px solid #e5d7b8; margin-top: 32px; padding-top: 28px; }
+[data-founder-page] > section > .btn { margin-bottom: 24px; }

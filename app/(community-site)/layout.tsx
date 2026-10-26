@@ -1,3 +1,4 @@
+import FounderBios from "@/components/FounderBios";
 import CookieNotice, { CookieNoticeButton } from "@/components/CookieNotice";
 
 import Link from "next/link";
@@ -46,6 +47,7 @@ export default async function CommunityLayout({
           </div>
         </footer>
         <CookieNotice />
+        <FounderBios />
       </AuthProvider>
     </Suspense>
   );

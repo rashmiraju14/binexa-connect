@@ -217,7 +217,7 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
         <section className="learning-section home-about" aria-labelledby="about-binexa-title">
           <p className="eyebrow">ABOUT BINEXA CONNECT</p>
           <h2 id="about-binexa-title">A community built around connection</h2>
-          <p>Co-founded by <strong>Binh Diep</strong>, Founder &amp; CEO of BinexaHealth, and <strong>Rashmi Thimmaraju</strong>, Technical Co-founder, Binexa Connect brings wellness education and community conversations together.</p>
+          <p>Co-founded by <strong><a href="/about#binh-diep-bio" data-founder-bio="binh-diep-bio" aria-haspopup="dialog">Binh Diep</a></strong>, Founder &amp; CEO of BinexaHealth, and <strong><a href="/about#rashmi-thimmaraju-bio" data-founder-bio="rashmi-thimmaraju-bio" aria-haspopup="dialog">Rashmi Thimmaraju</a></strong>, Technical Co-founder, Binexa Connect brings wellness education and community conversations together.</p>
           <FounderProfiles />
           <Link href="/about" className="textlink">Meet our co-founders &amp; learn about Binexa →</Link>
           <p className="muted">For education only. Not medical advice. <Link href="/privacy">Privacy &amp; Cookie Notice</Link></p>

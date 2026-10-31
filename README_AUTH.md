@@ -9,7 +9,7 @@ Session cookies are refreshed by `middleware.ts` for Next.js 15.
 ## Configure the project
 
 1. Create a Supabase project named `binexa-connect` in https://supabase.com/dashboard.
-2. Copy the Project URL and **publishable** key into the existing `.env.local`:
+2. Copy the Project URL and **publishable** key into `.env.local` (copy `.env.example` first):
 
    ```dotenv
    NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
@@ -90,3 +90,17 @@ and production. A real provider round trip cannot be verified without credential
 Provider references:
 - https://supabase.com/docs/guides/auth/social-sign-in/auth-google
 - https://supabase.com/docs/guides/auth/social-sign-in/auth-facebook
+
+## Troubleshooting unavailable account access
+
+If localhost reports that sign-in is not configured, create `.env.local` from
+`.env.example` and enter your project's public URL and publishable key. A legacy
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` is also supported consistently by browser, server,
+and session middleware. Prefer the publishable key when both are present.
+Restart the development server after editing these values. Setting variables in
+Vercel does not automatically configure your local checkout. For production,
+redeploy after changing public environment variables so Next.js rebuilds them.
+
+These settings connect the app to Supabase; Google and Facebook must also be
+configured and enabled in that project's authentication providers as described
+above. No application function can replace those provider credentials.

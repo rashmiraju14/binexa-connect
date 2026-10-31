@@ -1,5 +1,7 @@
 # Discord membership setup
 
+For the staged custom-domain migration, see [CUSTOM_DOMAIN_MIGRATION.md](CUSTOM_DOMAIN_MIGRATION.md). Keep existing hostnames and callback URLs until that checklist is approved and completed.
+
 Discord is optional for website access. Signed-in visitors can use every community
 page without a linked Discord account. This guide covers the optional Discord
 joining and verification flow and its access-granted confirmation page.

@@ -1,4 +1,6 @@
 import WellnessMethods from "@/components/WellnessMethods";
+export const metadata = { alternates: { canonical: "/lounge" } };
+
 import { requireAccount } from "@/lib/auth/require-account";
 import PageHeader from "@/components/PageHeader";
 import LoungeVideos from "@/components/LoungeVideos";

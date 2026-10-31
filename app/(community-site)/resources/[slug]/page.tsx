@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  return { alternates: { canonical: `/resources/${encodeURIComponent(slug)}` } };
+}
+
 import { requireAccount } from "@/lib/auth/require-account";
 import Link from 'next/link';import {notFound} from 'next/navigation';import {resources} from '@/lib/content';import {articleSections} from '@/lib/articles';import {ArrowLeft,ArrowUpRight} from 'lucide-react';
 export const dynamic = "force-dynamic";

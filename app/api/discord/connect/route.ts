@@ -1,3 +1,4 @@
+import { getAuthOrigin } from "@/lib/site-origin";
 import { safeNextPath } from "@/lib/auth/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
@@ -7,7 +8,14 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  const origin = request.nextUrl.origin;
+  let origin: string;
+  try {
+    origin = getAuthOrigin(request.url, undefined, undefined,
+      process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []);
+  } catch {
+    return NextResponse.json({ error: "Unsupported authentication origin" }, { status: 400 });
+  }
+
   const clientId = process.env.DISCORD_CLIENT_ID;
   const missing = [
     !clientId && "DISCORD_CLIENT_ID",

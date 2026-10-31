@@ -1,3 +1,5 @@
+export const metadata = { alternates: { canonical: "/join" } };
+
 import { requireAccount } from "@/lib/auth/require-account";
 import { communityCopy } from "@/lib/communityCopy";
 import CommunityOnboarding from "@/components/CommunityOnboarding";

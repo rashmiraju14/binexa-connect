@@ -1,3 +1,4 @@
+import { getAuthOrigin } from "@/lib/site-origin";
 import { safeNextPath } from "@/lib/auth/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
@@ -8,8 +9,16 @@ import { botHeaders, discordFetch, isDiscordConfigured } from "@/lib/discord/ser
 export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
+  let origin: string;
+  try {
+    origin = getAuthOrigin(request.url, undefined, undefined,
+      process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []);
+  } catch {
+    return NextResponse.json({ error: "Unsupported authentication origin" }, { status: 400 });
+  }
+
   const finish = (path: string) => {
-    const response = NextResponse.redirect(new URL(path, request.url));
+    const response = NextResponse.redirect(new URL(path, origin));
     response.cookies.delete("discord_oauth_state");
     response.cookies.delete("discord_oauth_user");
     response.cookies.delete("discord_oauth_next");
@@ -37,7 +46,7 @@ export async function GET(request: NextRequest) {
       method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ client_id: process.env.DISCORD_CLIENT_ID!,
         client_secret: process.env.DISCORD_CLIENT_SECRET!, grant_type: "authorization_code",
-        code, redirect_uri: `${request.nextUrl.origin}/api/discord/callback` }),
+        code, redirect_uri: `${origin}/api/discord/callback` }),
     });
     if (!tokenResponse.ok) {
       const failure = await tokenResponse.json().catch(() => null);

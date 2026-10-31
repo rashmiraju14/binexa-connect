@@ -1,3 +1,5 @@
+export const metadata = { alternates: { canonical: "/offerings" } };
+
 import { requireAccount } from "@/lib/auth/require-account";
 import PageHeader from "@/components/PageHeader";
 import LearningLibrary from "@/components/LearningLibrary";

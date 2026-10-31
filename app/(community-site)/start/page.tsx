@@ -1,4 +1,4 @@
-export const metadata = { title: "Start Here | Binexa Connect" };
+export const metadata = { alternates: { canonical: "/start" }, title: "Start Here | Binexa Connect" };
 
 import Link from "next/link";
 import { BookOpen, Heart, Leaf, MessagesSquare, ShieldCheck, Sparkles, ArrowRight } from "lucide-react";

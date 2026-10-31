@@ -1,5 +1,7 @@
 # Supabase authentication setup
 
+For the staged custom-domain migration, see [CUSTOM_DOMAIN_MIGRATION.md](CUSTOM_DOMAIN_MIGRATION.md). Keep existing hostnames and callback URLs until that checklist is approved and completed.
+
 The app has sign-up, email/password sign-in, email confirmation, a member dashboard,
 sign-out, and authentication checks for every route in `app/(community-site)`.
 Session cookies are refreshed by `middleware.ts` for Next.js 15.

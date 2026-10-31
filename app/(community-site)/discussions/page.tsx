@@ -1,3 +1,5 @@
+export const metadata = { alternates: { canonical: "/discussions" } };
+
 import { requireAccount } from "@/lib/auth/require-account";
 import DiscussionBoard from "@/components/DiscussionBoard";
 

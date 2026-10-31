@@ -1,4 +1,5 @@
 import "server-only";
+import { getSiteOrigin } from "@/lib/site-origin";
 import { safeNextPath } from "@/lib/auth/navigation";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -12,11 +13,7 @@ export function isDiscordConfigured() {
 }
 
 export function siteOrigin() {
-  const url = new URL(process.env.NEXT_PUBLIC_SITE_URL!);
-  if (url.protocol !== "https:" && !(url.protocol === "http:" && url.hostname === "localhost")) {
-    throw new Error("Invalid site URL");
-  }
-  return url.origin;
+  return getSiteOrigin();
 }
 
 export function discordFetch(path: string, init: RequestInit = {}) {

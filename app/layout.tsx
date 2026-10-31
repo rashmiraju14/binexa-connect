@@ -1,9 +1,11 @@
 
+import { getSiteOrigin } from "@/lib/site-origin";
 import type { Metadata } from "next";
 import "./globals.css";
 import "@/components/auth-popup.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteOrigin()),
   title: {
     default: "Binexa Connect | Binexa Health",
     template: "%s | Binexa Connect",

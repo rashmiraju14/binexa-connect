@@ -1,4 +1,6 @@
 import ResearchLibrary from "@/components/ResearchLibrary";
+export const metadata = { alternates: { canonical: "/resources" } };
+
 import { requireAccount } from "@/lib/auth/require-account";
 import LearningLibrary from "@/components/LearningLibrary";
 import CommunityInvitation from "@/components/CommunityInvitation";

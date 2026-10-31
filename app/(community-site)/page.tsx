@@ -1,3 +1,5 @@
+export const metadata = { alternates: { canonical: "/" } };
+
 import CommunityHome from "@/components/CommunityHome";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";

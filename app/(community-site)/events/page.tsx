@@ -1,3 +1,5 @@
+export const metadata = { alternates: { canonical: "/events" } };
+
 import { requireAccount } from "@/lib/auth/require-account";
 import LearningLibrary from "@/components/LearningLibrary";
 import CommunityInvitation from "@/components/CommunityInvitation";

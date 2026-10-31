@@ -1,5 +1,7 @@
 # Community homepage and member access
 
+For the staged custom-domain migration, see [CUSTOM_DOMAIN_MIGRATION.md](CUSTOM_DOMAIN_MIGRATION.md). Keep existing hostnames and callback URLs until that checklist is approved and completed.
+
 The community homepage renders at `/`. `/community` redirects to `/` for existing
 links. The previous landing component is preserved in
 `components/ArchivedLandingPage.tsx` but is no longer routed.

@@ -1,7 +1,17 @@
-import { type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { getLegacyDomainRedirect } from "./lib/site-origin";
 import { updateSession } from "./lib/supabase/proxy";
 
 export async function middleware(request: NextRequest) {
+  const destination = getLegacyDomainRedirect(request.url, {
+    method: request.method,
+    cookieNames: request.cookies.getAll().map(cookie => cookie.name),
+  });
+  if (destination) {
+    const response = NextResponse.redirect(destination, 308);
+    response.headers.set("Cache-Control", "no-store");
+    return response;
+  }
   return updateSession(request);
 }
 

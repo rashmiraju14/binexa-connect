@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
+import { getAuthOrigin } from "@/lib/site-origin";
 import { createClient } from "@/lib/supabase/client";
 
 export type AuthMode = "signup" | "signin";
@@ -50,7 +51,7 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
         const { data, error } = await supabase.auth.signUp({
           email, password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/confirm`,
+            emailRedirectTo: `${getAuthOrigin(window.location.origin)}/auth/confirm`,
             data: {
               username: String(fields.get("username") || "").trim(),
               phone: String(fields.get("phone") || "").trim(),

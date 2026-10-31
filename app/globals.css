@@ -176,8 +176,8 @@
 .founder-card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: white; }
 .founder-portrait { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #d9e7ef; }
 .founder-portrait img { object-fit: cover; }
-.founder-portrait-rashmi-thimmaraju img { transform: scale(1.7); transform-origin: 45% 43%; }
-.founder-portrait-binh-diep img { transform: scale(2.2); transform-origin: 73% 51%; }
+.founder-portrait-rashmi-thimmaraju img { object-position: center 35%; }
+.founder-portrait-binh-diep img { object-position: center 25%; }
 .founder-details { padding: 24px; }
 .founder-details h3 { margin: 16px 0 8px; color: var(--navy); font-size: 23px; }
 .founder-details p { font-size: 14px; line-height: 1.7; }

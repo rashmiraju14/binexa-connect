@@ -2,6 +2,7 @@ import Image from "next/image";
 import FounderProfiles from "@/components/FounderProfiles";
 import { discordJoinUrl } from "@/lib/discord/navigation";
 import CommunityMemberCount from "@/components/CommunityMemberCount";
+import PharmacyAnnouncement from "@/components/PharmacyAnnouncement";
 
 import CommunityInvitation from "@/components/CommunityInvitation";
 import Link from "next/link";
@@ -23,23 +24,7 @@ const communityPaths = [
 export default function Home({ authenticated = false }: { authenticated?: boolean }) {
   return (
     <main className="hero">
-      <div className="shell pharmacy-announcement-wrap">
-        <section className="pharmacy-announcement" aria-labelledby="launch-title">
-          <div className="pharmacy-announcement-brand" aria-hidden="true">
-            <Image src="/branding/binexa-icon.png" alt="" width={76} height={76} />
-            <span>THE NEXT CHAPTER<br />OF BINEXAHEALTH</span>
-          </div>
-          <div className="pharmacy-announcement-copy">
-            <span className="pharmacy-coming-soon"><span />COMING SOON</span>
-            <h2 id="launch-title">BinexaHealth Online Pharmacy</h2>
-            <p>Personalized online care is on the horizon. Connect with our community today for wellness resources and future launch updates.</p>
-          </div>
-          <div className="pharmacy-announcement-actions">
-            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">Join the community <ArrowRight size={17} aria-hidden="true" /></a>
-            <Link href="/events">Explore what’s ahead <ArrowRight size={14} aria-hidden="true" /></Link>
-          </div>
-        </section>
-      </div>
+      <div className="shell pharmacy-announcement-wrap"><PharmacyAnnouncement /></div>
 
       <div className="shell home-layout">
         <WellnessCategories />

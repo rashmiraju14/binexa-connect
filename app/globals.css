@@ -378,3 +378,8 @@
 .pharmacy-feature-card { padding: 30px 34px; }
 .pharmacy-feature-card p { max-width: none; }
 @media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; gap: 24px; } .pharmacy-feature-card { padding: 26px; } }
+
+.home-layout .home-welcome { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.pharmacy-feature-card { min-height: 340px; display: flex; flex-direction: column; justify-content: center; }
+.pharmacy-feature-card a { align-self: flex-start; margin-top: 8px; }
+@media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; } .pharmacy-feature-card { min-height: 310px; } }

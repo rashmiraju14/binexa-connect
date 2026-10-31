@@ -352,3 +352,12 @@
 .wellness-editorial-action { font-size: 12px; padding-top: 15px; }
 .home-layout .home-welcome .home-account-actions { margin-top: 0; }
 @media(max-width:700px) { .wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 210px; } .wellness-editorial-card:last-child .wellness-editorial-content, .wellness-editorial-content { padding: 19px; } .wellness-editorial-card h3 { font-size: 21px; } }
+
+/* Preserve the same three-card arrangement across screen sizes. */
+.wellness-editorial-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.home-layout .home-wellness { min-width: 0; }
+@media(max-width:700px) {
+  .wellness-editorial-grid { display: grid; grid-template-columns: repeat(3, minmax(245px, 1fr)); overflow-x: auto; gap: 16px; padding: 0 0 12px; scroll-snap-type: x mandatory; scroll-padding-inline: 0; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #c9ad6b #f1ead9; }
+  .wellness-editorial-card, .wellness-editorial-card:last-child { display: flex; grid-column: auto; scroll-snap-align: start; }
+  .wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 210px; flex-shrink: 0; }
+}

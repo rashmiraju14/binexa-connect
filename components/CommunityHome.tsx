@@ -30,16 +30,6 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
           <h1 id="welcome-title">
             Feel Better. <em>Live Healthier.</em> Thrive Longer.
           </h1>
-
-      </div>
-
-      <div className="shell home-layout">
-        <WellnessCategories />
-
-        <section
-          className="home-welcome"
-          aria-label="Personalized care and community"
-        >
           <span className="eyebrow">
             Personalized care, built around you
           </span>
@@ -50,6 +40,16 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             delivered through convenient online care.
           </p>
 
+
+      </div>
+
+      <div className="shell home-layout">
+        <WellnessCategories />
+
+        <section
+          className="home-welcome"
+          aria-label="Personalized care and community"
+        >
           <div className="actions home-account-actions">
             <Link href="/sign-in" className="btn home-signin">Sign In</Link>
             <a

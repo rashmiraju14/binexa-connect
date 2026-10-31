@@ -333,3 +333,8 @@
 .wellness-editorial-card h3 { font-size: 16px; min-height: 40px; }
 .wellness-editorial-label { font-size: 7px; letter-spacing: .7px; }
 @media(max-width:700px) { .wellness-editorial-grid { grid-template-columns: 1fr; gap: 16px; } .wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 200px; } .wellness-editorial-card h3 { min-height: 0; font-size: 20px; } .wellness-editorial-label { font-size: 8px; } .wellness-editorial-card:last-child .wellness-editorial-content, .wellness-editorial-content { padding: 18px; } }
+
+.home-headline>.eyebrow { display: inline-flex; margin-top: 16px; color: #a7791e; font-size: 10px; font-weight: 800; letter-spacing: 1.3px; }
+.home-headline>.lead { max-width: 850px; margin: 10px 0 0; color: #667786; font-size: 15px; line-height: 1.8; }
+.home-headline + .home-layout .home-welcome { padding-top: 0; }
+@media(max-width:700px) { .home-headline>.lead { font-size: 14px; line-height: 1.7; } }

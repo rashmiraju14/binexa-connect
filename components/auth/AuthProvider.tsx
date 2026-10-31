@@ -54,7 +54,7 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
     if (requested === "sign-in" || requested === "sign-up") {
       setNext(safeNextPath(query.get("next")));
       setMode(requested === "sign-in" ? "signin" : "signup");
-      setInitialMessage(query.get("verification") === "failed" ? "Your verification link is invalid or expired. Please sign in or request a new verification email by signing up again." : "");
+      setInitialMessage(query.get("oauth") === "failed" ? "We couldn’t complete your social sign-in. Please try again or sign in with email." : query.get("verification") === "failed" ? "Your verification link is invalid or expired. Please sign in or request a new verification email by signing up again." : "");
     }
   }, [queryString]);
 
@@ -70,7 +70,7 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
 
   function clearQuery() {
     const url = new URL(window.location.href);
-    for (const key of ["auth", "next", "verification", "discord"]) url.searchParams.delete(key);
+    for (const key of ["auth", "next", "verification", "discord", "oauth"]) url.searchParams.delete(key);
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
   }
 
@@ -147,7 +147,7 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
   return (
     <AuthContext.Provider value={{ authenticated: signedIn, openAuth }}>
       <div className={!signedIn && (pathname === "/" || pathname === "/community") ? "community-signup-preview" : undefined} style={{ display: "contents" }} onClickCapture={intercept}>{children}</div>
-      <AuthPopup open={mode !== null} initialMode={mode || "signup"} initialMessage={initialMessage} onClose={close} onSuccess={authenticatedSuccessfully} />
+      <AuthPopup open={mode !== null} initialMode={mode || "signup"} initialMessage={initialMessage} nextPath={next} onClose={close} onSuccess={authenticatedSuccessfully} />
       <dialog ref={discordDialog} className="binexa-auth-modal" aria-labelledby="discord-prompt-title" aria-describedby="discord-prompt-description" onCancel={event => { event.preventDefault(); close(); }}>
         <button type="button" className="binexa-auth-close" aria-label="Close Discord prompt" onClick={close}>×</button>
         <div className="binexa-auth-brand"><Image src="/branding/binexa-icon.png" alt="" width={48} height={48} /><strong>Binexa<span>Connect</span></strong></div>

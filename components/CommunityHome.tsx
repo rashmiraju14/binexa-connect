@@ -50,6 +50,7 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
           className="home-welcome"
           aria-label="Personalized care and community"
         >
+          <div className="community-access-details">
           <div className="actions home-account-actions">
             <Link href="/sign-in" className="btn home-signin">Sign In</Link>
             <a
@@ -82,6 +83,13 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             </span>
           </div>
 
+          </div>
+          <aside className="pharmacy-feature-card" aria-labelledby="pharmacy-feature-title">
+            <div className="pharmacy-feature-top"><Image src="/branding/binexa-icon.png" alt="" width={52} height={52} /><span>COMING SOON</span></div>
+            <h2 id="pharmacy-feature-title">BinexaHealth<br />Online Pharmacy</h2>
+            <p>Personalized online care is on the horizon. Explore wellness resources and community conversations while we prepare for launch.</p>
+            <Link href="/events">See what’s ahead <ArrowRight size={16} aria-hidden="true" /></Link>
+          </aside>
         </section>
       </div>
 

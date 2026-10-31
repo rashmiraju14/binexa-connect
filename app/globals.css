@@ -361,3 +361,14 @@
   .wellness-editorial-card, .wellness-editorial-card:last-child { display: flex; grid-column: auto; scroll-snap-align: start; }
   .wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 210px; flex-shrink: 0; }
 }
+
+.home-layout .home-welcome { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 38px; }
+.community-access-details { min-width: 0; }
+.pharmacy-feature-card { position: relative; overflow: hidden; padding: 28px 30px; border: 1px solid #bf974a; border-radius: 18px; background: radial-gradient(ellipse at bottom left, #245273, transparent 75%), #082b50; color: #fff; }
+.pharmacy-feature-top { display: flex; align-items: center; gap: 14px; }
+.pharmacy-feature-top img { object-fit: contain; }
+.pharmacy-feature-top span { color: #e8c76a; font-size: 9px; font-weight: 800; letter-spacing: 1.6px; }
+.pharmacy-feature-card h2 { color: #fff; font-size: 28px; line-height: 1.15; letter-spacing: -.7px; margin: 17px 0 12px; }
+.pharmacy-feature-card p { color: #c7d6e2; font-size: 12px; line-height: 1.8; margin: 0 0 18px; max-width: 430px; }
+.pharmacy-feature-card a { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; color: #f0d58d; font-size: 12px; font-weight: 750; }
+@media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; gap: 22px; } .pharmacy-feature-card { padding: 24px; } }

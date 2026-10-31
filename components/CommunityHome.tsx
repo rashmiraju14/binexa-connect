@@ -83,54 +83,6 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             </span>
           </div>
 
-          <div className="heroart home-community">
-            <div className="heroart-top">
-              <strong>Your wellness community</strong>
-              <p>
-                Explore ideas. Share perspectives.
-                Keep learning.
-              </p>
-            </div>
-
-            <div className="mockrows">
-              <Link
-                href="/resources"
-                className="mockrow"
-              >
-                <span className="roundicon">
-                  <BookOpen size={20} />
-                </span>
-
-                <div>
-                  <strong>Educational resources</strong>
-                  <p className="home-row-description">
-                    Helpful guides for your wellness journey
-                  </p>
-                </div>
-
-                <ArrowRight size={16} />
-              </Link>
-
-              <Link
-                href="/discussions"
-                className="mockrow"
-              >
-                <span className="roundicon">
-                  <MessageSquare size={20} />
-                </span>
-
-                <div>
-                  <strong>Community discussions</strong>
-                  <p className="home-row-description">
-                    Meaningful conversations and fresh
-                    perspectives
-                  </p>
-                </div>
-
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
         </section>
       </div>
 

@@ -72,44 +72,6 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             </Link>
           </div>
 
-          <section
-            className="home-launch"
-            aria-labelledby="launch-title"
-          >
-            <span className="pill">
-              Coming Soon
-            </span>
-
-            <h2 id="launch-title">
-              BinexaHealth Online Pharmacy
-            </h2>
-
-            <p>
-              We're preparing to bring personalized online
-              care to your wellness journey. Join our community
-              for educational resources, meaningful discussions,
-              and future launch updates.
-            </p>
-
-            <div className="home-launch-links">
-              <a
-                href={DISCORD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Join Our Discord Community →
-              </a>
-
-              <Link href="/events">
-                See what's planned →
-              </Link>
-
-              <Link href="/start">
-                Start here →
-              </Link>
-            </div>
-          </section>
-
           <div className="proof">
             <ShieldCheck size={18} />
             <span>
@@ -165,6 +127,24 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
                 <ArrowRight size={16} />
               </Link>
             </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="shell pharmacy-announcement-wrap">
+        <section className="pharmacy-announcement" aria-labelledby="launch-title">
+          <div className="pharmacy-announcement-brand" aria-hidden="true">
+            <Image src="/branding/binexa-icon.png" alt="" width={76} height={76} />
+            <span>THE NEXT CHAPTER<br />OF BINEXAHEALTH</span>
+          </div>
+          <div className="pharmacy-announcement-copy">
+            <span className="pharmacy-coming-soon"><span />COMING SOON</span>
+            <h2 id="launch-title">BinexaHealth Online Pharmacy</h2>
+            <p>Personalized online care is on the horizon. Connect with our community today for wellness resources and future launch updates.</p>
+          </div>
+          <div className="pharmacy-announcement-actions">
+            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">Join the community <ArrowRight size={17} aria-hidden="true" /></a>
+            <Link href="/events">Explore what’s ahead <ArrowRight size={14} aria-hidden="true" /></Link>
           </div>
         </section>
       </div>

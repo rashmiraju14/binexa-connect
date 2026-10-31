@@ -38,11 +38,7 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
           </span>
 
           <h1 id="welcome-title">
-            Feel Better
-            <br />
-            <em>Live Healthier</em>
-            <br />
-            Thrive Longer
+            Feel Better. <em>Live Healthier.</em> Thrive Longer.
           </h1>
 
           <p className="lead">

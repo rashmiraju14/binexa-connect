@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Users, MessageCircle } from "lucide-react";
+import "./community-member-count.css";
 
 type Stats = { binexaMembers: number | null; discordMembers: number | null };
 
@@ -24,12 +26,15 @@ export default function CommunityMemberCount() {
     return () => { controller.abort(); clearInterval(interval); };
   }, []);
   return (
-    <div style={{ marginBlock: 20 }}>
-      <div style={{ display: "flex", gap: 24, flexWrap: "wrap", fontWeight: 700 }}>
-        <span>Binexa Connect: {stats?.binexaMembers != null ? stats.binexaMembers.toLocaleString() : "—"} verified accounts</span>
-        <span>Discord: {stats?.discordMembers != null ? `~${stats.discordMembers.toLocaleString()}` : "—"} members</span>
+    <div className="community-counts" aria-label="Community membership">
+      <div className="community-count-badge">
+        <span className="community-count-icon"><Users size={16} aria-hidden="true" /></span>
+        <span><strong>{stats?.binexaMembers != null ? stats.binexaMembers.toLocaleString() : "—"}</strong> Binexa members</span>
       </div>
-      <small>Binexa counts confirmed accounts. Discord membership is approximate and updated every minute.</small>
+      <div className="community-count-badge" title="Approximate Discord server membership">
+        <span className="community-count-icon"><MessageCircle size={16} aria-hidden="true" /></span>
+        <span><strong>{stats?.discordMembers != null ? stats.discordMembers.toLocaleString() : "—"}</strong> on Discord <small>(approx.)</small></span>
+      </div>
     </div>
   );
 }

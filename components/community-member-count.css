@@ -1,0 +1,6 @@
+.community-counts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-block: 22px; }
+.community-count-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid #082b5012; border-radius: 100px; background: #ffffff8c; color: #526476; font-size: 12px; line-height: 1.4; }
+.community-count-icon { display: inline-flex; color: #92702d; }
+.community-count-badge strong { color: #082b50; font-weight: 800; margin-right: 2px; }
+.community-count-badge small { color: #697989; font-size: 10px; }
+@media (max-width: 420px) { .community-counts { gap: 8px; } .community-count-badge { padding: 7px 10px; font-size: 11px; } }

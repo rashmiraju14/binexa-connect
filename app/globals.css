@@ -269,19 +269,14 @@
 .founder-card[data-founder-bio]:hover { border-color: var(--gold); }
 .founder-card[data-founder-bio]:focus-within { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-/* A compact, pausable launch ticker above the homepage content. */
-.pharmacy-announcement-wrap { padding-block: 16px 0; }
-.pharmacy-marquee { display: flex; align-items: center; overflow: hidden; gap: 0; min-height: 52px; border: 1px solid #b69046; border-radius: 12px; background: #082b50; color: #e9eff5; box-shadow: 0 4px 14px #082b500c; }
-.pharmacy-marquee-label { display: inline-flex; align-items: center; align-self: stretch; gap: 7px; flex-shrink: 0; padding: 0 18px; background: #e8c76a; color: #082b50; text-transform: uppercase; letter-spacing: 1.1px; font-size: 9px; font-weight: 800; }
-.pharmacy-marquee-window { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 25px, #000 calc(100% - 25px), transparent); }
-.pharmacy-marquee-track { display: flex; width: max-content; animation: pharmacy-ticker 38s linear infinite; }
-.pharmacy-marquee-message { display: flex; align-items: center; flex-shrink: 0; gap: 24px; padding-inline: 24px 0; white-space: nowrap; font-size: 12px; }
-.pharmacy-marquee-message strong { color: #fff; font-weight: 750; }
-.pharmacy-marquee-dot { color: #e8c76a; font-size: 11px; }
-.pharmacy-marquee-controls { display: flex; align-items: center; flex-shrink: 0; gap: 10px; padding: 0 14px 0 8px; }
-.pharmacy-marquee-controls a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: #f1d58c; font-size: 10px; font-weight: 750; white-space: nowrap; }
-.pharmacy-marquee-pause { display: grid; place-items: center; width: 36px; min-height: 44px; border: 0; background: transparent; color: #c6d4e0; cursor: pointer; }
-.pharmacy-marquee:hover .pharmacy-marquee-track, .pharmacy-marquee:focus-within .pharmacy-marquee-track, .pharmacy-marquee[data-paused="true"] .pharmacy-marquee-track { animation-play-state: paused; }
-@keyframes pharmacy-ticker { to { transform: translateX(-50%); } }
-@media(max-width: 600px) { .pharmacy-marquee { flex-wrap: wrap; padding-top: 8px; gap: 7px 0; } .pharmacy-marquee-label { border-radius: 5px; margin-left: 10px; padding: 5px 8px; font-size: 8px; align-self: center; } .pharmacy-marquee-window { order: 3; flex-basis: 100%; padding: 9px 0 12px; border-top: 1px solid #ffffff14; } .pharmacy-marquee-controls { margin-left: auto; padding-right: 10px; } .pharmacy-marquee-controls a, .pharmacy-marquee-pause { min-height: 36px; } .pharmacy-marquee-message { font-size: 11px; } }
-@media(prefers-reduced-motion: reduce) { .pharmacy-marquee-track { animation: none; width: auto; } .pharmacy-marquee-message { white-space: normal; flex-wrap: wrap; padding: 12px 18px; gap: 6px 12px; } .pharmacy-marquee-message[aria-hidden="true"], .pharmacy-marquee-dot, .pharmacy-marquee-pause { display: none; } .pharmacy-marquee-window { mask-image: none; } }
+/* A quiet, stationary launch announcement directly below the header. */
+.pharmacy-announcement-wrap { padding-block: 10px 0; }
+.pharmacy-marquee { display: flex; align-items: center; gap: 14px; min-height: 36px; padding: 4px 14px; border: 1px solid #d9bf81; border-radius: 7px; background: #082b50; color: #fff; }
+.pharmacy-marquee-label { flex-shrink: 0; padding: 3px 7px; border-radius: 4px; background: #e8c76a; color: #082b50; text-transform: uppercase; letter-spacing: .8px; font-size: 8px; font-weight: 800; line-height: 1.5; }
+.pharmacy-announcement-text { display: flex; align-items: center; flex-wrap: wrap; gap: 3px 14px; margin: 0; font-size: 11px; line-height: 1.5; }
+.pharmacy-announcement-text strong { font-weight: 750; color: #fff; }
+.pharmacy-announcement-text span { color: #c9d5df; font-size: 10px; }
+.pharmacy-announcement-link { display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px; margin-left: auto; min-height: 30px; flex-shrink: 0; color: #f0d58f; font-size: 10px; font-weight: 700; }
+.pharmacy-announcement-wrap + .home-layout { padding-top: 25px; }
+@media(max-width: 700px) { .pharmacy-marquee { gap: 9px; padding: 5px 10px; } .pharmacy-announcement-text { font-size: 10px; } .pharmacy-announcement-text span { display: none; } .pharmacy-announcement-link { font-size: 9px; } .pharmacy-announcement-wrap + .home-layout { padding-top: 22px; } }
+@media(max-width: 420px) { .pharmacy-marquee { flex-wrap: wrap; gap: 3px 8px; } .pharmacy-announcement-text { flex: 1; } .pharmacy-announcement-link { flex-basis: 100%; min-height: 26px; } }

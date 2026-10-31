@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight, Pause, Play, Sparkles } from "lucide-react";
-import { discordJoinUrl } from "@/lib/discord/navigation";
+import { Pause, Play, Sparkles } from "lucide-react";
 
 export default function PharmacyAnnouncement() {
   const [paused, setPaused] = useState(false);
@@ -18,7 +17,6 @@ export default function PharmacyAnnouncement() {
       </div>
       <div className="pharmacy-marquee-controls">
         <button type="button" className="pharmacy-marquee-pause" onClick={() => setPaused(!paused)} aria-label={paused ? "Play announcement" : "Pause announcement"} aria-pressed={paused}>{paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}</button>
-        <a href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Join community <ArrowUpRight size={15} aria-hidden="true" /></a>
       </div>
     </section>
   );

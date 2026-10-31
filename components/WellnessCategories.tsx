@@ -1,76 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 const categories = [
-  {
-    href: "/offerings#weight-health",
-    title: "Weight Loss",
-    image: "/images/weightloss-image.png",
-    imagePosition: "center",
-    description: "Explore healthy weight management and metabolic wellness.",
-  },
-  {
-    href: "/offerings#healthy-aging",
-    title: "Longevity & Wellness",
-    image: "/images/longivity-wellness-image.png",
-    imagePosition: "center",
-    description: "Learn about healthy aging and everyday wellbeing.",
-  },
-  {
-    href: "/offerings#mens-health",
-    title: "Men's Sexual Health",
-    image: "/images/mens sexual health image.png",
-    imagePosition: "center 18%",
-    description: "Discover trusted education about men's sexual wellness.",
-  },
+  { href: "/offerings#weight-health", title: "Weight Loss", image: "/images/wellness-weight-v3.jpg", alt: "Preparing a nourishing meal in a bright home kitchen", label: "NOURISH & FLOURISH", description: "Build a healthier relationship with everyday nutrition and weight management.", position: "center" },
+  { href: "/offerings#healthy-aging", title: "Longevity & Wellness", image: "/images/wellness-aging-v3.jpg", alt: "An older couple enjoying a walk in a leafy park", label: "LIVE WELL, AGE WELL", description: "Explore small, meaningful steps toward a more active and fulfilling life.", position: "center" },
+  { href: "/offerings#mens-health", title: "Men’s Sexual Health", image: "/images/wellness-mens-v3.jpg", alt: "A man relaxing outdoors in natural daylight", label: "CONFIDENCE & CONNECTION", description: "Clear, thoughtful education to help you understand your wellbeing.", position: "center" },
 ];
 
 export default function WellnessCategories() {
   return (
-    <section className="home-wellness" aria-labelledby="wellness-title">
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <h2 id="wellness-title" style={{ color: "#082B50", fontSize: 36 }}>
-          Explore Your Wellness Journey
-        </h2>
-
-        <p style={{ color: "#667786", marginBottom: 30 }}>
-          Discover helpful information and explore topics that matter to you.
-        </p>
-
-        <div className="home-wellness-grid">
-          {categories.map((item) => (
-            <div
-              key={item.title}
-              style={{
-                background: "white",
-                borderRadius: 18,
-                overflow: "hidden",
-                boxShadow: "0 8px 24px rgba(8,43,80,0.08)",
-              }}
-            >
-              <div className="wellness-card-image">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 700px) 100vw, (max-width: 1000px) 33vw, 30vw"
-                  style={{ objectFit: "cover", objectPosition: item.imagePosition }}
-                />
-              </div>
-
-              <div style={{ padding: 24 }}>
-                <h3 style={{ color: "#082B50", fontSize: 22 }}>
-                  {item.title}
-                </h3>
-
-                <p style={{ color: "#667786", marginTop: 10 }}>
-                  {item.description}
-                </p>
-                <Link className="textlink" href={item.href}>Explore articles and videos →</Link>
-              </div>
+    <section className="home-wellness wellness-editorial" aria-labelledby="wellness-title">
+      <div className="wellness-editorial-heading">
+        <span className="wellness-editorial-eyebrow">A LITTLE KNOWLEDGE. A HEALTHIER YOU.</span>
+        <h2 id="wellness-title">Explore your<br />wellness journey.</h2>
+        <p>Fresh perspectives and practical knowledge for every chapter of life.</p>
+      </div>
+      <div className="wellness-editorial-grid">
+        {categories.map((item, index) => (
+          <Link key={item.href} className="wellness-editorial-card" href={item.href}>
+            <div className="wellness-editorial-photo">
+              <Image src={item.image} alt={item.alt} fill sizes="(max-width: 700px) 90vw, (max-width: 1000px) 30vw, 23vw" style={{ objectFit: "cover", objectPosition: item.position }} />
+              <span className="wellness-editorial-number">0{index + 1}</span>
             </div>
-          ))}
-        </div>
+            <div className="wellness-editorial-content">
+              <span className="wellness-editorial-label">{item.label}</span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <span className="wellness-editorial-action">Explore topic <ArrowUpRight size={16} aria-hidden="true" /></span>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

@@ -26,20 +26,23 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
     <main className="hero">
       <div className="shell pharmacy-announcement-wrap"><PharmacyAnnouncement /></div>
 
+      <div className="shell home-headline">
+          <h1 id="welcome-title">
+            Feel Better. <em>Live Healthier.</em> Thrive Longer.
+          </h1>
+
+      </div>
+
       <div className="shell home-layout">
         <WellnessCategories />
 
         <section
           className="home-welcome"
-          aria-labelledby="welcome-title"
+          aria-label="Personalized care and community"
         >
           <span className="eyebrow">
             Personalized care, built around you
           </span>
-
-          <h1 id="welcome-title">
-            Feel Better. <em>Live Healthier.</em> Thrive Longer.
-          </h1>
 
           <p className="lead">
             Weight loss, men's sexual health, and wellness

@@ -316,3 +316,11 @@
 
 .home-welcome #welcome-title { white-space: nowrap; font-size: clamp(16px, 1.7vw, 25px); line-height: 1.35; letter-spacing: -.9px; }
 @media(max-width:1000px) { .home-welcome #welcome-title { font-size: clamp(16px, 3.65vw, 34px); letter-spacing: -.65px; } }
+
+.home-headline { padding-top: 22px; }
+.home-headline #welcome-title { margin: 0; color: #082b50; font-size: clamp(18px, 3.3vw, 42px); line-height: 1.3; letter-spacing: -1.2px; white-space: nowrap; }
+.home-headline #welcome-title em { color: #bd871b; font-style: normal; }
+.home-headline + .home-layout { padding-top: 24px; }
+.wellness-editorial .wellness-editorial-heading h2 { white-space: nowrap; font-size: clamp(18px, 2.1vw, 28px); letter-spacing: -.8px; }
+@media(min-width:1001px) { .home-headline + .home-layout .home-welcome { padding-top: 0; } }
+@media(max-width:700px) { .home-headline { padding-top: 18px; } .home-headline #welcome-title { font-size: clamp(16px, 3.9vw, 27px); letter-spacing: -.5px; } .wellness-editorial .wellness-editorial-heading h2 { font-size: clamp(17px, 5vw, 28px); } }

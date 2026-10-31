@@ -13,7 +13,7 @@ export default function WellnessCategories() {
     <section className="home-wellness wellness-editorial" aria-labelledby="wellness-title">
       <div className="wellness-editorial-heading">
         <span className="wellness-editorial-eyebrow">A LITTLE KNOWLEDGE. A HEALTHIER YOU.</span>
-        <h2 id="wellness-title">Explore your<br />wellness journey.</h2>
+        <h2 id="wellness-title">Explore your wellness journey.</h2>
         <p>Fresh perspectives and practical knowledge for every chapter of life.</p>
       </div>
       <div className="wellness-editorial-grid">

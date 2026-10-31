@@ -53,3 +53,14 @@ excluded from Git. Use `https://binexa-connect-2.vercel.app` as the production
 `NEXT_PUBLIC_SITE_URL` and configure the matching Supabase and Discord redirects.
 `npm run dev` uses port 3000 locally. Avoid running multiple development servers
 against the same `.next-dev` directory.
+
+## Live member counts
+
+`/api/community/stats` loads verified Binexa accounts and Discord members
+independently. Binexa counts confirmed email or phone accounts via the scalar
+`verified_account_count` RPC. The function intentionally exposes only an aggregate,
+with a fixed empty search path and no user-controlled arguments or user records.
+Discord uses the existing public invite's approximate member count; bot/OAuth
+credentials are not required for this display. Polling refreshes every minute.
+Apply `20261031182225_public_verified_account_count.sql` to new databases before
+using this endpoint. A failed source returns null without hiding the other count.

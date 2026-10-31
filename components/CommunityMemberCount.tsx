@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Stats = { binexaMembers: number; discordMembers: number | null };
+type Stats = { binexaMembers: number | null; discordMembers: number | null };
 
 export default function CommunityMemberCount() {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -13,7 +13,7 @@ export default function CommunityMemberCount() {
         const response = await fetch("/api/community/stats", { cache: "no-store", signal: controller.signal });
         if (!response.ok) { setStats(null); return; }
         const data = await response.json();
-        if (!controller.signal.aborted && typeof data.binexaMembers === "number" &&
+        if (!controller.signal.aborted && (data.binexaMembers === null || typeof data.binexaMembers === "number") &&
           (data.discordMembers === null || typeof data.discordMembers === "number")) setStats(data);
       } catch {
         if (!controller.signal.aborted) setStats(null);
@@ -26,10 +26,10 @@ export default function CommunityMemberCount() {
   return (
     <div style={{ marginBlock: 20 }}>
       <div style={{ display: "flex", gap: 24, flexWrap: "wrap", fontWeight: 700 }}>
-        <span>Binexa Connect: {stats ? stats.binexaMembers.toLocaleString() : "—"} verified accounts</span>
+        <span>Binexa Connect: {stats?.binexaMembers != null ? stats.binexaMembers.toLocaleString() : "—"} verified accounts</span>
         <span>Discord: {stats?.discordMembers != null ? `~${stats.discordMembers.toLocaleString()}` : "—"} members</span>
       </div>
-      <small>Discord counts are approximate. Verified accounts may include members who have since left Discord.</small>
+      <small>Binexa counts confirmed accounts. Discord membership is approximate and updated every minute.</small>
     </div>
   );
 }

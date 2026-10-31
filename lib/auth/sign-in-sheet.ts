@@ -11,7 +11,7 @@ export async function recordSignIn(user: User): Promise<boolean> {
   if (!user.last_sign_in_at) return false;
   const payload = JSON.stringify({
     sentAt: Date.now(), userId: user.id,
-    name: typeof user.user_metadata?.username === "string" ? user.user_metadata.username.slice(0, 200) : "",
+    name: [user.user_metadata?.username, user.user_metadata?.full_name, user.user_metadata?.name].find((value): value is string => typeof value === "string" && value.trim().length > 0)?.slice(0, 200) || "",
     email: user.email || "", signedInAt: user.last_sign_in_at,
     phone: user.phone || (typeof user.user_metadata?.phone === "string" ? user.user_metadata.phone.slice(0, 50) : ""),
   });

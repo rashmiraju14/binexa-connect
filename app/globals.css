@@ -324,3 +324,12 @@
 .wellness-editorial .wellness-editorial-heading h2 { white-space: nowrap; font-size: clamp(18px, 2.1vw, 28px); letter-spacing: -.8px; }
 @media(min-width:1001px) { .home-headline + .home-layout .home-welcome { padding-top: 0; } }
 @media(max-width:700px) { .home-headline { padding-top: 18px; } .home-headline #welcome-title { font-size: clamp(16px, 3.9vw, 27px); letter-spacing: -.5px; } .wellness-editorial .wellness-editorial-heading h2 { font-size: clamp(17px, 5vw, 28px); } }
+
+/* Keep the three topic cards aligned in one compact desktop row. */
+.wellness-editorial-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.wellness-editorial-card:last-child { display: flex; grid-column: auto; }
+.wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 150px; min-height: 0; }
+.wellness-editorial-card:last-child .wellness-editorial-content, .wellness-editorial-content { padding: 14px; }
+.wellness-editorial-card h3 { font-size: 16px; min-height: 40px; }
+.wellness-editorial-label { font-size: 7px; letter-spacing: .7px; }
+@media(max-width:700px) { .wellness-editorial-grid { grid-template-columns: 1fr; gap: 16px; } .wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 200px; } .wellness-editorial-card h3 { min-height: 0; font-size: 20px; } .wellness-editorial-label { font-size: 8px; } .wellness-editorial-card:last-child .wellness-editorial-content, .wellness-editorial-content { padding: 18px; } }

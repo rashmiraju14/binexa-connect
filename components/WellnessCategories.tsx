@@ -17,11 +17,10 @@ export default function WellnessCategories() {
         <p>Fresh perspectives and practical knowledge for every chapter of life.</p>
       </div>
       <div className="wellness-editorial-grid">
-        {categories.map((item, index) => (
+        {categories.map((item) => (
           <Link key={item.href} className="wellness-editorial-card" href={item.href}>
             <div className="wellness-editorial-photo">
               <Image src={item.image} alt={item.alt} fill sizes="(max-width: 700px) 90vw, (max-width: 1000px) 30vw, 23vw" style={{ objectFit: "cover", objectPosition: item.position }} />
-              <span className="wellness-editorial-number">0{index + 1}</span>
             </div>
             <div className="wellness-editorial-content">
               <span className="wellness-editorial-label">{item.label}</span>

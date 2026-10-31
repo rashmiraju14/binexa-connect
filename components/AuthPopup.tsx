@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
+import { ArrowRight, Eye, EyeOff, ShieldCheck, X } from "lucide-react";
 import { getAuthOrigin } from "@/lib/site-origin";
 import { safeNextPath } from "@/lib/auth/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -19,6 +20,7 @@ type AuthPopupProps = {
 export default function AuthPopup({ open, onClose, initialMode = "signup", initialMessage = "", onSuccess, nextPath = "/" }: AuthPopupProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [mode, setMode] = useState<AuthMode>(initialMode);
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [provider, setProvider] = useState<"google" | "facebook" | null>(null);
   const [message, setMessage] = useState("");
@@ -26,6 +28,7 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
   useEffect(() => {
     if (!open) return;
     setMode(initialMode);
+    setShowPassword(false);
     setMessage(initialMessage);
   }, [open, initialMode, initialMessage]);
 
@@ -39,6 +42,13 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
   }, [open]);
 
   function close() { if (!loading) onClose(); }
+
+  function switchMode(nextMode: AuthMode) {
+    setMode(nextMode);
+    setMessage("");
+    setShowPassword(false);
+    dialogRef.current?.scrollTo({ top: 0 });
+  }
 
   async function signInWithProvider(provider: "google" | "facebook") {
     if (loading) return;
@@ -99,21 +109,25 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
   }
 
   return (
-    <dialog ref={dialogRef} className="binexa-auth-modal" aria-labelledby="binexa-auth-title" aria-describedby="binexa-auth-description"
+    <dialog ref={dialogRef} className="binexa-auth-modal binexa-account-dialog" aria-labelledby="binexa-auth-title" aria-describedby="binexa-auth-description"
       onCancel={event => { event.preventDefault(); close(); }}
       onClick={event => {
         if (event.target !== event.currentTarget) return;
         const bounds = event.currentTarget.getBoundingClientRect();
         if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
       }}>
-      <button type="button" className="binexa-auth-close" aria-label="Close account popup" disabled={loading} onClick={close}>×</button>
+      <button type="button" className="binexa-auth-close" aria-label="Close account popup" disabled={loading} onClick={close}><X size={20} aria-hidden="true" /></button>
       <div className="binexa-auth-brand">
         <Image src="/branding/binexa-icon.png" alt="BinexaHealth" width={48} height={48} />
         <div><strong>Binexa<span>Connect</span></strong><small>YOUR WELLNESS COMMUNITY</small></div>
       </div>
-      <p className="binexa-auth-eyebrow">MEMBER ACCESS</p>
-      <h2 id="binexa-auth-title">{mode === "signup" ? "Join the Binexa Connect Community" : "Welcome Back"}</h2>
-      <p id="binexa-auth-description" className="binexa-auth-description">{mode === "signup" ? "Create your free account to explore wellness articles, resources, and community conversations." : "Sign in to continue exploring your Binexa Connect community."}</p>
+      <div className="binexa-auth-modes" role="group" aria-label="Account access">
+        <button type="button" aria-pressed={mode === "signin"} disabled={loading} onClick={() => switchMode("signin")}>Sign in</button>
+        <button type="button" aria-pressed={mode === "signup"} disabled={loading} onClick={() => switchMode("signup")}>Create account</button>
+      </div>
+      <p className="binexa-auth-eyebrow">YOUR NEXT CHAPTER IN WELLNESS</p>
+      <h2 id="binexa-auth-title">{mode === "signup" ? "A healthier journey starts here." : "Welcome back."}</h2>
+      <p id="binexa-auth-description" className="binexa-auth-description">{mode === "signup" ? "Join a community for learning, connection, and everyday wellbeing. It’s free to get started." : "Your community, your inspiration, your next small step. Pick up where you left off."}</p>
       <div className="binexa-auth-social" aria-label="Sign in with a social account">
         <button type="button" disabled={loading} onClick={() => signInWithProvider("google")}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.33 2.98-7.36Z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.41l-3.24-2.51c-.9.6-2.04.96-3.38.96-2.6 0-4.81-1.76-5.6-4.12H3.06v2.59A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.4 13.92a6 6 0 0 1 0-3.84V7.49H3.06a10 10 0 0 0 0 9.02l3.34-2.59Z"/><path fill="#EA4335" d="M12 5.96c1.47 0 2.79.51 3.82 1.51l2.87-2.87A9.6 9.6 0 0 0 12 2a10 10 0 0 0-8.94 5.49l3.34 2.59C7.19 7.72 9.4 5.96 12 5.96Z"/></svg>
@@ -126,23 +140,34 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
       </div>
       <div className="binexa-auth-divider"><span>or continue with email</span></div>
       {message && <p className="binexa-auth-message" role="status">{message}</p>}
-      {open && <form onSubmit={submit} key={mode}>
-        {mode === "signup" && <>
-          <label htmlFor="binexa-username">Username</label>
-          <input id="binexa-username" name="username" autoComplete="username" minLength={3} maxLength={30} required disabled={loading} />
-        </>}
-        <label htmlFor="binexa-email">Email Address</label>
-        <input id="binexa-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required disabled={loading} />
-        {mode === "signup" && <>
-          <label htmlFor="binexa-phone">Phone Number</label>
-          <input id="binexa-phone" name="phone" type="tel" autoComplete="tel" required disabled={loading} />
-        </>}
-        <label htmlFor="binexa-password">Password</label>
-        <input id="binexa-password" name="password" type="password" placeholder={mode === "signup" ? "At least 8 characters" : "Your password"} autoComplete={mode === "signup" ? "new-password" : "current-password"} minLength={mode === "signup" ? 8 : undefined} required disabled={loading} />
-        <button type="submit" className="binexa-auth-submit" disabled={loading}>{loading ? "Please wait…" : mode === "signup" ? "Create My Free Account →" : "Sign In →"}</button>
+      {open && <form onSubmit={submit} key={mode} aria-busy={loading}>
+        {mode === "signup" && <div className="binexa-auth-field-row">
+          <div className="binexa-auth-field">
+            <label htmlFor="binexa-username">Username</label>
+            <input id="binexa-username" name="username" placeholder="Your community name" autoComplete="username" minLength={3} maxLength={30} required disabled={loading} />
+          </div>
+          <div className="binexa-auth-field">
+            <label htmlFor="binexa-phone">Phone number</label>
+            <input id="binexa-phone" name="phone" type="tel" placeholder="Your phone number" autoComplete="tel" required disabled={loading} />
+          </div>
+        </div>}
+        <div className="binexa-auth-field">
+          <label htmlFor="binexa-email">Email address</label>
+          <input id="binexa-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required disabled={loading} />
+        </div>
+        <div className="binexa-auth-field">
+          <label htmlFor="binexa-password">Password</label>
+          <div className="binexa-auth-password">
+            <input id="binexa-password" name="password" type={showPassword ? "text" : "password"} placeholder={mode === "signup" ? "Create a password" : "Enter your password"} autoComplete={mode === "signup" ? "new-password" : "current-password"} aria-describedby={mode === "signup" ? "binexa-password-hint" : undefined} minLength={mode === "signup" ? 8 : undefined} required disabled={loading} />
+            <button type="button" disabled={loading} onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button>
+          </div>
+          {mode === "signup" && <small id="binexa-password-hint" className="binexa-auth-hint">Use at least 8 characters.</small>}
+        </div>
+        <button type="submit" className="binexa-auth-submit" disabled={loading}>{loading ? "Please wait…" : mode === "signup" ? "Create free account" : "Sign in"}<ArrowRight size={18} aria-hidden="true" /></button>
       </form>}
-      <p className="binexa-auth-switch">{mode === "signup" ? "Already a member? " : "New to Binexa Connect? "}<button type="button" disabled={loading} onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMessage(""); }}>{mode === "signup" ? "Sign In" : "Create Account"}</button></p>
-      <p className="binexa-auth-footer">Your information is handled securely. Community information is educational and not medical advice.</p>
+      <p className="binexa-auth-switch">{mode === "signup" ? "Already a member? " : "New to Binexa Connect? "}<button type="button" disabled={loading} onClick={() => switchMode(mode === "signup" ? "signin" : "signup")}>{mode === "signup" ? "Sign In" : "Create Account"}</button></p>
+      <div className="binexa-auth-trust"><ShieldCheck size={15} aria-hidden="true" /><span>A thoughtful space for your wellbeing.</span><a href="/privacy" onClick={() => { if (!loading) onClose(); }}>Privacy</a></div>
+      <p className="binexa-auth-footer">For education and connection. Not a substitute for medical advice.</p>
     </dialog>
   );
 }

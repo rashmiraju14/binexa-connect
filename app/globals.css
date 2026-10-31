@@ -338,3 +338,17 @@
 .home-headline>.lead { max-width: 850px; margin: 10px 0 0; color: #667786; font-size: 15px; line-height: 1.8; }
 .home-headline + .home-layout .home-welcome { padding-top: 0; }
 @media(max-width:700px) { .home-headline>.lead { font-size: 14px; line-height: 1.7; } }
+
+/* Full-width topics followed by community actions. */
+.home-layout { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+.home-layout .home-wellness { grid-row: 1; }
+.home-layout .home-welcome { grid-row: 2; max-width: none; padding-top: 0; }
+.wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 230px; }
+.wellness-editorial-card:last-child .wellness-editorial-content, .wellness-editorial-content { padding: 22px; }
+.wellness-editorial-grid { gap: 22px; }
+.wellness-editorial-card h3 { font-size: 22px; min-height: 0; margin-block: 10px; }
+.wellness-editorial-card p { font-size: 13px; }
+.wellness-editorial-label { font-size: 9px; letter-spacing: 1px; }
+.wellness-editorial-action { font-size: 12px; padding-top: 15px; }
+.home-layout .home-welcome .home-account-actions { margin-top: 0; }
+@media(max-width:700px) { .wellness-editorial-card:last-child .wellness-editorial-photo, .wellness-editorial-photo { height: 210px; } .wellness-editorial-card:last-child .wellness-editorial-content, .wellness-editorial-content { padding: 19px; } .wellness-editorial-card h3 { font-size: 21px; } }

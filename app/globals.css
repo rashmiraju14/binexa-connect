@@ -383,3 +383,10 @@
 .pharmacy-feature-card { min-height: 340px; display: flex; flex-direction: column; justify-content: center; }
 .pharmacy-feature-card a { align-self: flex-start; margin-top: 8px; }
 @media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; } .pharmacy-feature-card { min-height: 310px; } }
+
+/* A distinctly taller launch card with more room beside it for sign-in. */
+.home-layout .home-welcome { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 42px; }
+.pharmacy-feature-card { min-height: 440px; padding: 36px 30px; }
+.pharmacy-feature-card h2 { margin-top: 24px; font-size: 30px; }
+.pharmacy-feature-card p { margin-bottom: 25px; }
+@media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; gap: 26px; } .pharmacy-feature-card { min-height: 400px; max-width: 420px; width: 100%; box-sizing: border-box; } }

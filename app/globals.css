@@ -372,3 +372,9 @@
 .pharmacy-feature-card p { color: #c7d6e2; font-size: 12px; line-height: 1.8; margin: 0 0 18px; max-width: 430px; }
 .pharmacy-feature-card a { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; color: #f0d58d; font-size: 12px; font-weight: 750; }
 @media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; gap: 22px; } .pharmacy-feature-card { padding: 24px; } }
+
+/* Lead with the wider launch card, followed by account access. */
+.home-layout .home-welcome { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 32px; }
+.pharmacy-feature-card { padding: 30px 34px; }
+.pharmacy-feature-card p { max-width: none; }
+@media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; gap: 24px; } .pharmacy-feature-card { padding: 26px; } }

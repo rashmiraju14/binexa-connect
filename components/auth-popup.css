@@ -58,3 +58,5 @@
   .binexa-auth-social button, .binexa-auth-submit { min-height: 48px; }
   .binexa-auth-switch button { min-height: 44px; }
 }
+
+@media(max-width: 520px) { .binexa-auth-modal::backdrop { backdrop-filter: none; background: #071e38b8; } }

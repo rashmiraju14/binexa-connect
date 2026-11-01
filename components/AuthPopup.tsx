@@ -41,6 +41,18 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
     return () => { dialog.close(); document.body.style.overflow = previous; };
   }, [open]);
 
+  // Mobile browsers may restore this page from their back/forward cache after OAuth.
+  useEffect(() => {
+    function restoreAfterOAuth(event: PageTransitionEvent) {
+      if (event.persisted) {
+        setLoading(false);
+        setProvider(null);
+      }
+    }
+    window.addEventListener("pageshow", restoreAfterOAuth);
+    return () => window.removeEventListener("pageshow", restoreAfterOAuth);
+  }, []);
+
   function close() { if (!loading) onClose(); }
 
   function switchMode(nextMode: AuthMode) {

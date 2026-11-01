@@ -1,3 +1,6 @@
+import ResearchLibrary from "@/components/ResearchLibrary";
+import LoungeArticles from "@/components/LoungeArticles";
+
 const methods = [
   { title: "Aerobic movement", description: "Activities such as walking and cycling that build endurance. Start at a comfortable level and increase gradually.", publisher: "NHS", url: "https://www.nhs.uk/live-well/exercise/" },
   { title: "Strength training", description: "Resistance work that challenges your muscles. Learn technique before adding difficulty.", publisher: "NHS", url: "https://www.nhs.uk/live-well/exercise/how-to-improve-strength-flexibility/" },
@@ -9,8 +12,10 @@ const methods = [
 ];
 
 export default function WellnessMethods() {
-  return <section className="learning-section" aria-labelledby="wellness-methods-title">
-    <div className="learning-heading"><h2 id="wellness-methods-title">Explore wellness approaches</h2><p>Understand the method behind a practice, then choose an appropriate guide or class. These introductions are educational, rather than a personalized exercise plan.</p></div>
-    <div className="cardgrid">{methods.map(method => <article className="card" key={method.title}><span className="pill">Practice guide</span><h3>{method.title}</h3><p>{method.description}</p><a className="textlink" href={method.url} target="_blank" rel="noopener noreferrer">Explore with {method.publisher} ↗</a></article>)}</div>
+  return <section id="lounge-articles" className="learning-section lounge-articles" aria-labelledby="wellness-methods-title">
+    <div className="learning-heading"><h2 id="wellness-methods-title">Articles</h2><p>Explore health articles and practical wellness guides from original publishers.</p></div>
+    <LoungeArticles/>
+    <ResearchLibrary embedded/>
+    <div className="cardgrid lounge-article-guides">{methods.map(method => <article className="card" key={method.title}><span className="pill">Practice guide</span><h3>{method.title}</h3><p>{method.description}</p><a className="textlink" href={method.url} target="_blank" rel="noopener noreferrer">Explore with {method.publisher} ↗</a></article>)}</div>
   </section>;
 }

@@ -398,3 +398,17 @@
 .pharmacy-feature-card h2 { margin-top: 16px; }
 .pharmacy-feature-card p { margin-bottom: 16px; }
 @media(max-width:800px) { .pharmacy-feature-card { min-height: 290px; } }
+
+/* Community Lounge: featured reading in the site palette. */
+.lounge-articles .learning-heading h2 { border-left: 4px solid var(--gold); padding-left: 14px; }
+.lounge-featured-article { border: 1px solid #e6d7b8; border-top: 4px solid var(--gold); background: linear-gradient(120deg, var(--ivory), var(--white) 80%); box-shadow: 0 8px 24px #082b5010; }
+.lounge-article-labels { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.lounge-article-featured { display: inline-flex; width: fit-content; padding: 6px 12px; border-radius: 6px; background: var(--navy); color: var(--white); font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.lounge-article-topic { color: #8a601d; font-size: 12px; font-weight: 700; }
+.lounge-featured-article h3 { max-width: 940px; }
+.lounge-featured-article .lounge-article-dates { margin-block: 6px 18px; }
+.lounge-article-updated { display: inline-block; margin-block: 6px; padding: 3px 10px; border-radius: 6px; background: #f9eed6; color: #8a601d; font-weight: 800; }
+.lounge-featured-article .lounge-article-read { align-self: flex-start; margin-top: 8px; padding: 11px 18px; border-radius: 8px; background: var(--navy); color: var(--white); font-weight: 700; }
+.lounge-featured-article .lounge-article-read:hover { background: #0e406e; }
+
+.lounge-article-guides { margin-top: 24px; }

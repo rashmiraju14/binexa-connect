@@ -393,3 +393,8 @@
 
 .home-layout .home-welcome { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
 @media(max-width:800px) { .home-layout .home-welcome { grid-template-columns: 1fr; } .pharmacy-feature-card { max-width: none; } }
+
+.pharmacy-feature-card { min-height: 290px; padding-block: 26px; }
+.pharmacy-feature-card h2 { margin-top: 16px; }
+.pharmacy-feature-card p { margin-bottom: 16px; }
+@media(max-width:800px) { .pharmacy-feature-card { min-height: 290px; } }

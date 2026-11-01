@@ -12,6 +12,11 @@ export async function middleware(request: NextRequest) {
     response.headers.set("Cache-Control", "no-store");
     return response;
   }
+  // Starting OAuth is public and creates a new verifier. Do not wait on an
+  // existing session refresh before sending the visitor to the provider.
+  if (request.nextUrl.pathname === "/auth/sign-in") {
+    return NextResponse.next({ request });
+  }
   return updateSession(request);
 }
 

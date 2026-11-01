@@ -62,26 +62,13 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
     dialogRef.current?.scrollTo({ top: 0 });
   }
 
-  async function signInWithProvider(provider: "google" | "facebook") {
+  function signInWithProvider(provider: "google" | "facebook") {
     if (loading) return;
     setLoading(true);
     setProvider(provider);
     setMessage("");
-    try {
-      const callback = new URL("/auth/callback", getAuthOrigin(window.location.origin));
-      callback.searchParams.set("next", safeNextPath(nextPath));
-      const { data, error } = await createClient().auth.signInWithOAuth({
-        provider,
-        options: { redirectTo: callback.href, skipBrowserRedirect: true },
-      });
-      if (error) throw error;
-      if (!data.url) throw new Error("Unable to start sign-in. Please try again.");
-      window.location.assign(data.url);
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to sign in. Please try again.");
-      setLoading(false);
-      setProvider(null);
-    }
+    const query = new URLSearchParams({ provider, next: safeNextPath(nextPath) });
+    window.location.assign(`/auth/sign-in?${query}`);
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {

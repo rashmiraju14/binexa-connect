@@ -56,8 +56,8 @@ Reference: https://supabase.com/docs/guides/auth/server-side/creating-a-client
 
 ## Google and Facebook sign-in
 
-Both account popup modes include Google and Facebook OAuth. The browser starts
-Supabase's PKCE flow; `/auth/callback` exchanges the code for a cookie session,
+Both account popup modes include Google and Facebook OAuth. The browser navigates to `/auth/sign-in`, where the server starts
+Supabase's PKCE flow and writes the verifier cookie; `/auth/callback` exchanges the code for a cookie session,
 preserves a safe local destination, and shows the existing Discord welcome prompt.
 Cancelled or failed sign-ins return to the sign-in popup with a retry message.
 

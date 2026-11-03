@@ -16,7 +16,7 @@ export default async function LoungeArticles() {
         {updated && updated.slice(0, 10) !== published.slice(0, 10) && <><br /><span className="lounge-article-updated">Updated <time dateTime={updated}>{formatDate(updated)}</time></span></>}
         {checkedAt && <><br />Last checked <time dateTime={checkedAt}>{formatDate(checkedAt)} at {new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: "UTC" }).format(new Date(checkedAt))} UTC</time></>}
       </p>
-      <a className="textlink lounge-article-read" href={peptideArticleUrl} target="_blank" rel="noopener noreferrer">Read the full article ↗</a>
+      <a className="textlink content-action lounge-article-read" href={peptideArticleUrl} target="_blank" rel="noopener noreferrer">Read the full article ↗</a>
     </div></article>
   );
 }

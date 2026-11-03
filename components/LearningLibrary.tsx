@@ -12,7 +12,7 @@ export default function LearningLibrary({ title, subtitle, topic, kind, ids }: {
       {item.kind === "Video" && !item.videoId && <a className="learning-video-link" href={item.url} target="_blank" rel="noopener noreferrer"><PlayCircle size={42}/><span>Watch on {item.publisher}</span></a>}
       <div className="learning-card-body"><span className="pill">{item.topic} · {item.kind}</span><h3>{item.title}</h3><p>{item.description}</p>
         <div className="postmeta">{item.publisher}{item.expert && <><br/>{item.expert}</>}{item.date && <><br/>{item.date}</>}</div>
-        <a className="textlink" href={item.url} target="_blank" rel="noopener noreferrer">{item.kind === "Video" ? "Video and transcript" : "Read original source"} <ArrowUpRight size={15}/></a>
+        <a className="textlink content-action" href={item.url} target="_blank" rel="noopener noreferrer">{item.kind === "Video" ? "Video and transcript" : "Read original source"} <ArrowUpRight size={15}/></a>
       </div>
     </article>)}</div>
   </section>;

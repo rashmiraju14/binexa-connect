@@ -6,7 +6,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import AuthPopup, { type AuthMode } from "@/components/AuthPopup";
-import { discordJoinUrl } from "@/lib/discord/navigation";
 import { isMemberPath, isDiscordPath, safeNextPath } from "@/lib/auth/navigation";
 
 const AuthContext = createContext<{
@@ -149,16 +148,14 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
       <div className={!signedIn && (pathname === "/" || pathname === "/community") ? "community-signup-preview" : undefined} style={{ display: "contents" }} onClickCapture={intercept}>{children}</div>
       <AuthPopup open={mode !== null} initialMode={mode || "signup"} initialMessage={initialMessage} nextPath={next} onClose={close} onSuccess={authenticatedSuccessfully} />
       <dialog ref={discordDialog} className="binexa-auth-modal" aria-labelledby="discord-prompt-title" aria-describedby="discord-prompt-description" onCancel={event => { event.preventDefault(); close(); }}>
-        <button type="button" className="binexa-auth-close" aria-label="Close Discord prompt" onClick={close}>×</button>
+        <button type="button" className="binexa-auth-close" aria-label="Close community welcome" onClick={close}>×</button>
         <div className="binexa-auth-brand"><Image src="/branding/binexa-icon.png" alt="" width={48} height={48} /><strong>Binexa<span>Connect</span></strong></div>
         <p className="binexa-auth-eyebrow">WELCOME TO YOUR COMMUNITY</p>
-        <h2 id="discord-prompt-title">Join us on Discord</h2>
-        <p id="discord-prompt-description" className="binexa-auth-description">You’re signed in and can access all member content. You can also join our Discord community to connect and chat with other members.</p>
+        <h2 id="discord-prompt-title">Welcome to Binexa Community</h2>
+        <p id="discord-prompt-description" className="binexa-auth-description">You’re signed in. Explore wellness resources, discover new ideas, and connect with your Binexa community.</p>
         <div className="binexa-discord-actions">
-          <a className="btn gold" href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Join Our Discord Community →</a>
-          <a className="textlink" href={safeNextPath(next)} onClick={close}>Continue exploring Binexa Connect →</a>
+          <a className="btn gold" href="/community" onClick={close}>Join Binexa Community →</a>
         </div>
-        <p className="binexa-auth-footer">The invite opens our Discord server in a new tab. Join the server there, then return here to continue exploring Binexa Connect.</p>
       </dialog>
     </AuthContext.Provider>
   );

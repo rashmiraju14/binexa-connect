@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { discordJoinUrl } from "@/lib/discord/navigation";
 import Link from "next/link";
 import { requireAccount } from "@/lib/auth/require-account";
 import SignOutButton from "./sign-out-button";
@@ -22,8 +21,7 @@ export default async function MemberPage() {
         <h1 id="member-title">Welcome, {username}!</h1>
         <p className="binexa-auth-description">You’re signed in. Explore your community, discover wellness resources, and connect with other members.</p>
         <div className="member-actions">
-          <Link href="/community" className="btn gold">Explore Binexa Connect →</Link>
-          <a href={discordJoinUrl} target="_blank" rel="noopener noreferrer" className="btn ghost">Join Our Discord Community ↗</a>
+          <Link href="/community" className="btn gold">Join Binexa Community →</Link>
         </div>
         <div className="member-signout"><SignOutButton /></div>
         <p className="binexa-auth-footer">Community content is educational and is not medical advice.</p>

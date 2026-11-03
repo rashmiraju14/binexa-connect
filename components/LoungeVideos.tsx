@@ -29,10 +29,10 @@ export default function LoungeVideos({ compact = false }: { compact?: boolean })
     </div>}
     <div className="learning-grid">{videos.map(video => <article className="learning-card" key={video.id}>
       {video.videoId ? <PrivacyVideo key={video.videoId} id={video.videoId} title={`${video.title} by ${video.creator}`} /> : <a className="learning-video-link" href={video.url} target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span><span>Watch on {video.creator} ↗</span></a>}
-      <div className="learning-card-body"><span className="pill">{video.type}</span>{video.format && <span className="postmeta">{video.format}</span>}<h3>{video.title}</h3><p>{video.description}</p><div className="postmeta">{video.creator}</div><a className="textlink" href={video.url} target="_blank" rel="noopener noreferrer">Watch at the original source ↗</a></div>
+      <div className="learning-card-body"><span className="pill">{video.type}</span>{video.format && <span className="postmeta">{video.format}</span>}<h3>{video.title}</h3><p>{video.description}</p><div className="postmeta">{video.creator}</div><a className="textlink content-action" href={video.url} target="_blank" rel="noopener noreferrer">Watch at the original source ↗</a></div>
     </article>)}</div>
     {!compact && matches.length === 0 && <div className="note"><p>No videos match this search. Try another term or choose All topics.</p><button type="button" className="btn ghost" onClick={() => { setQuery(""); setTopic("All topics"); setLimit(12); }}>Clear filters</button></div>}
-    {!compact && matches.length > limit && <button type="button" className="btn ghost lounge-more" onClick={() => setLimit(value => value + 12)}>Show more videos ({matches.length - limit} remaining)</button>}
-    {compact && <Link href="/lounge" className="textlink">Browse all {loungeVideos.length} lounge videos →</Link>}
+    {!compact && matches.length > limit && <button type="button" className="btn content-action lounge-more" onClick={() => setLimit(value => value + 12)}>Show more videos ({matches.length - limit} remaining)</button>}
+    {compact && <Link href="/lounge" className="textlink content-action">Browse all {loungeVideos.length} lounge videos →</Link>}
   </section>;
 }

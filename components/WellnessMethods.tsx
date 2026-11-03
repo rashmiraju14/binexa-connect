@@ -16,6 +16,6 @@ export default function WellnessMethods() {
     <div className="learning-heading"><h2 id="wellness-methods-title">Articles</h2><p>Explore health articles and practical wellness guides from original publishers.</p></div>
     <LoungeArticles/>
     <ResearchLibrary embedded/>
-    <div className="cardgrid lounge-article-guides">{methods.map(method => <article className="card" key={method.title}><span className="pill">Practice guide</span><h3>{method.title}</h3><p>{method.description}</p><a className="textlink" href={method.url} target="_blank" rel="noopener noreferrer">Explore with {method.publisher} ↗</a></article>)}</div>
+    <div className="cardgrid lounge-article-guides">{methods.map(method => <article className="card" key={method.title}><span className="pill">Practice guide</span><h3>{method.title}</h3><p>{method.description}</p><a className="textlink content-action" href={method.url} target="_blank" rel="noopener noreferrer">Explore with {method.publisher} ↗</a></article>)}</div>
   </section>;
 }

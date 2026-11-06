@@ -1,4 +1,4 @@
-export const communityUrl = "https://discord.gg/uGWdz6Bem";
+export { discordJoinUrl as communityUrl } from "@/lib/discord/navigation";
 export type LearningTopic = "Weight health" | "Healthy aging" | "Men’s health" | "Health technology";
 export type LearningItem = {
   id: string; topic: LearningTopic; kind: "Article" | "Research" | "Video";

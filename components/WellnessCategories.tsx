@@ -16,7 +16,7 @@ export default function WellnessCategories() {
         <h2 id="wellness-title">Explore your wellness journey.</h2>
         <p>Fresh perspectives and practical knowledge for every chapter of life.</p>
       </div>
-      <div className="wellness-editorial-grid">
+      <div className="wellness-editorial-grid" tabIndex={0} role="region" aria-label="Wellness topics">
         {categories.map((item) => (
           <Link key={item.href} className="wellness-editorial-card" href={item.href}>
             <div className="wellness-editorial-photo">

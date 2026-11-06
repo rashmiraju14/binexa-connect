@@ -25,7 +25,7 @@ work normally. Legacy `/sign-in` and `/sign-up` URLs open the homepage popup.
 After authentication, visitors see one **Join Our Discord Community** action and
 can continue browsing. The action authorizes Discord, joins the configured server,
 and verifies membership. Discord joining is optional for website access.
-The existing invite remains `https://discord.gg/uGWdz6Bem`; it is also available
+The existing invite remains `https://discord.gg/zwVuXWE8q`; it is also available
 when users need to finish Discord rules screening. OAuth state is tied to the
 Supabase user who began authorization, and return paths are restricted to this site.
 

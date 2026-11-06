@@ -5,9 +5,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireDiscordMembership } from "@/lib/discord/server";
 import AccessGrantedDialog from "./access-granted-dialog";
+import { discordJoinUrl } from "@/lib/discord/navigation";
 import "../onboarding.css";
 
-const DISCORD_INVITE_URL = "https://discord.gg/uGWdz6Bem";
+const DISCORD_INVITE_URL = discordJoinUrl;
 
 export default async function AccessGrantedPage({
   searchParams,

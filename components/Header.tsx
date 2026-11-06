@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { communityTabs } from "@/lib/communityCopy";
 import { useMemberAuth } from "@/components/auth/AuthProvider";
+import { isMemberPath, isDiscordPath, safeNextPath } from "@/lib/auth/navigation";
 import { discordJoinUrl } from "@/lib/discord/navigation";
 import ProfileMenu from "@/components/ProfileMenu";
 import styles from "./Header.module.css";
@@ -30,7 +31,10 @@ export default function Header() {
 
   function navigate(event: MouseEvent<HTMLAnchorElement>, destination: string) {
     setOpen(false);
-    if (!authenticated) { event.preventDefault(); openAuth("signup", destination); }
+    if (!authenticated && (isMemberPath(destination) || isDiscordPath(destination))) {
+      event.preventDefault();
+      openAuth("signin", safeNextPath(destination));
+    }
   }
   return <>
     <div className="topbar">BINEXA HEALTH · PERSONALIZED CARE. BETTER CONNECTIONS.</div>

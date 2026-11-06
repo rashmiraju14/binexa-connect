@@ -1,5 +1,6 @@
 
 import Image from "next/image";
+import { discordJoinUrl } from "@/lib/discord/navigation";
 import Link from "next/link";
 
 const benefits = [
@@ -52,7 +53,7 @@ export default function LandingPage() {
             Sign In
           </Link>
           <a
-            href="https://discord.gg/uGWdz6Bem"
+            href={discordJoinUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="landing-btn landing-btn-gold"
@@ -84,7 +85,7 @@ export default function LandingPage() {
 
           <div className="landing-hero-actions">
             <a
-              href="https://discord.gg/uGWdz6Bem"
+              href={discordJoinUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="landing-btn landing-btn-gold"
@@ -195,7 +196,7 @@ export default function LandingPage() {
         </p>
         <div className="landing-hero-actions">
           <a
-            href="https://discord.gg/uGWdz6Bem"
+            href={discordJoinUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="landing-btn landing-btn-gold"

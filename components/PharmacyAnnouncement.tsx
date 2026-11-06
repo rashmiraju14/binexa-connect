@@ -16,7 +16,7 @@ export default function PharmacyAnnouncement() {
         </div>
       </div>
       <div className="pharmacy-marquee-controls">
-        <button type="button" className="pharmacy-marquee-pause" onClick={() => setPaused(!paused)} aria-label={paused ? "Play announcement" : "Pause announcement"} aria-pressed={paused}>{paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}</button>
+        <button type="button" className="pharmacy-marquee-pause" data-auth-trigger onClick={() => setPaused(!paused)} aria-label={paused ? "Play announcement" : "Pause announcement"} aria-pressed={paused}>{paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}</button>
       </div>
     </section>
   );

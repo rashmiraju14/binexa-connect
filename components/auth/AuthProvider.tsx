@@ -95,52 +95,26 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
   }
 
   function intercept(event: MouseEvent<HTMLDivElement>) {
-    if (event.defaultPrevented || event.button !== 0) return;
-    const target = event.target as HTMLElement;
-    const publicLink = target.closest<HTMLAnchorElement>("a[href]");
-    if (publicLink) {
-      const url = new URL(publicLink.href, window.location.origin);
-      if (url.origin === window.location.origin && ["/privacy", "/about"].includes(url.pathname)) return;
-    }
-    // Explicit account buttons own their mode; do not replace it with preview sign-up.
-    if (target.closest("[data-auth-trigger]")) return;
-    const authAnchor = target.closest<HTMLAnchorElement>("a[href]");
-    const authUrl = authAnchor ? new URL(authAnchor.href, window.location.origin) : null;
-    if (authUrl?.origin === window.location.origin && ["/sign-in", "/sign-up", "/join"].includes(authUrl.pathname)) {
-      event.preventDefault();
-      event.stopPropagation();
-      openAuth(authUrl.pathname === "/sign-in" ? "signin" : "signup");
-      return;
-    }
-    // Signed-out homepage visitors see the account popup. Members navigate normally.
-    // Dialogs are siblings of this wrapper so their controls remain usable.
-    if (!signedIn && (pathname === "/" || pathname === "/community")) {
-      event.preventDefault();
-      event.stopPropagation();
-      const link = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
-      const destination = link ? new URL(link.href, window.location.origin) : null;
-      setNext(destination?.origin === window.location.origin && isMemberPath(destination.pathname)
-        ? safeNextPath(destination.pathname + destination.search + destination.hash) : "/");
-      setShowDiscord(false);
-      setInitialMessage("");
-      setMode("signup");
-      return;
-    }
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const anchor = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
-    if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const target = event.target;
+    if (!(target instanceof Element) || target.closest("[data-auth-trigger]")) return;
+    const anchor = target.closest<HTMLAnchorElement>("a[href]");
+    if (!anchor || (anchor.target && anchor.target !== "_self") || anchor.hasAttribute("download")) return;
     const url = new URL(anchor.href, window.location.origin);
     if (url.origin !== window.location.origin) return;
-    const accountLink = ["/sign-up", "/sign-in", "/join"].includes(url.pathname);
+    const accountLink = ["/sign-up", "/sign-in"].includes(url.pathname);
     if (signedIn) {
       if (accountLink) { event.preventDefault(); router.push("/member"); }
       return;
     }
-    if (!accountLink && !isMemberPath(url.pathname) && !isDiscordPath(url.pathname)) return;
+    if (accountLink) {
+      event.preventDefault();
+      openAuth(url.pathname === "/sign-in" ? "signin" : "signup", safeNextPath(url.searchParams.get("next")));
+      return;
+    }
+    if (!isMemberPath(url.pathname) && !isDiscordPath(url.pathname)) return;
     event.preventDefault();
-    setNext(accountLink ? "/" : safeNextPath(url.pathname + url.search + url.hash));
-    setInitialMessage("");
-    setMode(url.pathname === "/sign-in" || url.pathname === "/member" || isDiscordPath(url.pathname) ? "signin" : "signup");
+    openAuth("signin", safeNextPath(url.pathname + url.search + url.hash));
   }
 
   function authenticatedSuccessfully() {

@@ -58,7 +58,7 @@ export default async function JoinDiscordPage({ searchParams }: {
           in Discord, then return here to continue browsing.
         </p>
         {params.error === "screening_pending" && <p className="onboarding-note">
-          <a href="https://discord.gg/uGWdz6Bem" target="_blank" rel="noopener noreferrer">Open Discord to complete the server rules ↗</a>
+          <a href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Open Discord to complete the server rules ↗</a>
           {" "}Then return and choose Join Our Discord Community again.
         </p>}
         <div className="onboarding-footer">

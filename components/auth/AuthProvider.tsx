@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import Image from "next/image";
+import type { User } from "@supabase/supabase-js";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -10,11 +11,12 @@ import { isMemberPath, isDiscordPath, safeNextPath } from "@/lib/auth/navigation
 
 const AuthContext = createContext<{
   authenticated: boolean;
+  user: Pick<User, "id" | "email" | "user_metadata"> | null;
   openAuth: (mode: AuthMode, next?: string) => void;
-}>({ authenticated: false, openAuth: () => {} });
+}>({ authenticated: false, user: null, openAuth: () => {} });
 export const useMemberAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children, authenticated }: { children: ReactNode; authenticated: boolean }) {
+export function AuthProvider({ children, authenticated, initialUser = null }: { children: ReactNode; authenticated: boolean; initialUser?: Pick<User, "id" | "email" | "user_metadata"> | null }) {
   const router = useRouter();
   const pathname = usePathname();
   const queryString = useSearchParams().toString();
@@ -23,14 +25,24 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
   const [initialMessage, setInitialMessage] = useState("");
   const [showDiscord, setShowDiscord] = useState(false);
   const [signedIn, setSignedIn] = useState(authenticated);
+  const [user, setUser] = useState(initialUser);
+  const [welcomeFirstName, setWelcomeFirstName] = useState("");
   const discordDialog = useRef<HTMLDialogElement>(null);
 
   useEffect(() => { setSignedIn(authenticated); }, [authenticated]);
+  useEffect(() => { setUser(initialUser); }, [initialUser]);
   useEffect(() => {
     if (!isSupabaseConfigured()) return;
     const supabase = createClient();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSignedIn(Boolean(session));
+      setUser(session?.user ?? null);
+      const metadata = session?.user.user_metadata;
+      const firstName = [metadata?.full_name, metadata?.name, metadata?.given_name, metadata?.username]
+        .filter((value): value is string => typeof value === "string" && !value.includes("@"))
+        .map(value => value.trim().split(/\s+/)[0])
+        .find(value => value.length <= 50 && /^\p{L}[\p{L}\p{M}]*(?:['’\-][\p{L}\p{M}]+)*$/u.test(value));
+      setWelcomeFirstName(firstName || "");
       if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
         void fetch("/api/auth/sign-in-log", { method: "POST" }).catch(() => {});
       }
@@ -144,17 +156,17 @@ export function AuthProvider({ children, authenticated }: { children: ReactNode;
   }
 
   return (
-    <AuthContext.Provider value={{ authenticated: signedIn, openAuth }}>
+    <AuthContext.Provider value={{ authenticated: signedIn, user: signedIn ? user : null, openAuth }}>
       <div className={!signedIn && (pathname === "/" || pathname === "/community") ? "community-signup-preview" : undefined} style={{ display: "contents" }} onClickCapture={intercept}>{children}</div>
       <AuthPopup open={mode !== null} initialMode={mode || "signup"} initialMessage={initialMessage} nextPath={next} onClose={close} onSuccess={authenticatedSuccessfully} />
       <dialog ref={discordDialog} className="binexa-auth-modal" aria-labelledby="discord-prompt-title" aria-describedby="discord-prompt-description" onCancel={event => { event.preventDefault(); close(); }}>
         <button type="button" className="binexa-auth-close" aria-label="Close community welcome" onClick={close}>×</button>
         <div className="binexa-auth-brand"><Image src="/branding/binexa-icon.png" alt="" width={48} height={48} /><strong>Binexa<span>Connect</span></strong></div>
         <p className="binexa-auth-eyebrow">WELCOME TO YOUR COMMUNITY</p>
-        <h2 id="discord-prompt-title">Welcome to Binexa Community</h2>
+        <h2 id="discord-prompt-title">{welcomeFirstName ? `Welcome, ${welcomeFirstName}!` : "Welcome to Binexa Connect!"}</h2>
         <p id="discord-prompt-description" className="binexa-auth-description">You’re signed in. Explore wellness resources, discover new ideas, and connect with your Binexa community.</p>
         <div className="binexa-discord-actions">
-          <a className="btn gold" href="/community" onClick={close}>Join Binexa Community →</a>
+          <a className="btn gold" href="/community" onClick={close}>Continue Exploring Binexa Connect →</a>
         </div>
       </dialog>
     </AuthContext.Provider>

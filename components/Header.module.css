@@ -1,0 +1,14 @@
+.row:global(.headrow) { display: grid; grid-template-columns: auto minmax(0, 1fr) max-content; }
+.navigation { justify-self: end; }
+.actionSlot { display: grid; }
+.actionSlot > * { grid-area: 1 / 1; white-space: nowrap; }
+.inactive { visibility: hidden; pointer-events: none; }
+.avatarSlot { grid-column: 3; display: grid; min-height: 44px; }
+.avatarSlot > * { grid-area: 1 / 1; justify-self: end; align-self: center; }
+@media (max-width: 1000px) {
+  .row:global(.headrow) { grid-template-columns: minmax(0, 1fr) 44px 44px; }
+  .row > :global(.logo) { min-width: 0; }
+  .row > :global(.menu) { grid-column: 2; }
+  .avatarSlot { width: 44px; }
+  .desktopSignin { display: none; }
+}

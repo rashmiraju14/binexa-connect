@@ -16,10 +16,16 @@ export default async function CommunityLayout({
   const supabase = isSupabaseConfigured() ? await createClient() : null;
   const result = supabase ? await supabase.auth.getUser() : null;
   const authenticated = Boolean(result?.data.user && !result.error);
+  const user = authenticated ? result?.data.user : null;
 
   return (
     <Suspense fallback={<main className="shell" role="status" style={{ paddingBlock: 48 }}>Loading Binexa Connect…</main>}>
-      <AuthProvider authenticated={authenticated}>
+      <AuthProvider authenticated={authenticated} initialUser={user ? { id: user.id, email: user.email, user_metadata: {
+        given_name: user.user_metadata?.given_name,
+        full_name: user.user_metadata?.full_name,
+        name: user.user_metadata?.name,
+        username: user.user_metadata?.username,
+      } } : null}>
         <Header />
 
         {children}

@@ -19,10 +19,17 @@ type AuthPopupProps = {
 
 export default function AuthPopup({ open, onClose, initialMode = "signup", initialMessage = "", onSuccess, nextPath = "/" }: AuthPopupProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const form = formRef.current;
+    form?.reset();
+    return () => { form?.reset(); };
+  }, [open, mode]);
 
   useEffect(() => {
     if (!open) return;
@@ -83,6 +90,7 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
         });
         if (error) throw error;
         if (!data.session) {
+          formRef.current?.reset();
           setMessage("Check your email for a verification link. After confirming your account, sign in to access all member content.");
           return;
         }
@@ -90,6 +98,7 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
+      formRef.current?.reset();
       onSuccess?.();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to access your account. Please try again.");
@@ -128,25 +137,25 @@ export default function AuthPopup({ open, onClose, initialMode = "signup", initi
       </div>
       <div className="binexa-auth-divider"><span>or continue with email</span></div>
       {message && <p className="binexa-auth-message" role="status">{message}</p>}
-      {open && <form onSubmit={submit} key={mode} aria-busy={loading}>
+      {open && <form ref={formRef} onSubmit={submit} key={mode} aria-busy={loading} autoComplete="off">
         {mode === "signup" && <div className="binexa-auth-field-row">
           <div className="binexa-auth-field">
             <label htmlFor="binexa-username">Username</label>
-            <input id="binexa-username" name="username" placeholder="Your community name" autoComplete="username" minLength={3} maxLength={30} required disabled={loading} />
+            <input id="binexa-username" name="username" placeholder="Your community name" autoComplete="off" minLength={3} maxLength={30} required disabled={loading} />
           </div>
           <div className="binexa-auth-field">
             <label htmlFor="binexa-phone">Phone number</label>
-            <input id="binexa-phone" name="phone" type="tel" placeholder="Your phone number" autoComplete="tel" required disabled={loading} />
+            <input id="binexa-phone" name="phone" type="tel" placeholder="Your phone number" autoComplete="off" required disabled={loading} />
           </div>
         </div>}
         <div className="binexa-auth-field">
           <label htmlFor="binexa-email">Email address</label>
-          <input id="binexa-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required disabled={loading} />
+          <input id="binexa-email" name="email" type="email" placeholder="you@example.com" autoComplete="off" required disabled={loading} />
         </div>
         <div className="binexa-auth-field">
           <label htmlFor="binexa-password">Password</label>
           <div className="binexa-auth-password">
-            <input id="binexa-password" name="password" type={showPassword ? "text" : "password"} placeholder={mode === "signup" ? "Create a password" : "Enter your password"} autoComplete={mode === "signup" ? "new-password" : "current-password"} aria-describedby={mode === "signup" ? "binexa-password-hint" : undefined} minLength={mode === "signup" ? 8 : undefined} required disabled={loading} />
+            <input id="binexa-password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" autoComplete={mode === "signup" ? "new-password" : "current-password"} aria-describedby={mode === "signup" ? "binexa-password-hint" : undefined} minLength={mode === "signup" ? 8 : undefined} required disabled={loading} />
             <button type="button" disabled={loading} onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button>
           </div>
           {mode === "signup" && <small id="binexa-password-hint" className="binexa-auth-hint">Use at least 8 characters.</small>}

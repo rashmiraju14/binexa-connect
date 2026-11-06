@@ -35,7 +35,7 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
           </span>
 
           <p className="lead">
-            Weight loss, men's sexual health, and wellness
+            Weight loss, men&apos;s sexual health, and wellness
             &amp; longevity treatments tailored to your goals,
             delivered through convenient online care.
           </p>

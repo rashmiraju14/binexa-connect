@@ -5,8 +5,8 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 function fixture() {
   const written = [], notes = [];
-  const sheet = { getLastRow: () => written.length + 1, getMaxRows: () => 1000, getRange(row, col, rows, cols) {
-    return { getDisplayValues: () => [['User-ID', 'Name', 'Email-ID', 'Sign-in Time', 'Phone- number']], getNotes: () => notes.map(n => [n]), setNumberFormat() { return this; }, setValue(value) { return this; }, setValues(values) { written.push(values[0]); return this; }, setNote(value) { notes.push(value); return this; } };
+  const sheet = { getLastRow: () => written.length + 1, getMaxRows: () => 1000, getRange() {
+    return { getDisplayValues: () => [['User-ID', 'Name', 'Email-ID', 'Sign-in Time', 'Phone- number']], getNotes: () => notes.map(n => [n]), setNumberFormat() { return this; }, setValue() { return this; }, setValues(values) { written.push(values[0]); return this; }, setNote(value) { notes.push(value); return this; } };
   } };
   const context = { PropertiesService: { getScriptProperties: () => ({ getProperty: () => 'test-secret' }) }, Utilities: { Charset: { UTF_8: 'utf8' }, computeHmacSha256Signature: (p, s) => [...crypto.createHmac('sha256', s).update(p).digest()] }, SpreadsheetApp: { openById: () => ({ getSheetByName: () => sheet }), flush() {} }, LockService: { getScriptLock: () => ({ waitLock() {}, hasLock: () => true, releaseLock() {} }) }, ContentService: { MimeType: { JSON: 'json' }, createTextOutput: value => ({ setMimeType: () => JSON.parse(value) }) } };
   vm.createContext(context); vm.runInContext(fs.readFileSync(__dirname + '/Code.gs', 'utf8'), context);

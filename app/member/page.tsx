@@ -6,9 +6,16 @@ import "./member.css";
 
 export default async function MemberPage() {
   const user = await requireAccount("/member");
-  const username = typeof user.user_metadata?.username === "string"
-    && !user.user_metadata.username.includes("@")
-    ? user.user_metadata.username : "Member";
+  const metadata = user.user_metadata;
+  const firstName = [metadata?.given_name, metadata?.full_name, metadata?.name, metadata?.username]
+    .filter((value): value is string => typeof value === "string" && !value.includes("@"))
+    .map(value => value.trim().split(/\s+/)[0])
+    .find(value => value.length <= 50 && /^\p{L}[\p{L}\p{M}]*(?:['’\-][\p{L}\p{M}]+)*$/u.test(value));
+  const emailName = user.email?.split("@")[0]
+    .replace(/[._+\-]+/g, " ").replace(/\d+/g, " ").trim().split(/\s+/)[0];
+  const readableEmailName = emailName && emailName.length <= 50 && /^\p{L}[\p{L}\p{M}]*$/u.test(emailName)
+    ? emailName.charAt(0).toLocaleUpperCase() + emailName.slice(1) : "";
+  const displayName = firstName || readableEmailName;
 
   return (
     <main className="member-screen">
@@ -18,10 +25,10 @@ export default async function MemberPage() {
           <div><strong>Binexa<span>Connect</span></strong><small>YOUR WELLNESS COMMUNITY</small></div>
         </Link>
         <p className="binexa-auth-eyebrow">YOUR ACCOUNT</p>
-        <h1 id="member-title">Welcome, {username}!</h1>
-        <p className="binexa-auth-description">You’re signed in. Explore your community, discover wellness resources, and connect with other members.</p>
+        <h1 id="member-title">{displayName ? `Welcome, ${displayName}!` : "Welcome to Binexa Connect!"}</h1>
+        <p className="binexa-auth-description">We&apos;re glad you&apos;re here! Explore wellness resources, discover new ideas, and connect with a community focused on healthier living.</p>
         <div className="member-actions">
-          <Link href="/community" className="btn gold">Join Binexa Community →</Link>
+          <Link href="/community" className="btn gold">Continue Exploring Binexa Connect →</Link>
         </div>
         <div className="member-signout"><SignOutButton /></div>
         <p className="binexa-auth-footer">Community content is educational and is not medical advice.</p>

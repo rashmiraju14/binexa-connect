@@ -6,7 +6,9 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { communityTabs } from "@/lib/communityCopy";
 import { useMemberAuth } from "@/components/auth/AuthProvider";
-import { discordJoinUrl, discordJoinLabel } from "@/lib/discord/navigation";
+import { discordJoinUrl } from "@/lib/discord/navigation";
+import ProfileMenu from "@/components/ProfileMenu";
+import styles from "./Header.module.css";
 
 const links = [["Explore", "/explore"], ["Discussions", "/discussions"], ["Resources", "/resources"], ["Health Topics", "/offerings"], ["Events", "/events"]];
 
@@ -33,15 +35,17 @@ export default function Header() {
   return <>
     <div className="topbar">BINEXA HEALTH · PERSONALIZED CARE. BETTER CONNECTIONS.</div>
     <header className="header">
-      <div className="shell headrow">
+      <div className={`shell headrow ${styles.row}`}>
         <Link href="/" className="logo"><Image src="/brand/binexa-favicon.png" alt="Binexa Health gold and navy emblem" width={51} height={51} className="logomark" /><span className="brandtext">Binexa <span>Connect</span></span></Link>
-        <nav className="nav">
+        <nav className={`nav ${styles.navigation}`}>
           {links.map(([label, url]) => <Link key={url} href={url}>{label}</Link>)}
-          {authenticated && <Link href="/member">My Account</Link>}
-          <button type="button" className="btn header-signin" data-auth-trigger onClick={() => openAuth("signin", "/member")}>Sign In</button>
           <a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
         </nav>
         <button type="button" ref={menuButton} data-auth-trigger aria-label={open ? "Close menu" : "Open menu"} aria-controls="mobile-navigation" aria-expanded={open} className="btn ghost menu" onClick={() => setOpen(!open)}>{open ? <X size={19} /> : <Menu size={19} />}</button>
+        <div className={styles.avatarSlot}>
+          <button type="button" className={`btn header-signin ${styles.desktopSignin} ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => openAuth("signin", "/member")}>Sign In</button>
+          {authenticated && <ProfileMenu />}
+        </div>
       </div>
       <nav className="community-subnav shell" aria-label="Community activities">
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
@@ -49,9 +53,10 @@ export default function Header() {
       {open && <nav id="mobile-navigation" className="nav-mobile" aria-label="Mobile navigation" data-auth-trigger>
         {links.map(([label, url]) => <Link key={url} href={url} onClick={event => navigate(event, url)}>{label}</Link>)}
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={event => navigate(event, tab.href)}>{tab.title}</Link>)}
-        {authenticated && <Link href="/member" onClick={() => setOpen(false)}>My Account</Link>}
-        <button type="button" className="btn header-signin" data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>
-        <a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer" onClick={event => { setOpen(false); if (!authenticated) { event.preventDefault(); openAuth("signup"); } }}>{discordJoinLabel} →</a>
+        <div className={styles.actionSlot}>
+          <button type="button" className={`btn header-signin ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>
+        </div>
+        <a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>Join Discord ↗</a>
       </nav>}
     </header>
   </>;

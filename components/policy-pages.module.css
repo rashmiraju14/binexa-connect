@@ -1,0 +1,14 @@
+.page { line-height: 1.75; }
+.page li { margin-block: 12px; color: #536475; }
+.page ul, .page ol { padding-inline-start: 24px; }
+.notice { margin-block: 28px; padding: 22px; border: 1px solid #e6d5ac; border-radius: 14px; background: var(--ivory); }
+.notice h2 { margin-top: 0; font-size: 21px; }
+.notice p:last-child { margin-bottom: 0; }
+.contents, .related { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.contents { padding-block: 18px; border-block: 1px solid var(--line); }
+.related { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); }
+.page a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; border-radius: 2px; }
+@media (max-width: 520px) {
+  .notice { padding: 18px; }
+  .contents, .related { gap: 12px 18px; }
+}

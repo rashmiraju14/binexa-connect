@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unsupported authentication origin" }, { status: 400 });
   }
   const provider = request.nextUrl.searchParams.get("provider");
-  if (provider !== "google" && provider !== "facebook") {
+  if (provider !== "google") {
     return NextResponse.json({ error: "Unsupported sign-in provider" }, { status: 400 });
   }
   const next = safeNextPath(request.nextUrl.searchParams.get("next"));

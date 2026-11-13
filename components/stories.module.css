@@ -1,0 +1,14 @@
+.section {
+  padding-bottom: 65px;
+}
+.section .title {
+  white-space: normal;
+}
+.title span {
+  color: #bd871b;
+}
+@media (max-width: 700px) {
+  .section {
+    padding-bottom: 40px;
+  }
+}

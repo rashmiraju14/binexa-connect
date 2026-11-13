@@ -1,3 +1,5 @@
+import "server-only";
+
 export const articleSections: Record<string,{heading:string;body:string}[]> = {
   "welcome-to-binexa-connect": [
     {

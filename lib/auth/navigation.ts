@@ -7,7 +7,22 @@ export function safeNextPath(value: string | null | undefined, fallback = "/") {
   } catch { return fallback; }
 }
 
+export const publicArticleSlugs = [
+  "healthy-habits-that-stick",
+  "understanding-weight-care",
+  "spotting-credible-wellness-info",
+] as const;
+
+export function isPublicArticle(slug: string) {
+  return publicArticleSlugs.some(publicSlug => publicSlug === slug);
+}
+
 export function isMemberPath(path: string) {
+  const normalized = path.replace(/\/$/, "");
+  const article = /^\/resources\/([^/]+)$/.exec(normalized);
+  if (article) {
+    try { return !isPublicArticle(decodeURIComponent(article[1])); } catch { return true; }
+  }
   return /^\/(explore|offerings|join|resources|events|discussions|habits|lounge|start|member)(\/|$)/.test(path);
 }
 

@@ -1,7 +1,7 @@
+import { requireAccount } from "@/lib/auth/require-account";
 import ResearchLibrary from "@/components/ResearchLibrary";
 export const metadata = { alternates: { canonical: "/resources" } };
 
-import { requireAccount } from "@/lib/auth/require-account";
 import LearningLibrary from "@/components/LearningLibrary";
 import CommunityInvitation from "@/components/CommunityInvitation";
 import PageHeader from '@/components/PageHeader';import {resources} from '@/lib/content';import Link from 'next/link';import {ArrowUpRight,BookOpen} from 'lucide-react';

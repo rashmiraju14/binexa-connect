@@ -1,4 +1,5 @@
 import Image from "next/image";
+import EditorialStories from "./EditorialStories";
 import FounderProfiles from "@/components/FounderProfiles";
 import { discordJoinUrl } from "@/lib/discord/navigation";
 import CommunityMemberCount from "@/components/CommunityMemberCount";
@@ -42,6 +43,8 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
 
 
       </div>
+
+      <EditorialStories />
 
       <div className="shell home-layout">
         <WellnessCategories />

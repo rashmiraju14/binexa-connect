@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getAuthOrigin } from "@/lib/site-origin";
-import { isDiscordPath, safeNextPath } from "@/lib/auth/navigation";
+import { safeNextPath } from "@/lib/auth/navigation";
 
 export async function GET(request: NextRequest) {
   let origin: string;
@@ -20,9 +20,7 @@ export async function GET(request: NextRequest) {
       const supabase = await createClient();
       const { error } = await supabase.auth.exchangeCodeForSession(code);
       if (!error) {
-        const destination = isDiscordPath(new URL(next, origin).pathname)
-          ? new URL(next, origin)
-          : new URL(`/?${new URLSearchParams({ discord: "join", next })}`, origin);
+        const destination = new URL(next, origin);
         return NextResponse.redirect(destination, { headers: { "Cache-Control": "no-store" } });
       }
     } catch {

@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import AuthPopup, { type AuthMode } from "@/components/AuthPopup";
-import { isDiscussionPath, safeNextPath } from "@/lib/auth/navigation";
+import { isProtectedContentPath, safeNextPath } from "@/lib/auth/navigation";
 
 const AuthContext = createContext<{
   authenticated: boolean;
@@ -50,7 +50,7 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
       if (event === "SIGNED_OUT") {
         setMode(null);
         setShowDiscord(false);
-        if (isDiscussionPath(window.location.pathname)) window.location.replace("/");
+        if (isProtectedContentPath(window.location.pathname)) window.location.replace("/");
         else router.refresh();
       }
     });
@@ -114,13 +114,13 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
     setMode(requested);
   }
 
-  function interceptDiscussion(event: MouseEvent<HTMLDivElement>) {
+  function interceptProtectedContent(event: MouseEvent<HTMLDivElement>) {
     if (signedIn || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (!(event.target instanceof Element)) return;
     const anchor = event.target.closest<HTMLAnchorElement>("a[href]");
     if (!anchor || anchor.hasAttribute("download")) return;
     const destination = new URL(anchor.href, window.location.origin);
-    if (destination.origin !== window.location.origin || !isDiscussionPath(destination.pathname)) return;
+    if (destination.origin !== window.location.origin || !isProtectedContentPath(destination.pathname)) return;
     event.preventDefault();
     openAuth("signin", destination.pathname + destination.search + destination.hash);
   }
@@ -135,8 +135,8 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
 
   return (
     <AuthContext.Provider value={{ authenticated: signedIn, user: signedIn ? user : null, openAuth }}>
-      <div style={{ display: "contents" }} onClickCapture={interceptDiscussion}>
-        {!signedIn && isDiscussionPath(pathname) ? <main className="shell" role="status">Checking discussion access…</main> : children}
+      <div style={{ display: "contents" }} onClickCapture={interceptProtectedContent}>
+        {authenticated && !signedIn && isProtectedContentPath(pathname) ? <main className="shell" role="status">Checking account access…</main> : children}
       </div>
       <AuthPopup open={mode !== null} initialMode={mode || "signup"} initialMessage={initialMessage} nextPath={next} onClose={close} onSuccess={authenticatedSuccessfully} />
       <dialog ref={discordDialog} className="binexa-auth-modal" aria-labelledby="discord-prompt-title" aria-describedby="discord-prompt-description" onCancel={event => { event.preventDefault(); close(); }}>

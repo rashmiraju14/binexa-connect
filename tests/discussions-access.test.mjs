@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import ts from 'typescript';
-import { isDiscussionPath, safeNextPath } from '../lib/auth/navigation.ts';
+import { isDiscussionPath, isProtectedContentPath, safeNextPath } from '../lib/auth/navigation.ts';
 const require = createRequire(import.meta.url);
 function load(file, mocks) {
   const compiled = ts.transpileModule(readFileSync(file, 'utf8'), {
@@ -13,7 +13,7 @@ function load(file, mocks) {
   new Function('require', 'exports', compiled)(name => name in mocks ? mocks[name] : require(name), exports);
   return exports;
 }
-function provider(authenticated = false, destination = '/') {
+function provider(authenticated = false, destination = '/', pathname = '/') {
   const calls = [];
   let stateIndex = 0;
   const initial = [null, destination, '', false, authenticated, null, ''];
@@ -24,11 +24,11 @@ function provider(authenticated = false, destination = '/') {
       useRef: () => ({ current: null }), useEffect: effect => effects.push(effect),
       useState: () => { const index = stateIndex++; return [initial[index], value => calls.push(['state', index, value])]; },
     },
-    'next/navigation': { usePathname: () => '/', useSearchParams: () => new URLSearchParams(), useRouter: () => ({ replace: path => calls.push(['replace', path]), refresh: () => calls.push(['refresh']) }) },
+    'next/navigation': { usePathname: () => pathname, useSearchParams: () => new URLSearchParams(), useRouter: () => ({ replace: path => calls.push(['replace', path]), refresh: () => calls.push(['refresh']) }) },
     '@/lib/supabase/client': { createClient: () => { throw Error('No real auth calls in component test'); } },
     '@/lib/supabase/config': { isSupabaseConfigured: () => false },
     '@/components/AuthPopup': { default: 'auth-popup' },
-    '@/lib/auth/navigation': { isDiscussionPath, safeNextPath },
+    '@/lib/auth/navigation': { isDiscussionPath, isProtectedContentPath, safeNextPath },
     'next/image': { default: 'image' },
   };
   const element = load('components/auth/AuthProvider.tsx', mocks).AuthProvider({ authenticated, children: 'content' });
@@ -126,6 +126,7 @@ test('header Sign In uses the original desktop/mobile positions and authenticate
     const calls = [];
     const Header = load('components/Header.tsx', {
       react: { useState: () => [true, value => calls.push(['menu', value])], useEffect: () => {}, useRef: () => ({ current: null }) },
+      'next/navigation': { usePathname: () => '/research' },
       'next/link': { default: 'link' }, 'next/image': { default: 'image' },
       '@/lib/communityCopy': { communityTabs: [] },
       '@/lib/discord/navigation': { discordJoinUrl: 'https://discord.gg/zwVuXWE8q' },
@@ -135,6 +136,9 @@ test('header Sign In uses the original desktop/mobile positions and authenticate
     }).default;
     const nodes = descendants(Header());
     const buttons = nodes.filter(node => node.type === 'button' && node.props.children === 'Sign In');
+    const researchLinks = nodes.filter(node => node.props?.href === '/research');
+    assert.equal(researchLinks.length, 2);
+    assert.ok(researchLinks.every(link => link.props['aria-current'] === 'page' && link.props.children === 'New Releases'));
     assert.equal(buttons.length, 2);
     assert.ok(buttons[0].props.className.includes('desktop-signin'));
     assert.equal(buttons.every(button => button.props.className.includes('inactive')), authenticated);
@@ -160,5 +164,29 @@ test('Coming Soon Sign In opens the existing popup and disappears after authenti
       button.props.onClick();
       assert.deepEqual(calls, [['signin', '/member']]);
     }
+  }
+});
+
+test('New Releases links require Sign In, preserve their destination, and remain direct for members', () => {
+  const visitor = provider();
+  assert.equal(click(visitor, '/research'), true);
+  assert.ok(visitor.calls.some(call => call[0] === 'state' && call[1] === 0 && call[2] === 'signin'));
+  assert.ok(visitor.calls.some(call => call[0] === 'state' && call[1] === 1 && call[2] === '/research'));
+  assert.equal(click(provider(true), '/research'), false);
+  const previousWindow = globalThis.window;
+  const navigations = [];
+  globalThis.window = { location: { href: 'http://localhost:3000/resources', assign: path => navigations.push(path) }, history: { replaceState() {} } };
+  try {
+    const pending = provider(false, '/research');
+    pending.popup.props.onClose();
+    assert.deepEqual(navigations, []);
+    pending.popup.props.onSuccess();
+    assert.deepEqual(navigations, ['/research']);
+  } finally { globalThis.window = previousWindow; }
+});
+
+test('initial signed-out member requests render the server redirect boundary', () => {
+  for (const path of ['/research', '/discussions']) {
+    assert.equal(provider(false, path, path).wrapper.props.children, 'content');
   }
 });

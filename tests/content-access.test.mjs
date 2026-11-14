@@ -5,11 +5,11 @@ import { isMemberPath } from '../lib/auth/navigation.ts';
 import { readdirSync } from 'node:fs';
 test('published content and information routes are public; accounts remain protected', () => {
   for (const path of ['/', '/community', '/about', '/privacy', '/data-deletion', '/resources', '/resources/', '/resources/glp1-questions', '/resources/healthy-habits-that-stick', '/resources/unknown', '/explore', '/offerings', '/join', '/events', '/habits', '/lounge', '/start']) assert.equal(isMemberPath(path), false, path);
-  for (const path of ['/member', '/member/', '/member/settings', '/discussions', '/discussions/', '/discussions/topic', '/%64iscussions']) assert.equal(isMemberPath(path), true, path);
+  for (const path of ['/member', '/member/', '/member/settings', '/discussions', '/discussions/', '/discussions/topic', '/%64iscussions', '/research', '/research/', '/research/updates', '/%72esearch']) assert.equal(isMemberPath(path), true, path);
 });
-test('published page tree has no gates except Discussions', () => {
+test('published page tree has no gates except member content', () => {
   for (const file of readdirSync('app/(community-site)', { recursive: true }).filter(file => /\.tsx$/.test(file))) {
-    if (file.startsWith('discussions/')) continue;
+    if (file.startsWith('discussions/') || file.startsWith('research/')) continue;
     assert.doesNotMatch(readFileSync(`app/(community-site)/${file}`, 'utf8'), /requireAccount|requireDiscord|isPublicArticle/);
   }
   assert.match(readFileSync('app/member/page.tsx', 'utf8'), /await requireAccount/);

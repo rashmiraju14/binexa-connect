@@ -1,9 +1,7 @@
 import Image from "next/image";
-import HomeSignInButton from "@/components/HomeSignInButton";
+import ComingSoonBanner from "@/components/ComingSoonBanner";
 import EditorialStories from "./EditorialStories";
 import FounderProfiles from "@/components/FounderProfiles";
-import { discordJoinUrl } from "@/lib/discord/navigation";
-import CommunityMemberCount from "@/components/CommunityMemberCount";
 import PharmacyAnnouncement from "@/components/PharmacyAnnouncement";
 
 import CommunityInvitation from "@/components/CommunityInvitation";
@@ -16,7 +14,6 @@ import {
 } from "lucide-react";
 import WellnessCategories from "@/components/WellnessCategories";
 
-const DISCORD_URL = discordJoinUrl;
 const communityPaths = [
   { href: "/start", title: "Start Here", label: "Find your starting point", image: "/images/home-benefits/start-circle-v2.jpg", imageAlt: "A person learning on a laptop", description: "New to Binexa Connect? Choose your interests and discover where to begin.", highlights: ["Choose the topics that matter to you", "Find your first community conversation"], action: "Find my starting point", tone: "welcome" },
   { href: "/habits", title: "Small Habits", label: "Make room for everyday progress", image: "/images/home-benefits/habits-circle-v2.jpg", imageAlt: "A colorful fresh salad with avocado", description: "Choose one manageable habit and use the weekly planner to notice your progress.", highlights: ["Pick a realistic step for your week", "Check in without pressure to be perfect"], action: "Explore small habits", tone: "habits" },
@@ -45,57 +42,12 @@ export default function Home() {
 
       </div>
 
+      <ComingSoonBanner />
+
       <EditorialStories />
 
       <div className="shell home-layout">
         <WellnessCategories />
-
-        <section
-          className="home-welcome"
-          aria-label="Personalized care and community"
-        >
-          <aside className="pharmacy-feature-card" aria-labelledby="pharmacy-feature-title">
-            <div className="pharmacy-feature-top"><Image src="/branding/binexa-icon.png" alt="" width={52} height={52} /><span>COMING SOON</span></div>
-            <h2 id="pharmacy-feature-title">BinexaHealth<br />Online Pharmacy</h2>
-            <p>Personalized online care is on the horizon. Explore wellness resources and community conversations while we prepare for launch.</p>
-            <Link href="/events">See what’s ahead <ArrowRight size={16} aria-hidden="true" /></Link>
-          </aside>
-          <div className="community-access-details">
-          <div className="actions home-account-actions">
-            <HomeSignInButton />
-            <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn ghost"
-            >
-              Join Our Discord Community
-              <ArrowRight size={16} />
-            </a>
-          </div>
-
-          <CommunityMemberCount />
-
-          <div className="actions">
-            <Link
-              href="/offerings"
-              className="textlink"
-            >
-              Explore wellness topics →
-            </Link>
-          </div>
-
-          <div className="proof">
-            <ShieldCheck size={18} />
-            <span>
-              A welcoming space to{" "}
-              <b>learn and connect.</b>
-            </span>
-          </div>
-
-          </div>
-
-        </section>
       </div>
 
       <div className="shell home-learning">

@@ -7,13 +7,19 @@ export function safeNextPath(value: string | null | undefined, fallback = "/") {
   } catch { return fallback; }
 }
 
-// Published educational content is public. Discussions and account pages require a session.
+// Published educational resources remain public; member content and account pages require a session.
 export function isDiscussionPath(path: string) {
   try {
     return /^\/discussions(\/|$)/.test(decodeURIComponent(path));
   } catch { return false; }
 }
 
+export function isProtectedContentPath(path: string) {
+  try {
+    return isDiscussionPath(path) || /^\/research(\/|$)/.test(decodeURIComponent(path));
+  } catch { return false; }
+}
+
 export function isMemberPath(path: string) {
-  return /^\/member(\/|$)/.test(path) || isDiscussionPath(path);
+  return /^\/member(\/|$)/.test(path) || isProtectedContentPath(path);
 }

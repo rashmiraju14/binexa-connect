@@ -4,16 +4,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { communityTabs } from "@/lib/communityCopy";
 import { useMemberAuth } from "@/components/auth/AuthProvider";
 import { discordJoinUrl } from "@/lib/discord/navigation";
 import ProfileMenu from "@/components/ProfileMenu";
 import styles from "./Header.module.css";
 
-const links = [["Explore", "/explore"], ["Discussions", "/discussions"], ["Resources", "/resources"], ["Health Topics", "/offerings"], ["Events", "/events"]];
+const links = [["Explore", "/explore"], ["Discussions", "/discussions"], ["Resources", "/resources"], ["New Releases", "/research"], ["Health Topics", "/offerings"], ["Events", "/events"]];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const { authenticated, openAuth } = useMemberAuth();
   const menuButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function Header() {
       <div className={`shell headrow ${styles.row}`}>
         <Link href="/" className="logo"><Image src="/brand/binexa-favicon.png" alt="Binexa Health gold and navy emblem" width={51} height={51} className="logomark" /><span className="brandtext">Binexa <span>Connect</span></span></Link>
         <nav className={`nav ${styles.navigation}`}>
-          {links.map(([label, url]) => <Link key={url} href={url}>{label}</Link>)}
+          {links.map(([label, url]) => <Link key={url} href={url} aria-current={pathname === url ? "page" : undefined}>{label}</Link>)}
           <a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
         </nav>
         <button type="button" ref={menuButton} data-auth-trigger aria-label={open ? "Close menu" : "Open menu"} aria-controls="mobile-navigation" aria-expanded={open} className="btn ghost menu" onClick={() => setOpen(!open)}>{open ? <X size={19} /> : <Menu size={19} />}</button>
@@ -46,8 +48,8 @@ export default function Header() {
       <nav className="community-subnav shell" aria-label="Community activities">
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
       </nav>
-      {open && <nav id="mobile-navigation" className="nav-mobile" aria-label="Mobile navigation" data-auth-trigger>
-        {links.map(([label, url]) => <Link key={url} href={url} onClick={() => setOpen(false)}>{label}</Link>)}
+      {open && <nav id="mobile-navigation" className={`nav-mobile ${styles.mobileNavigation}`} aria-label="Mobile navigation" data-auth-trigger>
+        {links.map(([label, url]) => <Link key={url} href={url} aria-current={pathname === url ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={() => setOpen(false)}>{tab.title}</Link>)}
         <div className={styles.actionSlot}>
           <button type="button" className={`btn header-signin ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>

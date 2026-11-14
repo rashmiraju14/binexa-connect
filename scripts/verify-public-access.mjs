@@ -96,6 +96,7 @@ try {
       await wait('document.readyState === "complete" && Boolean(document.querySelector("main"))');
       await check();
       await authPrompt('header a[href="/discussions"]', path);
+      await authPrompt('header a[href="/research"]', path, '/research');
       console.log(`PASS ${mobile ? "mobile" : "desktop"}: ${path}`);
     }
     await go('/');
@@ -134,18 +135,21 @@ try {
     }
     console.log(`PASS ${mobile ? 'mobile' : 'desktop'}: ${paths.length} public pages, refresh, scrolling, homepage links, article bodies, no auth prompts or overflow`);
   }
-  for (const headers of [{}, { RSC: '1' }]) {
-    const discussion = await fetch(base + '/discussions', { redirect: 'manual', headers });
-    const body = await discussion.text();
-    assert.ok(discussion.status === 307 || body.includes('NEXT_REDIRECT'));
-    assert.ok((discussion.headers.get('location') || body).includes('next=%2Fdiscussions'));
-    assert.ok(!body.includes('chat-conversation') && !body.includes('Where could AI help healthcare?'));
+  for (const protectedPath of ['/discussions', '/research']) {
+    for (const headers of [{}, { RSC: '1' }]) {
+      const response = await fetch(base + protectedPath, { redirect: 'manual', headers });
+      const body = await response.text();
+      assert.ok(response.status === 307 || body.includes('NEXT_REDIRECT'));
+      assert.ok((response.headers.get('location') || body).includes(`next=${encodeURIComponent(protectedPath)}`));
+      assert.ok(!body.includes('chat-conversation') && !body.includes('Where could AI help healthcare?'));
+      if (protectedPath === '/research') assert.ok(!body.includes('Research sources by category'));
+    }
   }
   for (const method of ['GET', 'POST', 'PATCH', 'DELETE']) {
     const response = await fetch(base + '/api/discussions', { method });
     assert.ok(response.status >= 400, `No public discussion API for ${method}`);
   }
-  console.log('PASS direct Discussions HTML/RSC blocked; no public discussion API');
+  console.log('PASS direct Discussions and New Releases HTML/RSC blocked; no public discussion API');
   const account = await fetch(base + '/member', { redirect: 'manual' });
   assert.equal(account.status, 307);
   const privateWrite = await fetch(base + '/api/auth/sign-in-log', { method: 'POST', headers: { origin: base } });

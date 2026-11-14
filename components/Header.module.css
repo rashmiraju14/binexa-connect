@@ -1,10 +1,16 @@
 .row:global(.headrow) { display: grid; grid-template-columns: auto minmax(0, 1fr) max-content; }
-.navigation { justify-self: end; }
+.navigation:global(.nav) { justify-self: end; gap: clamp(12px, 1.4vw, 22px); white-space: nowrap; }
+.navigation a[aria-current="page"], .mobileNavigation a[aria-current="page"] { color: #a16a13; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
 .actionSlot { display: grid; }
 .actionSlot > * { grid-area: 1 / 1; white-space: nowrap; }
 .inactive { visibility: hidden; pointer-events: none; }
 .avatarSlot { grid-column: 3; display: grid; min-height: 44px; }
 .avatarSlot > * { grid-area: 1 / 1; justify-self: end; align-self: center; }
+@media (min-width: 1001px) and (max-width: 1200px) {
+  .row:global(.headrow) { gap: 16px; }
+  .navigation:global(.nav) { gap: 12px; }
+  .navigation :global(.header-discord) { padding-inline: 12px; }
+}
 @media (max-width: 1000px) {
   .row:global(.headrow) { grid-template-columns: minmax(0, 1fr) 44px 44px; }
   .row > :global(.logo) { min-width: 0; }

@@ -1,0 +1,8 @@
+.filters:global(.lounge-topic-filters) { margin-top: 0; }
+.count { margin: 16px 0 24px; color: var(--muted); font-size: 13px; }
+.grid:global(.learning-grid) { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.cardTitle { margin: 15px 0 10px; color: var(--navy); font-size: 19px; line-height: 1.4; }
+.empty:global(.learning-card) { align-items: flex-start; gap: 14px; padding: 32px; border-color: #e6d7b8; background: var(--ivory); }
+.empty h2 { margin: 0; color: var(--navy); font-size: 20px; line-height: 1.4; }
+.empty p { max-width: 52ch; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+.emptyActions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }

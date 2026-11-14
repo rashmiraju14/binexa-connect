@@ -1,13 +1,11 @@
 export const metadata = { alternates: { canonical: "/join" } };
 
-import { requireAccount } from "@/lib/auth/require-account";
 import { communityCopy } from "@/lib/communityCopy";
 import CommunityOnboarding from "@/components/CommunityOnboarding";
 import PageHeader from "@/components/PageHeader";
 import LearningLibrary from "@/components/LearningLibrary";
 import { discordJoinUrl } from "@/lib/discord/navigation";
-export default async function Join() { await requireAccount("/join");
-  return <main><PageHeader eyebrow="Learn together" title={communityCopy.join.title} subtitle={communityCopy.join.body}/>
+export default async function Join() { return <main><PageHeader eyebrow="Learn together" title={communityCopy.join.title} subtitle={communityCopy.join.body}/>
     <div className="shell pagecontent"><div className="cardgrid">
       <article className="card"><span className="pill">Discover</span><h3>Find your next useful read</h3><p>Explore public research, clinician perspectives, and accessible guides across our wellness topics.</p></article>
       <article className="card"><span className="pill">Connect</span><h3>Share what sparks your curiosity</h3><p>Bring an article, a question, or a new perspective to our Discord community.</p></article>

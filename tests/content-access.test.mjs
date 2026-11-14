@@ -1,32 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { isPublicArticle, isMemberPath, publicArticleSlugs } from '../lib/auth/navigation.ts';
-test('only the three selected article slugs are public, regardless of previous reading', () => {
-  assert.equal(publicArticleSlugs.length, 3);
-  for (const slug of publicArticleSlugs) {
-    assert.equal(isPublicArticle(slug), true);
-    assert.equal(isMemberPath(`/resources/${slug}`), false);
-    assert.equal(isMemberPath(`/resources/${slug}/`), false);
-  }
-  for (const slug of ['welcome-to-binexa-connect', 'glp1-questions', 'ai-and-healthcare', 'unknown', 'Healthy-habits-that-stick']) {
-    assert.equal(isPublicArticle(slug), false);
-    assert.equal(isMemberPath(`/resources/${slug}`), true);
-  }
-  assert.equal(isMemberPath('/resources/healthy%2Dhabits-that-stick'), false);
-  assert.equal(isMemberPath('/resources/%ZZ'), true);
+import { isMemberPath } from '../lib/auth/navigation.ts';
+import { readdirSync } from 'node:fs';
+test('published content and information routes are public; accounts remain protected', () => {
+  for (const path of ['/', '/community', '/about', '/privacy', '/data-deletion', '/resources', '/resources/', '/resources/glp1-questions', '/resources/healthy-habits-that-stick', '/resources/unknown', '/explore', '/offerings', '/join', '/events', '/habits', '/lounge', '/start']) assert.equal(isMemberPath(path), false, path);
+  for (const path of ['/member', '/member/', '/member/settings', '/discussions', '/discussions/', '/discussions/topic', '/%64iscussions']) assert.equal(isMemberPath(path), true, path);
 });
-test('previews, public landings, auth and safety remain public; community routes remain protected', () => {
-  for (const path of ['/', '/community', '/about', '/privacy', '/data-deletion', '/sign-in', '/sign-up']) assert.equal(isMemberPath(path), false, path);
-  for (const path of ['/resources', '/resources/', '/member', '/explore', '/offerings', '/join', '/events', '/discussions', '/habits', '/lounge', '/start']) assert.equal(isMemberPath(path), true, path);
+test('published page tree has no gates except Discussions', () => {
+  for (const file of readdirSync('app/(community-site)', { recursive: true }).filter(file => /\.tsx$/.test(file))) {
+    if (file.startsWith('discussions/')) continue;
+    assert.doesNotMatch(readFileSync(`app/(community-site)/${file}`, 'utf8'), /requireAccount|requireDiscord|isPublicArticle/);
+  }
+  assert.match(readFileSync('app/member/page.tsx', 'utf8'), /await requireAccount/);
 });
-test('article data remains server-only and page and layout both check access', () => {
-  const body = readFileSync('lib/articles.ts', 'utf8');
-  assert.match(body, /import "server-only"/);
-  const page = readFileSync('app/(community-site)/resources/[slug]/page.tsx', 'utf8');
-  const guard = page.indexOf('if (!isPublicArticle(slug)) await requireAccount');
-  assert.ok(guard >= 0 && guard < page.indexOf('const article ='));
-  assert.match(readFileSync('app/(community-site)/resources/[slug]/layout.tsx', 'utf8'), /if \(!isPublicArticle\(slug\)\) await requireAccount/);
+test('public content has no account-link gates or blocked embedded resources', () => {
+  for (const file of ['components/Header.tsx', 'components/CommunityHome.tsx']) {
+    assert.doesNotMatch(readFileSync(file, 'utf8'), /Create My Free Account|href="\/sign-(in|up)"/);
+  }
+  assert.doesNotMatch(readFileSync('components/auth/AuthProvider.tsx', 'utf8'), /continue reading|community-signup-preview/);
+  assert.doesNotMatch(readFileSync('components/auth-popup.css', 'utf8'), /community-signup-preview/);
 });
 test('sign-in returns to the safe requested route and sign-out discards router cache', () => {
   const callback = readFileSync('app/auth/callback/route.ts', 'utf8');

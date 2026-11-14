@@ -3,10 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { communityTabs } from "@/lib/communityCopy";
 import { useMemberAuth } from "@/components/auth/AuthProvider";
-import { isMemberPath, isDiscordPath, safeNextPath } from "@/lib/auth/navigation";
 import { discordJoinUrl } from "@/lib/discord/navigation";
 import ProfileMenu from "@/components/ProfileMenu";
 import styles from "./Header.module.css";
@@ -29,13 +28,6 @@ export default function Header() {
     return () => { window.removeEventListener("keydown", closeOnEscape); desktop.removeEventListener("change", closeOnDesktop); };
   }, [open]);
 
-  function navigate(event: MouseEvent<HTMLAnchorElement>, destination: string) {
-    setOpen(false);
-    if (!authenticated && (isMemberPath(destination) || isDiscordPath(destination))) {
-      event.preventDefault();
-      openAuth("signin", safeNextPath(destination));
-    }
-  }
   return <>
     <div className="topbar">BINEXA HEALTH · PERSONALIZED CARE. BETTER CONNECTIONS.</div>
     <header className="header">
@@ -55,8 +47,8 @@ export default function Header() {
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
       </nav>
       {open && <nav id="mobile-navigation" className="nav-mobile" aria-label="Mobile navigation" data-auth-trigger>
-        {links.map(([label, url]) => <Link key={url} href={url} onClick={event => navigate(event, url)}>{label}</Link>)}
-        {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={event => navigate(event, tab.href)}>{tab.title}</Link>)}
+        {links.map(([label, url]) => <Link key={url} href={url} onClick={() => setOpen(false)}>{label}</Link>)}
+        {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={() => setOpen(false)}>{tab.title}</Link>)}
         <div className={styles.actionSlot}>
           <button type="button" className={`btn header-signin ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>
         </div>

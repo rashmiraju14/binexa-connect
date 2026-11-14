@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import AuthPopup, { type AuthMode } from "@/components/AuthPopup";
-import { isMemberPath, isDiscordPath, safeNextPath } from "@/lib/auth/navigation";
+import { isDiscussionPath, safeNextPath } from "@/lib/auth/navigation";
 
 const AuthContext = createContext<{
   authenticated: boolean;
@@ -25,7 +25,6 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
   const [initialMessage, setInitialMessage] = useState("");
   const [showDiscord, setShowDiscord] = useState(false);
   const [signedIn, setSignedIn] = useState(authenticated);
-  const [accessRevoked, setAccessRevoked] = useState(false);
   const [user, setUser] = useState(initialUser);
   const [welcomeFirstName, setWelcomeFirstName] = useState("");
   const discordDialog = useRef<HTMLDialogElement>(null);
@@ -47,12 +46,11 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
       if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
         void fetch("/api/auth/sign-in-log", { method: "POST" }).catch(() => {});
       }
-      if (event === "SIGNED_IN") { setAccessRevoked(false); setMode(null); setShowDiscord(false); }
+      if (event === "SIGNED_IN") { setMode(null); setShowDiscord(false); }
       if (event === "SIGNED_OUT") {
-        setAccessRevoked(true);
         setMode(null);
         setShowDiscord(false);
-        if (isMemberPath(window.location.pathname)) window.location.replace("/");
+        if (isDiscussionPath(window.location.pathname)) window.location.replace("/");
         else router.refresh();
       }
     });
@@ -62,19 +60,13 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
   useEffect(() => {
     function restore(event: PageTransitionEvent) {
       if (event.persisted) {
-        setAccessRevoked(true);
         setSignedIn(false);
         setUser(null);
         window.location.reload();
       }
     }
-    function snapshot() {
-      if (isMemberPath(window.location.pathname)) document.documentElement.style.visibility = "hidden";
-    }
-    window.addEventListener("pagehide", snapshot);
     window.addEventListener("pageshow", restore);
     return () => {
-      window.removeEventListener("pagehide", snapshot);
       window.removeEventListener("pageshow", restore);
     };
   }, []);
@@ -93,7 +85,7 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
     if (!signedIn && (requested === "sign-in" || requested === "sign-up")) {
       setNext(safeNextPath(query.get("next")));
       setMode(requested === "sign-in" ? "signin" : "signup");
-      setInitialMessage(query.get("oauth") === "failed" ? "We couldn’t complete your social sign-in. Please try again or sign in with email." : query.get("verification") === "failed" ? "Your verification link is invalid or expired. Please sign in or request a new verification email by signing up again." : isMemberPath(safeNextPath(query.get("next")).split(/[?#]/)[0]) ? "Sign in to continue reading." : "");
+      setInitialMessage(query.get("oauth") === "failed" ? "We couldn’t complete your social sign-in. Please try again or sign in with email." : query.get("verification") === "failed" ? "Your verification link is invalid or expired. Please sign in or request a new verification email by signing up again." : "");
     }
   }, [queryString, signedIn]);
 
@@ -118,44 +110,34 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
   function openAuth(requested: AuthMode, destination = "/") {
     setNext(safeNextPath(destination));
     setShowDiscord(false);
-    setInitialMessage(isMemberPath(safeNextPath(destination).split(/[?#]/)[0]) ? "Sign in to continue reading." : "");
+    setInitialMessage("");
     setMode(requested);
   }
 
-  function intercept(event: MouseEvent<HTMLDivElement>) {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const target = event.target;
-    if (!(target instanceof Element) || target.closest("[data-auth-trigger]")) return;
-    const anchor = target.closest<HTMLAnchorElement>("a[href]");
-    if (!anchor || (anchor.target && anchor.target !== "_self") || anchor.hasAttribute("download")) return;
-    const url = new URL(anchor.href, window.location.origin);
-    if (url.origin !== window.location.origin) return;
-    const accountLink = ["/sign-up", "/sign-in"].includes(url.pathname);
-    if (signedIn) {
-      if (accountLink) { event.preventDefault(); router.push("/member"); }
-      return;
-    }
-    if (accountLink) {
-      event.preventDefault();
-      openAuth(url.pathname === "/sign-in" ? "signin" : "signup", safeNextPath(url.searchParams.get("next")));
-      return;
-    }
-    if (!isMemberPath(url.pathname) && !isDiscordPath(url.pathname)) return;
+  function interceptDiscussion(event: MouseEvent<HTMLDivElement>) {
+    if (signedIn || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!(event.target instanceof Element)) return;
+    const anchor = event.target.closest<HTMLAnchorElement>("a[href]");
+    if (!anchor || anchor.hasAttribute("download")) return;
+    const destination = new URL(anchor.href, window.location.origin);
+    if (destination.origin !== window.location.origin || !isDiscussionPath(destination.pathname)) return;
     event.preventDefault();
-    openAuth("signin", safeNextPath(url.pathname + url.search + url.hash));
+    openAuth("signin", destination.pathname + destination.search + destination.hash);
   }
 
   function authenticatedSuccessfully() {
     setSignedIn(true);
     setMode(null);
     clearQuery();
-    router.replace(safeNextPath(next));
-    router.refresh();
+    // Discard any signed-out prefetch of the protected destination.
+    window.location.assign(safeNextPath(next));
   }
 
   return (
     <AuthContext.Provider value={{ authenticated: signedIn, user: signedIn ? user : null, openAuth }}>
-      <div className={!signedIn && (pathname === "/" || pathname === "/community") ? "community-signup-preview" : undefined} style={{ display: "contents" }} onClickCapture={intercept}>{accessRevoked && isMemberPath(pathname) ? <main className="shell" role="status">Checking account access…</main> : children}</div>
+      <div style={{ display: "contents" }} onClickCapture={interceptDiscussion}>
+        {!signedIn && isDiscussionPath(pathname) ? <main className="shell" role="status">Checking discussion access…</main> : children}
+      </div>
       <AuthPopup open={mode !== null} initialMode={mode || "signup"} initialMessage={initialMessage} nextPath={next} onClose={close} onSuccess={authenticatedSuccessfully} />
       <dialog ref={discordDialog} className="binexa-auth-modal" aria-labelledby="discord-prompt-title" aria-describedby="discord-prompt-description" onCancel={event => { event.preventDefault(); close(); }}>
         <button type="button" className="binexa-auth-close" aria-label="Close community welcome" onClick={close}>×</button>

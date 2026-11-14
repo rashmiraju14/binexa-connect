@@ -7,25 +7,13 @@ export function safeNextPath(value: string | null | undefined, fallback = "/") {
   } catch { return fallback; }
 }
 
-export const publicArticleSlugs = [
-  "healthy-habits-that-stick",
-  "understanding-weight-care",
-  "spotting-credible-wellness-info",
-] as const;
-
-export function isPublicArticle(slug: string) {
-  return publicArticleSlugs.some(publicSlug => publicSlug === slug);
+// Published educational content is public. Discussions and account pages require a session.
+export function isDiscussionPath(path: string) {
+  try {
+    return /^\/discussions(\/|$)/.test(decodeURIComponent(path));
+  } catch { return false; }
 }
 
 export function isMemberPath(path: string) {
-  const normalized = path.replace(/\/$/, "");
-  const article = /^\/resources\/([^/]+)$/.exec(normalized);
-  if (article) {
-    try { return !isPublicArticle(decodeURIComponent(article[1])); } catch { return true; }
-  }
-  return /^\/(explore|offerings|join|resources|events|discussions|habits|lounge|start|member)(\/|$)/.test(path);
-}
-
-export function isDiscordPath(path: string) {
-  return path === "/api/discord/connect" || path === "/join-discord";
+  return /^\/member(\/|$)/.test(path) || isDiscussionPath(path);
 }

@@ -2,11 +2,10 @@ export const metadata = { alternates: { canonical: "/start" }, title: "Start Her
 
 import Link from "next/link";
 import { BookOpen, Heart, Leaf, MessagesSquare, ShieldCheck, Sparkles, ArrowRight } from "lucide-react";
-import { requireAccount } from "@/lib/auth/require-account";
 import { discordJoinUrl } from "@/lib/discord/navigation";
 
 const steps = [
-  { title: "Your account is ready", text: "You’re signed in. Your free account unlocks the community’s member pages.", href: "/member", action: "View my account" },
+  { title: "Choose your starting point", text: "Explore wellness topics and published resources at your own pace.", href: "/explore", action: "Explore the community" },
   { title: "Join our Discord community", text: "Meet other members, ask general questions, and participate in live community conversations. Discord is optional for website access.", href: discordJoinUrl, action: "Join Discord", external: true },
   { title: "Explore health topics", text: "Follow your curiosity about weight health, nutrition, healthy aging, men’s health, or healthcare technology.", href: "/offerings", action: "Choose a topic" },
   { title: "Visit the resource library", text: "Read written guides, research explainers, and original sources. Bring your questions to your next healthcare conversation.", href: "/resources", action: "Browse resources" },
@@ -44,8 +43,8 @@ const resources = [
   ["AI & digital health", "NIH", "Research information about healthcare technology and innovation.", "https://research.nih.gov/research-at-nih/digital-health"],
 ];
 const faqs = [
-  ["Is Binexa Connect free to join?", "Yes, creating a community account and accessing the current educational resources is free. Any future paid services or features will be clearly identified."],
-  ["Do I need a Discord account?", "You need a Discord account to participate in our Discord server. Discord membership is not required to access the website’s member pages after signing in."],
+  ["Is Binexa Connect free to join?", "Yes, all published educational resources are free to read without an account. Any future paid services or features will be clearly identified."],
+  ["Do I need a Discord account?", "You need a Discord account to participate in our Discord server. You can read all published website content without signing in."],
   ["Can I ask health-related questions?", "General educational questions are welcome. Community discussions do not replace advice from a licensed healthcare professional."],
   ["Can I share my personal health journey?", "You may share experiences you feel comfortable discussing. Avoid sensitive medical or identifying details, and respect other members’ privacy."],
   ["Are resources reviewed by healthcare professionals?", "We aim to share credible educational information and identify sources. Not all content has received clinical review; check each resource’s authorship, date, and review information."],
@@ -54,7 +53,6 @@ const faqs = [
 ];
 
 export default async function Start() {
-  await requireAccount("/start");
   return <main className="start-page">
     <header className="start-welcome"><div className="shell"><span className="eyebrow">YOUR COMMUNITY STARTS HERE</span><h1>Welcome to Binexa Connect!</h1><p className="start-tagline">Your community for learning, connecting, and growing together.</p><p>We’re glad you’re here. Explore reliable health information, share experiences, discover wellness resources, and connect with others.</p><strong>Learn together. Support each other. Grow healthier together.</strong><nav aria-label="On this page" className="start-jump-links"><a href="#getting-started">Getting started</a><a href="#community-topics">Explore topics</a><a href="#guidelines">Guidelines</a><a href="#helpful-resources">Resources</a><a href="#start-faq">FAQs</a><a href="#start-founders">Our founders</a></nav></div></header>
     <div className="shell start-content">

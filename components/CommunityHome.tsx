@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HomeSignInButton from "@/components/HomeSignInButton";
 import EditorialStories from "./EditorialStories";
 import FounderProfiles from "@/components/FounderProfiles";
 import { discordJoinUrl } from "@/lib/discord/navigation";
@@ -22,7 +23,7 @@ const communityPaths = [
   { href: "/lounge", title: "Community Lounge", label: "Fresh ideas for your downtime", image: "/images/home-benefits/lounge-circle-v2.jpg", imageAlt: "People enjoying a meal together", description: "Find a recipe, explore a movement practice, or enjoy a lighter moment.", highlights: ["Browse health, cooking, and yoga videos", "Discover practical guides and fresh ideas"], action: "Visit the lounge", tone: "lounge" },
 ];
 
-export default function Home({ authenticated = false }: { authenticated?: boolean }) {
+export default function Home() {
   return (
     <main className="hero">
       <div className="shell pharmacy-announcement-wrap"><PharmacyAnnouncement /></div>
@@ -61,7 +62,7 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
           </aside>
           <div className="community-access-details">
           <div className="actions home-account-actions">
-            <Link href="/sign-in" className="btn home-signin">Sign In</Link>
+            <HomeSignInButton />
             <a
               href={DISCORD_URL}
               target="_blank"
@@ -115,7 +116,6 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
               </Link>
             ))}
           </div>
-          {!authenticated && <p className="community-path-note">Choose a path to create your free account or sign in. Your account unlocks all community tabs.</p>}
         </section>
 
         <section className="learning-section home-member-benefits" aria-labelledby="member-benefits-title">
@@ -130,13 +130,12 @@ export default function Home({ authenticated = false }: { authenticated?: boolea
             <article className="card home-benefit-card"><div className="home-benefit-image"><Image src="/images/home-benefits/community-daylight.jpg" alt="Friends standing together outdoors in warm sunlight" fill sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 900px) 45vw, 360px" /></div><div className="home-benefit-body"><MessageSquare color="#D39A22" /><h3>Feel part of a community</h3><p>Ask thoughtful questions, share perspectives, and connect through discussions and our Discord community.</p><Link href="/discussions" className="textlink">Explore community discussions →</Link></div></article>
           </div>
           <div className="home-getting-started">
-            <h3>{authenticated ? "Make your next visit count" : "Getting started is simple"}</h3>
+            <h3>Getting started is simple</h3>
             <ol>
-              <li><strong>{authenticated ? "Pick your next topic." : "Create your free account."}</strong> {authenticated ? "Choose a subject you’d like to understand better." : "Sign up or sign in to unlock member pages."}</li>
+              <li><strong>Pick your next topic.</strong> Choose a subject you’d like to understand better.</li>
               <li><strong>Explore one helpful resource.</strong> Read a guide and save a question for your next healthcare conversation.</li>
               <li><strong>Connect in your own way.</strong> Join a discussion or visit Discord when you feel ready.</li>
             </ol>
-            <Link href={authenticated ? "/explore" : "/sign-up"} className="btn gold">{authenticated ? "Explore your community →" : "Create My Free Account →"}</Link>
             <p className="muted">Educational information and shared experiences. For personal medical advice, speak with a qualified healthcare professional.</p>
           </div>
         </section>

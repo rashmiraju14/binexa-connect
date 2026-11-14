@@ -44,7 +44,7 @@
 .binexa-discord-actions { display: grid; gap: 14px; margin-top: 24px; }
 .binexa-discord-actions .btn { display: flex; justify-content: center; text-align: center; }
 .binexa-discord-actions .textlink { margin-top: 8px; text-align: center; }
-.community-signup-preview iframe { pointer-events: none; }
+
 .auth-nav-link { border: 0; padding: 0; background: transparent; color: #082b50; font: inherit; font-weight: 700; cursor: pointer; text-align: left; }
 .auth-nav-link:focus-visible { outline: 3px solid #ad7b18; outline-offset: 4px; }
 @media (max-width: 520px) {

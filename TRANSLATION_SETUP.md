@@ -59,3 +59,11 @@ Audio, video speech, text baked into images, external iframe contents, PDFs, and
 ## Verification status
 
 All 71 automated tests pass. TypeScript passes. Live LibreTranslate 1.9.6 loaded four languages and six translation models. Actual homepage translations succeeded through the language selector in Vietnamese, Simplified Chinese, and Spanish (approximately 21, 17, and 14 seconds respectively). Switching back to English restored the original heading, the mobile selector remained visible, and no browser runtime errors were observed. This is functional verification, not linguistic or medical review. The earlier installation storage blocker is resolved. No public server was provisioned or deployment made.
+
+## Temporary connected Vercel preview
+
+The release branch `release/libretranslate-languages` has branch-specific preview variables pointing to a temporary Cloudflare Quick Tunnel. Production variables are unchanged. This is a testing connection only, authorized by the user; it requires this Mac, LibreTranslate on port 5100, the key-protected gateway on port 5101, and cloudflared to remain running. The hostname changes if the tunnel restarts.
+
+`scripts/translation-preview-proxy.py` exposes only a health route and a translation route. Translations require a dedicated random key stored outside the repository in `/tmp/binexa-translation-preview.key` and as a sensitive, server-only Vercel preview variable. Anonymous translation requests are rejected. Page text and that dedicated key pass through Cloudflare; passwords and form values are excluded by the website selector. Do not commit the key or tunnel logs.
+
+Restarting this temporary setup, or moving to permanent hosting, requires checking the tunnel URL/key and updating the branch-specific preview environment before redeploying. It is not an always-on production solution.

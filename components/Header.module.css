@@ -18,3 +18,7 @@
   .avatarSlot { width: 44px; }
   .desktopSignin { display: none; }
 }
+
+.languageRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 8px; }
+.languageRow > nav { flex-wrap: wrap; }
+@media (max-width: 1000px) { .languageRow { justify-content: flex-end; } }

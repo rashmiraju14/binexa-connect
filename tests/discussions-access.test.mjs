@@ -132,6 +132,7 @@ test('header Sign In uses the original desktop/mobile positions and authenticate
       '@/lib/discord/navigation': { discordJoinUrl: 'https://discord.gg/zwVuXWE8q' },
       '@/components/auth/AuthProvider': { useMemberAuth: () => ({ authenticated, openAuth: (...args) => calls.push(args) }) },
       '@/components/ProfileMenu': { default: 'profile-menu' },
+      '@/components/language/LanguageSelector': { default: 'language-selector' },
       './Header.module.css': { default: { desktopSignin: 'desktop-signin', inactive: 'inactive', actionSlot: 'action-slot', avatarSlot: 'avatar-slot' } },
     }).default;
     const nodes = descendants(Header());

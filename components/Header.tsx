@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { communityTabs } from "@/lib/communityCopy";
 import { useMemberAuth } from "@/components/auth/AuthProvider";
 import { discordJoinUrl } from "@/lib/discord/navigation";
+import LanguageSelector from "@/components/language/LanguageSelector";
 import ProfileMenu from "@/components/ProfileMenu";
 import styles from "./Header.module.css";
 
@@ -45,9 +46,9 @@ export default function Header() {
           {authenticated && <ProfileMenu />}
         </div>
       </div>
-      <nav className="community-subnav shell" aria-label="Community activities">
+      <div className={`shell ${styles.languageRow}`}><nav className="community-subnav" aria-label="Community activities">
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
-      </nav>
+      </nav><LanguageSelector /></div>
       {open && <nav id="mobile-navigation" className={`nav-mobile ${styles.mobileNavigation}`} aria-label="Mobile navigation" data-auth-trigger>
         {links.map(([label, url]) => <Link key={url} href={url} aria-current={pathname === url ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={() => setOpen(false)}>{tab.title}</Link>)}

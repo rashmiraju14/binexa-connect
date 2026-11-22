@@ -44,7 +44,8 @@ export default function LanguageSelector() {
       document.documentElement.lang = 'en';
     }
     restore();
-    if (language === 'en') return;
+    // Member conversations must not be sent to an external translation provider.
+    if (language === 'en' || pathname === '/discussions' || pathname.startsWith('/discussions/')) return;
     const observer = new MutationObserver(() => schedule());
     function observe() { observer.observe(document.body, { childList: true, characterData: true, attributes: true, attributeFilter: ['aria-label', 'placeholder', 'title', 'alt'], subtree: true }); }
     function schedule() {

@@ -68,3 +68,37 @@ test('translation route protects the key, rejects invalid requests and preserves
     if (savedKey === undefined) delete process.env.LIBRETRANSLATE_API_KEY; else process.env.LIBRETRANSLATE_API_KEY = savedKey;
   }
 });
+
+test('Cloudflare keeps credentials private, preserves order and handles quota errors', async () => {
+  const oldFetch = globalThis.fetch;
+  try {
+    process.env.CLOUDFLARE_ACCOUNT_ID = 'a'.repeat(32);
+    process.env.CLOUDFLARE_API_TOKEN = 'test-private-token';
+    const route = loadRoute();
+    globalThis.fetch = async (url, options) => {
+      assert.equal(String(url), `https://api.cloudflare.com/client/v4/accounts/${'a'.repeat(32)}/ai/run/@cf/meta/m2m100-1.2b`);
+      assert.equal(options.headers.Authorization, 'Bearer test-private-token');
+      const p = JSON.parse(options.body);
+      return { ok: true, json: async () => ({ success: true, result: { translated_text: `${p.target_lang}:${p.text}` } }) };
+    };
+    for (const [target, code] of [['zh-CN','zh'],['vi','vi'],['es','es']]) {
+      const result = await route.POST(request({ target, texts: ['Hello', 'Welcome'] }));
+      assert.deepEqual(result.body, { translations: [`${code}:Hello`, `${code}:Welcome`] });
+      assert.ok(!JSON.stringify(result).includes('test-private-token'));
+    }
+    globalThis.fetch = async () => ({ ok: false, status: 429 });
+    assert.equal((await route.POST(request({ target: 'es', texts: ['Hello'] }))).status, 429);
+    globalThis.fetch = async () => ({ ok: true, json: async () => ({ success: true, result: {} }) });
+    assert.equal((await route.POST(request({ target: 'es', texts: ['Hello'] }))).status, 502);
+  } finally {
+    globalThis.fetch = oldFetch;
+    delete process.env.CLOUDFLARE_ACCOUNT_ID;
+    delete process.env.CLOUDFLARE_API_TOKEN;
+  }
+});
+
+
+test('member discussion routes are excluded from external translation', () => {
+  const selector = readFileSync('components/language/LanguageSelector.tsx', 'utf8');
+  assert.ok(selector.includes("pathname === '/discussions' || pathname.startsWith('/discussions/')"));
+});

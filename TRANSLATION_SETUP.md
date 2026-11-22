@@ -1,3 +1,11 @@
+## Cloudflare Workers AI
+
+Set server-only `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in Vercel Production. Use a token scoped to Workers AI Read and Edit on the selected account. Redeploy after saving. When both settings exist, Cloudflare takes priority over LibreTranslate.
+
+The integration calls Meta M2M100 through Cloudflare for English website text, targeting Chinese (`zh`), Vietnamese (`vi`), or Spanish (`es`). Translation output is machine generated. Do not assume clinical review or guaranteed Simplified Chinese output; verify representative content. Podcast audio, images, and external embeds remain in their original language.
+
+Stay on the Free plan to avoid paid overages. Cloudflare's shared daily Workers AI quota applies; translation falls back to English with a message when requests fail. The app's per-instance circuit breaker is not a global quota. No credentials are returned to visitors or logged. Eligible website text is sent to Cloudflare. Discussion pages are excluded entirely so private member conversations stay in their original language; passwords and form inputs are also excluded by the selector. Translations are not persisted server-side.
+
 # Whole-site translation with LibreTranslate
 
 The header supports English, Simplified Chinese (Mandarin), Vietnamese, and Spanish. The visitor's choice is saved in their browser. Pages, newly rendered content, accessible member messages, dialogs, and descriptive accessibility attributes use the same translation service. English restores original content. Authentication and route guards are unchanged.

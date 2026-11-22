@@ -37,11 +37,12 @@ export async function POST(request: NextRequest) {
     if (characters + count > 100000) return reply({ error: 'Translation is busy. Please try again shortly.' }, 429);
     characters += count;
     if (useCloudflare) {
-      if (!/^[a-f0-9]{32}$/i.test(cloudflareAccount!)) throw new Error('Invalid translation configuration');
+      if (!/^[a-f0-9]{32}$/i.test(cloudflareAccount!)) return reply({ error: 'Translation setup needs a valid Cloudflare Account ID.' }, 503);
       const translations: string[] = new Array(body.texts.length);
       const signal = AbortSignal.timeout(55000);
       let next = 0;
       let providerStatus = 502;
+      let providerError = 'Translation is temporarily unavailable. Please try again or choose English.';
       try {
         await Promise.all(Array.from({ length: Math.min(4, body.texts.length) }, async () => {
           while (next < body.texts.length) {
@@ -51,14 +52,19 @@ export async function POST(request: NextRequest) {
               body: JSON.stringify({ text: body.texts[index], source_lang: 'en', target_lang: body.target === 'zh-CN' ? 'zh' : body.target }),
               cache: 'no-store', redirect: 'error', signal,
             });
-            if (!response.ok) { if (response.status === 429) providerStatus = 429; throw new Error('Translation provider unavailable'); }
+            if (!response.ok) {
+              if (response.status === 429) providerStatus = 429;
+              if ([401, 403].includes(response.status)) providerError = 'Cloudflare translation access was denied. The website administrator needs to check the Workers AI token permissions.';
+              console.warn('Cloudflare translation request failed', { status: response.status });
+              throw new Error('Translation provider unavailable');
+            }
             const result = await response.json();
-            if (result.success !== true || typeof result.result?.translated_text !== 'string' || !result.result.translated_text.trim()) throw new Error('Invalid translation response');
+            if (result.success !== true || typeof result.result?.translated_text !== 'string' || !result.result.translated_text.trim()) { console.warn('Cloudflare translation returned an invalid response', { codes: result.errors?.map((error: { code?: number }) => error.code) }); throw new Error('Invalid translation response'); }
             translations[index] = result.result.translated_text;
           }
         }));
       } catch {
-        return reply({ error: providerStatus === 429 ? 'Translation has reached its free usage limit. Please try again later or choose English.' : 'Translation is temporarily unavailable. Please try again or choose English.' }, providerStatus);
+        return reply({ error: providerStatus === 429 ? 'Translation has reached its free usage limit. Please try again later or choose English.' : providerError }, providerStatus);
       }
       return reply({ translations });
     }

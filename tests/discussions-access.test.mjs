@@ -13,7 +13,7 @@ function load(file, mocks) {
   new Function('require', 'exports', compiled)(name => name in mocks ? mocks[name] : require(name), exports);
   return exports;
 }
-function provider(authenticated = false, destination = '/', pathname = '/') {
+function provider(authenticated = false, destination = '/', pathname = '/', query = '') {
   const calls = [];
   let stateIndex = 0;
   const initial = [null, destination, '', false, authenticated, null, ''];
@@ -24,7 +24,7 @@ function provider(authenticated = false, destination = '/', pathname = '/') {
       useRef: () => ({ current: null }), useEffect: effect => effects.push(effect),
       useState: () => { const index = stateIndex++; return [initial[index], value => calls.push(['state', index, value])]; },
     },
-    'next/navigation': { usePathname: () => pathname, useSearchParams: () => new URLSearchParams(), useRouter: () => ({ replace: path => calls.push(['replace', path]), refresh: () => calls.push(['refresh']) }) },
+    'next/navigation': { usePathname: () => pathname, useSearchParams: () => new URLSearchParams(query), useRouter: () => ({ replace: path => calls.push(['replace', path]), refresh: () => calls.push(['refresh']) }) },
     '@/lib/supabase/client': { createClient: () => { throw Error('No real auth calls in component test'); } },
     '@/lib/supabase/config': { isSupabaseConfigured: () => false },
     '@/components/AuthPopup': { default: 'auth-popup' },
@@ -190,4 +190,51 @@ test('initial signed-out member requests render the server redirect boundary', (
   for (const path of ['/research', '/discussions']) {
     assert.equal(provider(false, path, path).wrapper.props.children, 'content');
   }
+});
+
+test('public page loads never open Sign In from stale auth parameters', () => {
+  const previousWindow = globalThis.window;
+  const replacements = [];
+  globalThis.window = {
+    location: { href: 'http://localhost:3100/?auth=sign-in&next=%2Fmember&topic=wellness#intro' },
+    history: { replaceState: (...args) => replacements.push(args[2]) },
+    addEventListener() {}, removeEventListener() {},
+  };
+  try {
+    for (const path of ['/', '/offerings', '/resources', '/resources/glp1-questions', '/about', '/lounge']) {
+      for (const query of ['', 'auth=sign-in', 'auth=sign-up', 'auth=sign-in&next=%2Fmember', 'auth=sign-in&next=https%3A%2F%2Fevil.example']) {
+        const component = provider(false, '/', path, query);
+        assert.equal(component.popup.props.open, false);
+        component.effects.forEach(effect => effect());
+        assert.equal(component.calls.some(call => call[0] === 'state' && call[1] === 0 && call[2] !== null), false, `${path}?${query}`);
+        assert.equal(component.calls.some(call => call[0] === 'replace'), false);
+      }
+    }
+    assert.ok(replacements.every(path => path === '/?topic=wellness#intro'));
+  } finally { globalThis.window = previousWindow; }
+});
+
+test('protected redirects prompt once and dismissal cannot replay a stale auth query', () => {
+  const previousWindow = globalThis.window;
+  globalThis.window = {
+    location: { href: 'http://localhost:3100/?auth=sign-in&next=%2Fresearch' },
+    history: { replaceState() {} }, addEventListener() {}, removeEventListener() {},
+  };
+  try {
+    for (const destination of ['/research', '/research?category=health', '/discussions']) {
+      const component = provider(false, '/', '/', `auth=sign-in&next=${encodeURIComponent(destination)}`);
+      component.effects.forEach(effect => effect());
+      assert.ok(component.calls.some(call => call[0] === 'state' && call[1] === 1 && call[2] === destination));
+      assert.equal(component.calls.filter(call => call[0] === 'state' && call[1] === 0 && call[2] === 'signin').length, 1);
+      component.popup.props.onClose();
+      component.effects.forEach(effect => effect());
+      assert.equal(component.calls.filter(call => call[0] === 'state' && call[1] === 0 && call[2] === 'signin').length, 1);
+    }
+    for (const query of ['auth=sign-in&oauth=failed', 'auth=sign-in&verification=failed']) {
+      const component = provider(false, '/', '/', query);
+      component.effects.forEach(effect => effect());
+      assert.ok(component.calls.some(call => call[0] === 'state' && call[1] === 0 && call[2] === 'signin'));
+      assert.ok(component.calls.some(call => call[0] === 'state' && call[1] === 2 && call[2].length > 0));
+    }
+  } finally { globalThis.window = previousWindow; }
 });

@@ -28,6 +28,7 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
   const [user, setUser] = useState(initialUser);
   const [welcomeFirstName, setWelcomeFirstName] = useState("");
   const discordDialog = useRef<HTMLDialogElement>(null);
+  const consumedAuthQuery = useRef<string | null>(null);
 
   useEffect(() => { setSignedIn(authenticated); }, [authenticated]);
   useEffect(() => { setUser(initialUser); }, [initialUser]);
@@ -82,8 +83,19 @@ export function AuthProvider({ children, authenticated, initialUser = null }: { 
   useEffect(() => {
     const query = new URLSearchParams(queryString);
     const requested = query.get("auth");
-    if (!signedIn && (requested === "sign-in" || requested === "sign-up")) {
-      setNext(safeNextPath(query.get("next")));
+    if (requested !== "sign-in" && requested !== "sign-up") {
+      consumedAuthQuery.current = null;
+      return;
+    }
+    if (consumedAuthQuery.current === queryString) return;
+    consumedAuthQuery.current = queryString;
+    const destination = safeNextPath(query.get("next"));
+    const protectedReturn = isProtectedContentPath(new URL(destination, "https://binexa.local").pathname);
+    const failedReturn = query.get("oauth") === "failed" || query.get("verification") === "failed";
+    // Consume redirects once; stale homepage auth parameters must not open a modal.
+    clearQuery();
+    if (!signedIn && (protectedReturn || failedReturn)) {
+      setNext(destination);
       setMode(requested === "sign-in" ? "signin" : "signup");
       setInitialMessage(query.get("oauth") === "failed" ? "We couldn’t complete your social sign-in. Please try again or sign in with email." : query.get("verification") === "failed" ? "Your verification link is invalid or expired. Please sign in or request a new verification email by signing up again." : "");
     }

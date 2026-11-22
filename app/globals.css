@@ -477,3 +477,8 @@
 .video-thumbnail:hover .video-thumbnail-icon { background: var(--gold); color: var(--navy); }
 .video-thumbnail-fallback { padding: 24px 24px 12px; font-weight: 700; }
 .video-thumbnail:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+
+.back-to-home{display:flex;align-items:center;width:fit-content;max-width:100%;margin-bottom:20px}
+.reading-navigation{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:670px;margin:32px auto 0;padding-bottom:32px}
+.reading-navigation .back-to-home{margin-bottom:0}
+@media(max-width:480px){.reading-navigation{align-items:flex-start;flex-direction:column}}

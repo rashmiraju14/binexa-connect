@@ -1,50 +1,39 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { BookOpen } from "lucide-react";
-import { learningItems } from "@/lib/learning";
+import { useState, type ReactNode } from "react";
+import Image from "next/image";
+import { newReleases, releaseCategories, sortReleases, formatReleaseDate, type NewRelease, type ReleaseCategory } from "@/lib/new-releases";
 import styles from "./ResearchInsights.module.css";
 
-const categories = [
-  { label: "Latest Research", topic: null },
-  { label: "Weight & Metabolism", topic: "Weight health" },
-  { label: "Longevity & Wellness", topic: "Healthy aging" },
-  { label: "Men's Health", topic: "Men’s health" },
-] as const;
+type PeptidesSlot = { id: "peptides"; category: "Skin Care"; published: "2026-10-09"; content: ReactNode };
 
-// Reuse existing NIH reports whose original source pages were verified for this view.
-const verifiedIds = new Set(["glp-research", "aging-research"]);
-const researchItems = learningItems.filter(item => item.kind === "Research" && verifiedIds.has(item.id));
+export default function ResearchInsights({ peptides }: { peptides?: ReactNode } = {}) {
+  const [category, setCategory] = useState<ReleaseCategory>("All Updates");
+  const collection: (NewRelease | PeptidesSlot)[] = [...newReleases];
+  if (peptides) collection.push({ id: "peptides", category: "Skin Care", published: "2026-10-09", content: peptides });
+  const items = sortReleases(collection).filter(item => category === "All Updates" || item.category === category);
 
-export default function ResearchInsights() {
-  const [category, setCategory] = useState<(typeof categories)[number]["label"]>("Latest Research");
-  const topic = categories.find(item => item.label === category)?.topic;
-  const items = researchItems.filter(item => !topic || item.topic === topic);
-
-  return <section aria-label="Research sources by category">
-    <div className={`lounge-topic-filters ${styles.filters}`} role="group" aria-label="Filter research by category">
-      {categories.map(item => <button type="button" key={item.label} aria-pressed={category === item.label} onClick={() => setCategory(item.label)}>{item.label}</button>)}
+  return <section aria-label="New Releases sources by category">
+    <div className={`lounge-topic-filters ${styles.filters}`} role="group" aria-label="Filter New Releases by category">
+      {releaseCategories.map(label => <button type="button" key={label} aria-pressed={category === label} onClick={() => setCategory(label)}>{label}</button>)}
     </div>
-    <p className={styles.count} role="status">{items.length} research {items.length === 1 ? "source" : "sources"} · {category}</p>
-    {items.length > 0 ? <div className={`learning-grid ${styles.grid}`}>
-      {items.map(item => <article className="learning-card" key={item.id}>
-        <div className="learning-card-body">
-          <span className="pill">{categories.find(value => value.topic === item.topic)?.label} · Research explainer</span>
-          <h2 className={styles.cardTitle}>{item.title}</h2>
-          <p>{item.description}</p>
-          <div className="postmeta">{item.publisher}{item.date && <><br />{item.date}</>}</div>
-          <a className="textlink content-action" href={item.url} target="_blank" rel="noopener noreferrer">Read original source ↗</a>
-        </div>
-      </article>)}
-    </div> : <div className={`learning-card ${styles.empty}`}>
-      <BookOpen size={28} color="#D39A22" aria-hidden="true" />
-      <h2>No research listed yet</h2>
-      <p>No verified research sources are listed in {category} yet. Browse the current research selection or explore our educational resources.</p>
-      <div className={styles.emptyActions}>
-        <button type="button" className="btn small" onClick={() => setCategory("Latest Research")}>View latest research</button>
-        <Link className="textlink" href="/resources">Browse resources →</Link>
-      </div>
-    </div>}
+    <p className={styles.count} role="status">{items.length} {items.length === 1 ? "source" : "sources"} · {category}</p>
+    <p className={styles.context}>Binexa editorial summaries introduce the linked sources. The FDA safety update is featured first; other items follow publication dates, newest first. Undated resources appear last.</p>
+    <div className={`learning-grid ${styles.grid}`}>
+      {items.map(item => "content" in item ? <div key={item.id} className={styles.peptides} data-release-id={item.id}>{item.content}</div> :
+        <article className={`learning-card ${item.id === "fda-glp1-vision" ? styles.featured : ""}`} key={item.id} data-release-id={item.id}>
+          {item.thumbnail && <Image className={styles.thumbnail} src={item.thumbnail.src} alt={item.thumbnail.alt} width={640} height={360} unoptimized />}
+          <div className="learning-card-body">
+            {item.id === "fda-glp1-vision" && <strong className={styles.featureLabel}>Featured safety update</strong>}
+            <span className="pill">{item.category}</span>
+            <p className={styles.kind}>{item.kind}</p>
+            <span className="postmeta">Binexa editorial summary</span>
+            <h2 className={styles.cardTitle}>{item.title}</h2>
+            <p>{item.summary}</p>
+            <p className="postmeta">{item.publisher}<br />{item.published ? <>{item.dateLabel || "Published"} <time dateTime={item.published}>{formatReleaseDate(item.published)}</time></> : "Publication date not provided by publisher"}</p>
+            <a className="textlink content-action" href={item.url} target="_blank" rel="noopener noreferrer">Read Original Source ↗</a>
+          </div>
+        </article>)}
+    </div>
   </section>;
 }

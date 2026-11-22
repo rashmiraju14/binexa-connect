@@ -17,9 +17,12 @@ function load(file, mocks = {}) {
 }
 const { resources } = load('lib/content.ts');
 const { articleSections } = load('lib/articles.ts');
+const { nextResource } = load('lib/resource-navigation.ts', { './content': { resources }, './articles': { articleSections } });
+const Home = () => createElement('a', { href: '/' }, '← Back to Home');
 function page(signedIn) {
   return load('app/(community-site)/resources/[slug]/page.tsx', {
     '@/lib/auth/require-account': { requireAccount: async () => { if (!signedIn) throw Error('Sign in required'); } },
+    '@/components/BackToHome': Home, '@/lib/resource-navigation': { nextResource },
     '@/lib/content': { resources }, '@/lib/articles': { articleSections },
     '@/components/EditorialStories': { storyImages: {} },
     '@/components/editorial.module.css': {},
@@ -46,4 +49,15 @@ test('article pages and the library have no reading or authentication triggers',
   for (const file of ['app/(community-site)/resources/[slug]/page.tsx', 'app/(community-site)/resources/page.tsx']) {
     assert.doesNotMatch(readFileSync(file, 'utf8'), /requireAccount|ArticleReader|IntersectionObserver|sessionStorage|openAuth|onScroll|onClick/);
   }
+});
+
+test('Next follows the published Resources Library order without wrapping or accepting unknown items', async () => {
+  for (const [index, resource] of resources.entries()) {
+    const expected = resources[index + 1];
+    assert.equal(nextResource(resource.slug)?.slug, expected?.slug);
+    const html = renderToStaticMarkup(await page(false)({ params: Promise.resolve({ slug: resource.slug }) }));
+    assert.equal(html.includes('Next →'), Boolean(expected));
+    if (expected) assert.ok(html.includes(`href="/resources/${expected.slug}"`));
+  }
+  assert.equal(nextResource('unpublished-draft'), undefined);
 });

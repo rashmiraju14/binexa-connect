@@ -30,7 +30,7 @@ test('public Events hub renders all sections, honest empty states, local assets,
   assert.ok(html.includes('Our podcast episodes'));
   assert.ok(html.indexOf('aria-label="Explore Events and Media"') < html.indexOf('id="events-title"'));
   assert.ok(html.includes('The Podcast'));
-  assert.ok(html.includes('Awaiting pre-launch event photos'));
+  assert.ok(html.includes('/images/events/pre-launch/photo-17.webp')); 
   assert.ok(!html.includes('The pre-launch album'));
   assert.ok(html.includes('href="/events/highlights"'));
   assert.ok(!html.includes('id="binexa-moments"'));
@@ -41,7 +41,10 @@ test('public Events hub renders all sections, honest empty states, local assets,
   assert.equal((html.match(/>Coming Soon</g) || []).length, 0);
   assert.ok(html.includes('https://discord.gg/zwVuXWE8q'));
   assert.ok(!html.includes('<iframe'));
-  assert.ok(!html.includes('href="https://www.youtube.com'));
+  assert.ok(html.includes('href="https://www.youtube.com/channel/UCB4lTIYKyfqgbPA06Ia6wVw"'));
+  assert.equal((html.match(/Click Here to Watch/g) || []).length, 1);
+  assert.ok(html.includes('target="_blank"'));
+  assert.ok(!html.includes('Our YouTube highlights'));
   for (const image of [...Object.values(data.editorialImages), ...data.upcomingEvents.map(event => event.image)]) {
     assert.ok(existsSync(`public${image.src}`), image.src);
     assert.ok(image.alt.length > 10);

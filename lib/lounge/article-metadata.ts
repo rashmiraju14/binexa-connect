@@ -23,7 +23,8 @@ export function extractArticleDates(html: string) {
 }
 
 export async function getPeptideArticleMetadata() {
-  const fallback = { published: "2026-10-09", updated: undefined as string | undefined, checkedAt: undefined as string | undefined };
+  // Last verified publisher Article dates; retain them if the source is unavailable.
+  const fallback = { published: "2026-10-09", updated: "2026-11-02", checkedAt: undefined as string | undefined };
   try {
     const response = await fetch(peptideArticleUrl, { next: { revalidate: 86400 }, signal: AbortSignal.timeout(5000) });
     if (!response.ok) return fallback;

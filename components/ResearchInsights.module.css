@@ -6,3 +6,14 @@
 .empty h2 { margin: 0; color: var(--navy); font-size: 20px; line-height: 1.4; }
 .empty p { max-width: 52ch; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
 .emptyActions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+
+.context { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0 0 24px; max-width: 85ch; }
+.kind { font-weight: 700; color: var(--navy); font-size: 13px; margin-block: 12px; }
+.featured:global(.learning-card) { grid-column: 1 / -1; border-color: var(--gold); border-top-width: 4px; background: linear-gradient(120deg, var(--ivory), var(--white) 80%); }
+.featureLabel { display: block; margin-bottom: 16px; color: var(--navy); }
+.peptides { min-width: 0; }
+.grid > article { min-width: 0; overflow-wrap: anywhere; }
+.grid .cardTitle { font-size: 20px; }
+
+.grid :global(.pill) { align-self: flex-start; }
+.thumbnail { display: block; width: 100%; height: 180px; object-fit: contain; background: var(--ivory); border-bottom: 1px solid var(--line); }

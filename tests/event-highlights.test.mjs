@@ -24,12 +24,14 @@ function page(overrides = {}) {
     './EventHighlights.module.css': { default: {} },
   }).default;
 }
-test('dedicated public highlights page shows verified event details and honest missing-media state', () => {
+test('dedicated public highlights page shows event details and all 19 supplied photos', () => {
   const html = renderToStaticMarkup(createElement(page()));
   assert.ok(html.includes('Our moments. Our story.'));
   assert.ok(html.includes('November 20, 2026'));
-  assert.ok(html.includes('Awaiting actual Binexa event photos'));
-  assert.ok(!html.includes('data-gallery-count'));
+  assert.ok(!html.includes('Awaiting actual Binexa event photos')); 
+  assert.ok(html.includes('data-gallery-count="19"'));
+  assert.equal(new Set(data.pastEvents[0].gallery.map(item => item.src)).size, 19);
+  for (const item of data.pastEvents[0].gallery) assert.ok(readFileSync(`public${item.src}`).length > 0);
   assert.ok(!html.includes('<iframe'));
   assert.ok(html.includes('href="/events"'));
   assert.doesNotMatch(readFileSync('app/(community-site)/events/highlights/page.tsx', 'utf8'), /requireAccount|openAuth|AuthPopup/);

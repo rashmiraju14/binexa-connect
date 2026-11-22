@@ -73,3 +73,17 @@ test("unusual paths cannot turn the redirect into an external redirect", () => {
   assert.equal(redirect("/%2F%2Fattacker.example/path").origin, custom);
   assert.equal(redirect("/%zz"), null);
 });
+
+test("local production-build auth explicitly allows its configured port without widening production origins", () => {
+  const local = "http://localhost:3100";
+  for (const path of ["/auth/sign-in?provider=google", "/auth/callback?code=test&next=%2Fresearch", "/auth/confirm", "/api/discord/callback"]) {
+    assert.equal(getAuthOrigin(local + path, local, "production"), local);
+  }
+  for (const origin of ["http://localhost:3000", "http://localhost:3101", "http://127.0.0.1:3100", "http://localhost:3100.attacker.example", "https://attacker.example"]) {
+    assert.throws(() => getAuthOrigin(origin, local, "production"));
+  }
+  assert.throws(() => getAuthOrigin(local, custom, "production"));
+  for (const origin of [custom, legacy, www]) {
+    assert.equal(getAuthOrigin(origin + "/auth/callback", local, "production"), origin);
+  }
+});

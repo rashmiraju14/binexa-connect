@@ -1,3 +1,4 @@
+import BackToHome from "@/components/BackToHome";
 import Link from "next/link";
 import styles from "@/components/policy-pages.module.css";
 
@@ -9,6 +10,7 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <main className={`shell policy-page ${styles.page}`}>
+      <BackToHome />
       <p className="eyebrow">BINEXA CONNECT</p>
       <h1>Privacy Policy &amp; Cookie Notice</h1>
       <p className="muted">Last updated November 7, 2026</p>

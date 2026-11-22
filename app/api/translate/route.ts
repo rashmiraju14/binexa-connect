@@ -53,17 +53,19 @@ export async function POST(request: NextRequest) {
               cache: 'no-store', redirect: 'error', signal,
             });
             if (!response.ok) {
+              providerError = `Translation provider returned HTTP ${response.status}. Please choose English while we check the service.`;
               if (response.status === 429) providerStatus = 429;
               if ([401, 403].includes(response.status)) providerError = 'Cloudflare translation access was denied. The website administrator needs to check the Workers AI token permissions.';
               console.warn('Cloudflare translation request failed', { status: response.status });
               throw new Error('Translation provider unavailable');
             }
             const result = await response.json();
-            if (result.success !== true || typeof result.result?.translated_text !== 'string' || !result.result.translated_text.trim()) { console.warn('Cloudflare translation returned an invalid response', { codes: result.errors?.map((error: { code?: number }) => error.code) }); throw new Error('Invalid translation response'); }
+            if (result.success !== true || typeof result.result?.translated_text !== 'string' || !result.result.translated_text.trim()) { providerError = 'Translation provider returned an unexpected response.'; console.warn('Cloudflare translation returned an invalid response', { codes: result.errors?.map((error: { code?: number }) => error.code) }); throw new Error('Invalid translation response'); }
             translations[index] = result.result.translated_text;
           }
         }));
-      } catch {
+      } catch (error) {
+        if (error instanceof TypeError && providerError === 'Translation is temporarily unavailable. Please try again or choose English.') providerError = 'Translation connection failed. Please check that the saved token contains only the token text.';
         return reply({ error: providerStatus === 429 ? 'Translation has reached its free usage limit. Please try again later or choose English.' : providerError }, providerStatus);
       }
       return reply({ translations });

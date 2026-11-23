@@ -1,5 +1,6 @@
 .control { display: flex; align-items: center; gap: 7px; color: #93651b; margin-left: auto; flex-shrink: 0; }
-.select { font: inherit; font-size: 13px; font-weight: 700; color: #0b2b50; background: #fcfaf5; border: 1px solid #d9bd83; border-radius: 8px; padding: 8px 24px 8px 10px; max-width: 190px; cursor: pointer; }
+.select { font: inherit; font-size: 12px; font-weight: 700; color: #0b2b50; background: #fcfaf5; border: 1px solid #d9bd83; border-radius: 8px; min-height: 40px; padding: 7px 22px 7px 9px; max-width: 150px; cursor: pointer; }
+.control > svg { width: 17px; height: 17px; }
 .select:focus-visible { outline: 2px solid #a77522; outline-offset: 3px; }
 .notice { position: fixed; top: 160px; right: 20px; z-index: 100; max-width: min(390px, calc(100vw - 40px)); background: #fffdf8; color: #0b2b50; border: 1px solid #d9bd83; border-radius: 12px; box-shadow: 0 5px 25px #0b2b5020; padding: 16px; font-size: 14px; }
 .notice button { background: transparent; border: 0; color: #93651b; text-decoration: underline; cursor: pointer; font: inherit; margin-top: 8px; }

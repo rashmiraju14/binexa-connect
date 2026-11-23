@@ -1,10 +1,16 @@
 .row:global(.headrow) { display: grid; grid-template-columns: auto minmax(0, 1fr) max-content; }
 .navigation:global(.nav) { justify-self: end; gap: clamp(12px, 1.4vw, 22px); white-space: nowrap; }
+@media (min-width: 1201px) { .navigation:global(.nav) { transform: translateX(16px); } }
 .navigation a[aria-current="page"], .mobileNavigation a[aria-current="page"] { color: #a16a13; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
 .actionSlot { display: grid; }
+.topActions { grid-column: 3; display: flex; align-items: center; gap: 12px; }
+.topActions .visitHealth, .mobileNavigation .visitHealth { background: #e8c76a; border-color: #d39a22; color: #082b50; white-space: nowrap; min-height: 40px; padding: 9px 14px; font-size: 12px; }
+.topActions .visitHealth:hover, .mobileNavigation .visitHealth:hover { background: #f1d789; }
+.lowerActions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 14px; }
+.lowerActions :global(.header-discord) { min-height: 40px; padding: 9px 14px; font-size: 12px; }
 .actionSlot > * { grid-area: 1 / 1; white-space: nowrap; }
 .inactive { visibility: hidden; pointer-events: none; }
-.avatarSlot { grid-column: 3; display: grid; min-height: 44px; }
+.avatarSlot { display: grid; min-height: 44px; }
 .avatarSlot > * { grid-area: 1 / 1; justify-self: end; align-self: center; }
 @media (min-width: 1001px) and (max-width: 1200px) {
   .row:global(.headrow) { gap: 16px; }
@@ -17,6 +23,8 @@
   .row > :global(.menu) { grid-column: 2; }
   .avatarSlot { width: 44px; }
   .desktopSignin { display: none; }
+  .desktopVisit { display: none; }
+  .topActions { width: 44px; }
 }
 
 .languageRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 8px; }

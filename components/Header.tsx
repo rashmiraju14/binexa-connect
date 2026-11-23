@@ -12,7 +12,7 @@ import LanguageSelector from "@/components/language/LanguageSelector";
 import ProfileMenu from "@/components/ProfileMenu";
 import styles from "./Header.module.css";
 
-const links = [["Explore", "/explore"], ["Discussions", "/discussions"], ["Resources", "/resources"], ["New Releases", "/research"], ["Health Topics", "/offerings"], ["Events", "/events"]];
+const links = [["Explore", "/explore"], ["Discussions", "/discussions"], ["Resources", "/resources"], ["New Releases", "/research"], ["Events", "/events"]];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -38,26 +38,25 @@ export default function Header() {
         <Link href="/" className="logo"><Image src="/brand/binexa-favicon.png" alt="Binexa Health gold and navy emblem" width={51} height={51} className="logomark" /><span className="brandtext">Binexa <span>Connect</span></span></Link>
         <nav className={`nav ${styles.navigation}`}>
           {links.map(([label, url]) => <Link key={url} href={url} aria-current={pathname === url ? "page" : undefined}>{label}</Link>)}
-          <a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
         </nav>
         <button type="button" ref={menuButton} data-auth-trigger aria-label={open ? "Close menu" : "Open menu"} aria-controls="mobile-navigation" aria-expanded={open} className="btn ghost menu" onClick={() => setOpen(!open)}>{open ? <X size={19} /> : <Menu size={19} />}</button>
+        <div className={styles.topActions}>
+          <a className={`btn ${styles.visitHealth} ${styles.desktopVisit}`} href="https://binexahealth.com" target="_blank" rel="noopener noreferrer">BinexaHealth</a>
         <div className={styles.avatarSlot}>
           <button type="button" className={`btn header-signin ${styles.desktopSignin} ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => openAuth("signin", "/member")}>Sign In</button>
           {authenticated && <ProfileMenu />}
-        </div>
+        </div></div>
       </div>
       <div className={`shell ${styles.languageRow}`}><nav className="community-subnav" aria-label="Community activities">
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
-        <a href="https://binexahealth.com" target="_blank" rel="noopener noreferrer">Visit BinexaHealth ↗</a>
-      </nav><LanguageSelector /></div>
+      </nav><div className={styles.lowerActions}><a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer">Join Discord ↗</a><LanguageSelector /></div></div>
       {open && <nav id="mobile-navigation" className={`nav-mobile ${styles.mobileNavigation}`} aria-label="Mobile navigation" data-auth-trigger>
         {links.map(([label, url]) => <Link key={url} href={url} aria-current={pathname === url ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={() => setOpen(false)}>{tab.title}</Link>)}
-        <a href="https://binexahealth.com" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>Visit BinexaHealth ↗</a>
+        <a className={`btn ${styles.visitHealth}`} href="https://binexahealth.com" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>BinexaHealth</a>
         <div className={styles.actionSlot}>
           <button type="button" className={`btn header-signin ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>
         </div>
-        <a className="btn ghost header-discord" href={discordJoinUrl} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>Join Discord ↗</a>
       </nav>}
     </header>
   </>;

@@ -17,3 +17,6 @@
 
 .grid :global(.pill) { align-self: flex-start; }
 .thumbnail { display: block; width: 100%; height: 180px; object-fit: contain; background: var(--ivory); border-bottom: 1px solid var(--line); }
+
+.videoCard { margin-bottom: 24px; overflow: hidden; }
+.video { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; background: var(--navy); }

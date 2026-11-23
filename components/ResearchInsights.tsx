@@ -19,6 +19,18 @@ export default function ResearchInsights({ peptides }: { peptides?: ReactNode } 
     </div>
     <p className={styles.count} role="status">{items.length} {items.length === 1 ? "source" : "sources"} · {category}</p>
     <p className={styles.context}>Binexa editorial summaries introduce the linked sources. The FDA safety update is featured first; other items follow publication dates, newest first. Undated resources appear last.</p>
+    {(category === "All Updates" || category === "Weight Health") && <div className={`learning-card ${styles.videoCard}`} data-release-video="gma-glp1-teens">
+      <iframe className={styles.video} src="https://www.youtube-nocookie.com/embed/p8V_23c6tio" title="Teen speaks out about using GLP-1 for weight loss — Good Morning America" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+      <div className="learning-card-body">
+        <span className="pill">Weight Health</span>
+        <p className={styles.kind}>Video · Good Morning America</p>
+        <h2 className={styles.cardTitle}>Teen speaks out about using GLP-1 for weight loss</h2>
+        <p>A Good Morning America video featuring a teenager’s perspective on GLP-1 use for weight loss. Individual experiences do not establish safety or suitability for other children or teenagers.</p>
+        <a className="textlink content-action" href="https://www.youtube.com/watch?v=p8V_23c6tio" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+        <p className="postmeta">Related reading · The New York Times</p>
+        <a className="textlink" href="https://www.nytimes.com/2026/11/16/well/weight-loss-drugs-children.html" target="_blank" rel="noopener noreferrer">Study Paves Way for GLP-1s for Young Children, but Some Doctors Are Uneasy ↗</a>
+      </div>
+    </div>}
     <div className={`learning-grid ${styles.grid}`}>
       {items.map(item => "content" in item ? <div key={item.id} className={styles.peptides} data-release-id={item.id}>{item.content}</div> :
         <article className={`learning-card ${item.id === "fda-glp1-vision" ? styles.featured : ""}`} key={item.id} data-release-id={item.id}>

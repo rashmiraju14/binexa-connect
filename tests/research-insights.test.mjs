@@ -175,3 +175,17 @@ test('verified-member New Releases renders one featured Peptides card with origi
   assert.ok(html.indexOf('Featured article') < html.indexOf('Research collection'));
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);
 });
+
+test('New Releases video uses official embed and stays within Weight Health filters', () => {
+  const research = view();
+  const video = () => nodes(research.render()).find(node => node.props?.['data-release-video'] === 'gma-glp1-teens');
+  assert.ok(video());
+  const html = renderToStaticMarkup(video());
+  assert.ok(html.includes('https://www.youtube-nocookie.com/embed/p8V_23c6tio'));
+  assert.ok(html.includes('Good Morning America'));
+  assert.ok(html.includes('https://www.nytimes.com/2026/11/16/well/weight-loss-drugs-children.html'));
+  research.click('Longevity');
+  assert.equal(video(), undefined);
+  research.click('Weight Health');
+  assert.ok(video());
+});

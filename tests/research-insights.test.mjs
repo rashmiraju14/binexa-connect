@@ -53,7 +53,7 @@ test('all category filters select only the corresponding sources, including the 
   assert.equal(nodes(research.render()).filter(node => node.props?.['data-release-id'] === 'peptides').length, 1);
 });
 test('cards contain editorial labels, original attribution, verified dates and safe source links', () => {
-  const cards = nodes(view().render()).filter(node => node.type === 'article');
+  const cards = nodes(view().render()).filter(node => node.type === 'article' && node.props?.['data-release-id']);
   assert.equal(cards.length, 10);
   for (const card of cards) {
     const source = releaseData.newReleases.find(item => item.id === card.props['data-release-id']);
@@ -106,7 +106,7 @@ test('FDA is featured first, remaining publication dates descend, undated resour
   const dates = sorted.slice(1).filter(item=>item.published).map(item=>item.published);
   assert.deepEqual(dates,[...dates].sort().reverse());
   assert.deepEqual(releaseData.newReleases.map(item=>item.id),before);
-  const cards=nodes(view().render()).filter(node=>node.type==='article');
+  const cards=nodes(view().render()).filter(node=>node.type==='article' && node.props?.['data-release-id']);
   assert.equal(cards[0].props['data-release-id'],'fda-glp1-vision');
   assert.equal(renderToStaticMarkup(view().render()).split('Featured safety update').length-1,1);
 });
@@ -183,7 +183,10 @@ test('New Releases video uses official embed and stays within Weight Health filt
   const html = renderToStaticMarkup(video());
   assert.ok(html.includes('https://www.youtube-nocookie.com/embed/p8V_23c6tio'));
   assert.ok(html.includes('Good Morning America'));
-  assert.ok(html.includes('https://www.nytimes.com/2026/11/16/well/weight-loss-drugs-children.html'));
+  assert.ok(!html.includes('nytimes.com'));
+  const article = nodes(research.render()).find(node => node.props?.['data-release-article'] === 'nyt-glp1-young-children');
+  assert.ok(article);
+  assert.ok(renderToStaticMarkup(article).includes('https://www.nytimes.com/2026/11/16/well/weight-loss-drugs-children.html'));
   research.click('Longevity');
   assert.equal(video(), undefined);
   research.click('Weight Health');

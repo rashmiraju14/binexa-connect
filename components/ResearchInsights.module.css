@@ -1,4 +1,13 @@
 .filters:global(.lounge-topic-filters) { margin-top: 0; }
+.formatTabs { display: flex; width: fit-content; max-width: 100%; gap: 4px; padding: 6px; margin: 0 auto 32px; border: 1px solid #e7dcc7; border-radius: 17px; background: #f8f5ee; box-shadow: 0 4px 18px #0b294a04; }
+.formatTabs button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 60px; min-width: 180px; padding: 10px 28px 10px 16px; border: 1px solid transparent; border-radius: 11px; background: transparent; color: var(--navy); font: inherit; font-size: 18px; font-weight: 800; cursor: pointer; transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease; }
+.formatTabs button svg { box-sizing: border-box; width: 38px; height: 38px; padding: 9px; border-radius: 50%; background: #ece1ca; flex-shrink: 0; color: #946719; }
+.formatTabs button:hover { background: #efe6d4; }
+.formatTabs button[aria-pressed="true"] { background: var(--navy); color: white; border-color: var(--navy); box-shadow: 0 2px 5px #0b2b4d18; }
+.formatTabs button[aria-pressed="true"] svg { background: #ffffff14; color: #e4bd71; }
+.formatTabs button:focus-visible { outline: 2px solid #a57422; outline-offset: 3px; }
+@media (max-width: 420px) { .formatTabs { display: flex; } .formatTabs button { flex: 1; min-width: 0; padding-inline: 18px; } }
+@media (prefers-reduced-motion: reduce) { .formatTabs button { transition: none; } }
 .count { margin: 16px 0 24px; color: var(--muted); font-size: 13px; }
 .grid:global(.learning-grid) { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
 .cardTitle { margin: 15px 0 10px; color: var(--navy); font-size: 19px; line-height: 1.4; }

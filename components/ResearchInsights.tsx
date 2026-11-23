@@ -15,8 +15,13 @@ export default function ResearchInsights({ peptides }: { peptides?: ReactNode } 
   const items = sortReleases(collection).filter(item => category === "All Updates" || item.category === category);
 
   return <section aria-label="New Releases sources by category">
-    <div className={`lounge-topic-filters ${styles.filters}`} role="group" aria-label="Choose New Releases format">
-      {(["Articles", "Videos"] as const).map(label => <button type="button" key={label} aria-pressed={format === label} onClick={() => setFormat(label)}>{label}</button>)}
+    <div className={styles.formatTabs} role="group" aria-label="Choose New Releases format">
+      {(["Articles", "Videos"] as const).map(label => <button type="button" key={label} aria-pressed={format === label} onClick={() => setFormat(label)}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          {label === "Articles" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m10 9 5 3-5 3z" /></>}
+        </svg>
+        {label}
+      </button>)}
     </div>
     <div className={`lounge-topic-filters ${styles.filters}`} role="group" aria-label="Filter New Releases by category">
       {releaseCategories.map(label => <button type="button" key={label} aria-pressed={category === label} onClick={() => setCategory(label)}>{label}</button>)}

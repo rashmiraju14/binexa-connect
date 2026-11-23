@@ -34,7 +34,7 @@ function view(props = {}) {
     Component,
     render: () => Component(props),
     click: label => {
-      const button = nodes(Component(props)).find(node => node.type === 'button' && node.props.children === label);
+      const button = nodes(Component(props)).find(node => node.type === 'button' && [node.props.children].flat().includes(label));
       assert.ok(button, label);
       button.props.onClick();
     },

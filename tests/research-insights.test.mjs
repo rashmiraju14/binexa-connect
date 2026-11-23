@@ -23,8 +23,9 @@ const { learningItems } = load('lib/learning.ts', { '@/lib/discord/navigation': 
 const releaseData = load('lib/new-releases.ts', { './learning': { learningItems } });
 function view(props = {}) {
   let selected = 'All Updates';
+  let format = 'Articles';
   const Component = load('components/ResearchInsights.tsx', {
-    react: { useState: () => [selected, value => { selected = value; }] },
+    react: { useState: initial => initial === 'Articles' ? [format, value => { format = value; }] : [selected, value => { selected = value; }] },
     'next/link': { default: ({ href, children }) => createElement('a', { href }, children) },
     '@/lib/new-releases': releaseData,
     './ResearchInsights.module.css': { default: {} },
@@ -41,7 +42,7 @@ function view(props = {}) {
 }
 test('all category filters select only the corresponding sources, including the single Peptides slot', () => {
   const research = view({ peptides: createElement('article', null, 'Original Peptides card') });
-  assert.deepEqual(nodes(research.render()).filter(node => node.props?.['aria-pressed'] !== undefined).map(node => node.props.children), releaseData.releaseCategories);
+  assert.deepEqual(nodes(research.render()).filter(node => node.props?.['aria-pressed'] !== undefined && releaseData.releaseCategories.includes(node.props.children)).map(node => node.props.children), releaseData.releaseCategories);
   const expected = { 'All Updates': 11, 'Weight Health': 3, Longevity: 3, "Men's Health": 1, 'Preventive Health': 2, 'Healthcare Technology': 1, 'Skin Care': 1 };
   for (const [category, count] of Object.entries(expected)) {
     research.click(category);
@@ -179,13 +180,16 @@ test('verified-member New Releases renders one featured Peptides card with origi
 test('New Releases video uses official embed and stays within Weight Health filters', () => {
   const research = view();
   const video = () => nodes(research.render()).find(node => node.props?.['data-release-video'] === 'gma-glp1-teens');
+  assert.equal(video(), undefined);
+  const article = nodes(research.render()).find(node => node.props?.['data-release-article'] === 'nyt-glp1-young-children');
+  assert.ok(article);
+  research.click('Videos');
   assert.ok(video());
   const html = renderToStaticMarkup(video());
   assert.ok(html.includes('https://www.youtube-nocookie.com/embed/p8V_23c6tio'));
   assert.ok(html.includes('Good Morning America'));
   assert.ok(!html.includes('nytimes.com'));
-  const article = nodes(research.render()).find(node => node.props?.['data-release-article'] === 'nyt-glp1-young-children');
-  assert.ok(article);
+  assert.equal(nodes(research.render()).filter(node => node.props?.['data-release-article']).length, 0);
   assert.ok(renderToStaticMarkup(article).includes('https://www.nytimes.com/2026/11/16/well/weight-loss-drugs-children.html'));
   research.click('Longevity');
   assert.equal(video(), undefined);

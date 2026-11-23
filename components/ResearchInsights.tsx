@@ -8,18 +8,22 @@ import styles from "./ResearchInsights.module.css";
 type PeptidesSlot = { id: "peptides"; category: "Skin Care"; published: "2026-10-09"; content: ReactNode };
 
 export default function ResearchInsights({ peptides }: { peptides?: ReactNode } = {}) {
+  const [format, setFormat] = useState<"Articles" | "Videos">("Articles");
   const [category, setCategory] = useState<ReleaseCategory>("All Updates");
   const collection: (NewRelease | PeptidesSlot)[] = [...newReleases];
   if (peptides) collection.push({ id: "peptides", category: "Skin Care", published: "2026-10-09", content: peptides });
   const items = sortReleases(collection).filter(item => category === "All Updates" || item.category === category);
 
   return <section aria-label="New Releases sources by category">
+    <div className={`lounge-topic-filters ${styles.filters}`} role="group" aria-label="Choose New Releases format">
+      {(["Articles", "Videos"] as const).map(label => <button type="button" key={label} aria-pressed={format === label} onClick={() => setFormat(label)}>{label}</button>)}
+    </div>
     <div className={`lounge-topic-filters ${styles.filters}`} role="group" aria-label="Filter New Releases by category">
       {releaseCategories.map(label => <button type="button" key={label} aria-pressed={category === label} onClick={() => setCategory(label)}>{label}</button>)}
     </div>
-    <p className={styles.count} role="status">{items.length} {items.length === 1 ? "source" : "sources"} · {category}</p>
-    <p className={styles.context}>Binexa editorial summaries introduce the linked sources. The FDA safety update is featured first; other items follow publication dates, newest first. Undated resources appear last.</p>
-    {(category === "All Updates" || category === "Weight Health") && <div className={`learning-card ${styles.videoCard}`} data-release-video="gma-glp1-teens">
+    <p className={styles.count} role="status">{format === "Articles" ? items.length + ((category === "All Updates" || category === "Weight Health") ? 1 : 0) : ((category === "All Updates" || category === "Weight Health") ? 1 : 0)} {format === "Articles" ? "articles" : "videos"} · {category}</p>
+    {format === "Articles" && <p className={styles.context}>Binexa editorial summaries introduce the linked sources. The FDA safety update is featured first; other items follow publication dates, newest first. Undated resources appear last.</p>}
+    {format === "Videos" && (category === "All Updates" || category === "Weight Health") && <div className={`learning-card ${styles.videoCard}`} data-release-video="gma-glp1-teens">
       <iframe className={styles.video} src="https://www.youtube-nocookie.com/embed/p8V_23c6tio" title="Teen speaks out about using GLP-1 for weight loss — Good Morning America" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
       <div className="learning-card-body">
         <span className="pill">Weight Health</span>
@@ -29,7 +33,7 @@ export default function ResearchInsights({ peptides }: { peptides?: ReactNode } 
         <a className="textlink content-action" href="https://www.youtube.com/watch?v=p8V_23c6tio" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
       </div>
     </div>}
-    {(category === "All Updates" || category === "Weight Health") && <article className={`learning-card ${styles.videoCard}`} data-release-article="nyt-glp1-young-children">
+    {format === "Articles" && (category === "All Updates" || category === "Weight Health") && <article className={`learning-card ${styles.videoCard}`} data-release-article="nyt-glp1-young-children">
       <div className="learning-card-body">
         <span className="pill">Weight Health</span>
         <p className={styles.kind}>Article · The New York Times</p>
@@ -39,7 +43,8 @@ export default function ResearchInsights({ peptides }: { peptides?: ReactNode } 
         <a className="textlink content-action" href="https://www.nytimes.com/2026/11/16/well/weight-loss-drugs-children.html" target="_blank" rel="noopener noreferrer">Read Original Article ↗</a>
       </div>
     </article>}
-    <div className={`learning-grid ${styles.grid}`}>
+    {format === "Videos" && category !== "All Updates" && category !== "Weight Health" && <p>No videos in this category yet.</p>}
+    {format === "Articles" && <div className={`learning-grid ${styles.grid}`}>
       {items.map(item => "content" in item ? <div key={item.id} className={styles.peptides} data-release-id={item.id}>{item.content}</div> :
         <article className={`learning-card ${item.id === "fda-glp1-vision" ? styles.featured : ""}`} key={item.id} data-release-id={item.id}>
           {item.thumbnail && <Image className={styles.thumbnail} src={item.thumbnail.src} alt={item.thumbnail.alt} width={640} height={360} unoptimized />}
@@ -54,6 +59,6 @@ export default function ResearchInsights({ peptides }: { peptides?: ReactNode } 
             <a className="textlink content-action" href={item.url} target="_blank" rel="noopener noreferrer">Read Original Source ↗</a>
           </div>
         </article>)}
-    </div>
+    </div>}
   </section>;
 }

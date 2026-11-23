@@ -12,11 +12,11 @@ export default function ComingSoonBanner() {
       <div className={styles.left}>
         <div className={styles.label}>
           <Image src="/branding/binexa-icon.png" alt="Binexa B logo" width={56} height={56} />
-          <span>COMING SOON</span>
+          <span>LAUNCHING NOVEMBER 23</span>
         </div>
         <h2 id="pharmacy-feature-title">BinexaHealth Online Pharmacy</h2>
-        <p>Personalized online care is on the horizon. Explore wellness resources while we prepare for launch.</p>
-        <Link className={styles.ahead} href="/events">See what&apos;s ahead <ArrowRight size={22} aria-hidden="true" /></Link>
+        <p>BinexaHealth Online Pharmacy launches November 23, 2026. First-time customers: use promo code WELCOME50.</p>
+        <Link className={styles.ahead} href="/events">Explore our community <ArrowRight size={22} aria-hidden="true" /></Link>
       </div>
       <div className={styles.right}>
         <h3>Stay curious. Stay connected.</h3>

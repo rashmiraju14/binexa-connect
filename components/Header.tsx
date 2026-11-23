@@ -48,10 +48,12 @@ export default function Header() {
       </div>
       <div className={`shell ${styles.languageRow}`}><nav className="community-subnav" aria-label="Community activities">
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href}>{tab.title}</Link>)}
+        <a href="https://binexahealth.com" target="_blank" rel="noopener noreferrer">Visit BinexaHealth ↗</a>
       </nav><LanguageSelector /></div>
       {open && <nav id="mobile-navigation" className={`nav-mobile ${styles.mobileNavigation}`} aria-label="Mobile navigation" data-auth-trigger>
         {links.map(([label, url]) => <Link key={url} href={url} aria-current={pathname === url ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
         {communityTabs.map(tab => <Link key={tab.href} href={tab.href} onClick={() => setOpen(false)}>{tab.title}</Link>)}
+        <a href="https://binexahealth.com" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>Visit BinexaHealth ↗</a>
         <div className={styles.actionSlot}>
           <button type="button" className={`btn header-signin ${authenticated ? styles.inactive : ""}`} data-auth-trigger onClick={() => { setOpen(false); openAuth("signin", "/member"); }}>Sign In</button>
         </div>

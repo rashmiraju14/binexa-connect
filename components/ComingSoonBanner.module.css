@@ -1,6 +1,8 @@
 .wrap { margin-block: 24px 32px; }
 .banner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 44px; padding: 24px 32px; border: 1px solid #e7ae25; border-radius: 24px; background: radial-gradient(ellipse at center, #0b3153, #062643 85%); color: #fff; }
 .left, .right { min-width: 0; }
+.visitHealth { display: flex; align-items: center; justify-content: center; gap: 10px; width: fit-content; min-height: 48px; padding: 11px 24px; margin-top: 20px; border: 1px solid #ffca3b; border-radius: 999px; background: #ffca3b; color: #082b50; font-size: 17px; font-weight: 750; }
+.visitHealth:hover { background: #ffda73; border-color: #ffda73; }
 .label { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
 .label img { flex-shrink: 0; object-fit: contain; }
 .label span { color: #ffcf53; font-size: 14px; font-weight: 800; letter-spacing: 1.5px; }

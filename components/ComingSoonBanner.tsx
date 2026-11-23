@@ -16,6 +16,7 @@ export default function ComingSoonBanner() {
         </div>
         <h2 id="pharmacy-feature-title">BinexaHealth Online Pharmacy</h2>
         <p>BinexaHealth Online Pharmacy launches November 23, 2026. First-time customers: use promo code WELCOME50.</p>
+        <a className={styles.visitHealth} href="https://binexahealth.com" target="_blank" rel="noopener noreferrer">Visit BinexaHealth <ArrowRight size={20} aria-hidden="true" /></a>
         <Link className={styles.ahead} href="/events">Explore our community <ArrowRight size={22} aria-hidden="true" /></Link>
       </div>
       <div className={styles.right}>

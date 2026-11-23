@@ -20,14 +20,12 @@ export default function FounderBios() { return <>
       <p className="eyebrow">A MESSAGE FROM OUR CO-FOUNDER</p>
       <h2 id="rashmi-welcome-title">Rashmi Thimmaraju</h2>
       <p className="founder-role">Technical Co-Founder, BinexaHealth</p>
-      <p>I believe technology is most meaningful when it helps people feel informed, supported, and connected. My goal is to make health information easier to understand and create a community where everyone feels welcome to learn and ask questions.</p>
-      <p>One area that has always interested me is the role of technology in healthcare. I believe AI has the potential to make health information easier to understand, improve access to educational resources, and help people make more informed decisions about their well-being.</p>
-      <p>Over the years, I&apos;ve also developed an interest in digital health, preventive wellness, and how technology can bring people together. I believe that while technology is important, having a supportive community where people can learn and share experiences is equally valuable.</p>
-      <p>This is why I co-founded BinexaHealth with Binh Diep and helped create Binexa Connect.</p>
-      <p>My goal is to build a community where people can explore new ideas, ask questions, share experiences, and learn about health and technology in a simple and welcoming environment.</p>
-      <p>Through Binexa Connect, I plan to share articles and information about artificial intelligence in healthcare, emerging health technologies, wellness, and digital innovation. I also look forward to learning from members through their experiences, questions, and discussions.</p>
-      <p>I want this to be a welcoming community where everyone feels comfortable participating, whether you&apos;re interested in learning something new, sharing an experience, or simply connecting with others.</p>
-      <p>Thank you for being here. I look forward to connecting, learning, and growing together.</p>
+      <p>I&apos;m Rashmi, the technical co-founder of BinexaHealth. My focus is the technology behind Binexa Connect and how it can make learning about health easier, more approachable, and more connected.</p>
+      <p>I&apos;ve always wanted to be an entrepreneur—to take an idea, build it into something real, and see it become useful to others. Co-founding BinexaHealth gives me the opportunity to bring that ambition together with my interest in technology and healthcare.</p>
+      <p>My software background and master&apos;s degree in Artificial Intelligence inform my approach to building digital products. I&apos;m interested in bringing that technical foundation into healthcare through tools that are useful and easy to navigate.</p>
+      <p>I&apos;m especially interested in artificial intelligence, digital health, and the ways thoughtful design can help people navigate information. For me, building a useful platform starts with understanding the people who use it.</p>
+      <p>Working alongside Binh Diep, I helped create Binexa Connect as a place to explore ideas and exchange perspectives. I bring a technology perspective to our work, with an emphasis on a clear and welcoming experience.</p>
+      <p>As this community grows, I want your questions and feedback to help shape what we build next. Thank you for being part of it.</p>
       <p><strong>Rashmi Thimmaraju, B.Tech., M.S.</strong><br /><em>Technical Co-Founder, BinexaHealth</em></p>
     </FounderBiography>
 </>; }
